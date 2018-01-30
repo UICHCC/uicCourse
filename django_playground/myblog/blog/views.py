@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from . import models
 
 
 def index(request):
-    return render(request, 'index.html', {'hello': 'Hello, Blog~'})
+    article = models.Article.objects.all()
+    return render(request, 'index.html', {'article': article})
 
 
 
