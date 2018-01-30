@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Django Blog</title>
+    <title>{{ article.title }} | Django Blog</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
@@ -187,16 +187,18 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8 blog-main">
-          <h3 class="pb-3 mb-4 font-italic border-bottom">
-            From the DEEP ♂ DARK ♂ FANTASY
-          </h3>
-          {% for article in articles %}
           <div class="blog-post">
             <h2 class="blog-post-title">{{ article.title }}</h2>
               <p>{{ article.content }}</p>
-              <a href="{% url 'post_page' article.id %}">READ MORE</a>
+              <a href="#">Edit Post</a>
           </div><!-- /.blog-post -->
-          {% endfor %}
+
+
+          <nav class="blog-pagination">
+            <a class="btn btn-outline-primary" href="#">Older</a>
+            <a class="btn btn-outline-secondary disabled" href="#">Newer</a>
+          </nav>
+
         </div><!-- /.blog-main -->
 
         <aside class="col-md-4 blog-sidebar">
