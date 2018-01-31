@@ -42,10 +42,10 @@
       <form>
       <div class="card-body ">
           <div class="form-group">
-        <input type="text" class="form-control" value="{{ coursedata.course_name_en }}">
+        <input type="text" class="form-control" value="{{ coursedata.course_name_en }}" name="cne">
           </div>
 <div class="form-group">
-        <input type="text" class="form-control" value="{{ coursedata.course_name_cn }}">
+        <input type="text" class="form-control" value="{{ coursedata.course_name_cn }}" name="cnc">
 </div>
           <div class="row">
               <div class="col">
@@ -53,7 +53,7 @@
                 <div class="card-body text-primary">
                   <h5 class="card-title">Course Code</h5>
                     <div class="form-group">
-        <input type="text" class="form-control" value="{{ coursedata.course_code | upper }}">
+        <input type="text" class="form-control" value="{{ coursedata.course_code | upper }}" name="cc">
 </div>
                 </div>
               </div>
@@ -63,7 +63,7 @@
                 <div class="card-body text-success">
                   <h5 class="card-title">Course Class</h5>
                     <div class="form-group">
-        <input type="text" class="form-control" value="{{ coursedata.course_class | upper }}">
+        <input type="text" class="form-control" value="{{ coursedata.course_class | upper }}" name="cclass">
 </div>
                 </div>
               </div>
@@ -73,7 +73,7 @@
                 <div class="card-body text-danger">
                   <h5 class="card-title">Course Units</h5>
                     <div class="form-group">
-        <input type="number" class="form-control" value="{{ coursedata.course_units }}">
+        <input type="number" class="form-control" value="{{ coursedata.course_units }}" name="cu">
 </div>
                 </div>
               </div>
@@ -81,7 +81,7 @@
           </div>
           <hr>
           <div class="form-group">
-        <textarea class="form-control" rows="5">{{ coursedata.course_descriptions }}</textarea>
+        <textarea class="form-control" rows="5" name="cd">{{ coursedata.course_descriptions }}</textarea>
 </div>
     </div>
           <div class="form-group text-center">
