@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Login request | Course Index</title>
+    <title>{{ coursedata.course_name_en }} | Course Index</title>
     <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
     {% load static %}
@@ -36,28 +36,44 @@
 
     <!-- Begin page content -->
     <main role="main" class="container">
-        <h1><pre>C0urse L1st</pre></h1>
-
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Course Name</th>
-                    <th scope="col">Course Code</th>
-                    <th scope="col">Course Unit(s)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for course in courses %}
-                    <tr>
-                        <th scope="row">{{ course.id }}</th>
-                        <td><a href="{% url 'course_detail' course.id %}">{{ course.course_name_en }}</a></td>
-                        <td>{{ course.course_code }}</td>
-                        <td>{{ course.course_units }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <br>
+    <div class="card">
+      <div class="card-header text-white bg-dark">Course Detail: {{ coursedata.course_code | upper }}</div>
+      <div class="card-body">
+        <h1 class="card-title">{{ coursedata.course_name_en }}</h1>
+        <h2 class="card-title">{{ coursedata.course_name_cn }}</h2>
+          <div class="row">
+              <div class="col">
+              <div class="card border-primary">
+                <div class="card-body text-primary">
+                  <h5 class="card-title">Course Code</h5>
+                  <p class="card-text">{{ coursedata.course_code | upper }}</p>
+                </div>
+              </div>
+              </div>
+              <div class="col">
+              <div class="card border-success">
+                <div class="card-body text-success">
+                  <h5 class="card-title">Course Class</h5>
+                  <p class="card-text">{{ coursedata.course_class | upper }}</p>
+                </div>
+              </div>
+              </div>
+              <div class="col">
+              <div class="card border-danger">
+                <div class="card-body text-danger">
+                  <h5 class="card-title">Course Units</h5>
+                  <p class="card-text">{{ coursedata.course_units }}</p>
+                </div>
+              </div>
+              </div>
+          </div>
+          <hr>
+          <p class="card-text">{{ coursedata.course_descriptions }}</p>
+    </div>
+    </div>
+        <br>
+        <a href="{% url 'course_detail_edit' coursedata.id %}" class="btn btn-primary">Edit</a>
     </main>
 
     <footer class="footer">

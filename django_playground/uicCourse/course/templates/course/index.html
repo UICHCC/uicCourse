@@ -35,6 +35,14 @@
 
     <!-- Begin page content -->
     <main role="main" class="container">
+        {% if errormessage != NULL %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ errormessage }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% endif %}
       <h1 class="mt-5">UIC Index</h1>
       <small class="text-secondary">For a more transparent future</small>
       <hr>
