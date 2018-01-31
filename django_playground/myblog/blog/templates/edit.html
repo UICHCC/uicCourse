@@ -170,7 +170,8 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8 blog-main form-group">
-          <form action="" method="post">
+          <form action="{% url 'edit_new' %}" method="post">
+              {% csrf_token %}
               <div class="form-group">
                   <label>Title</label>
                   <input type="text" class="form-control" name="title">
@@ -185,7 +186,7 @@
 
         <aside class="col-md-4 blog-sidebar">
           <div class="p-3 mb-3 bg-light rounded">
-            <h4 class="font-italic">Edit Area</h4>
+            <h4 class="font-italic">NEW ARTICLE Area</h4>
           </div>
         </aside><!-- /.blog-sidebar -->
 
