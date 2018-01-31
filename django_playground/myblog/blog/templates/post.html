@@ -190,7 +190,7 @@
           <div class="blog-post">
             <h2 class="blog-post-title">{{ article.title }}</h2>
               <p>{{ article.content }}</p>
-              <a href="#">Edit Post</a>
+              <a href="{% url 'edit_page' article.id %}">Edit Post</a>
           </div><!-- /.blog-post -->
 
 

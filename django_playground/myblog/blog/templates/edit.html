@@ -172,14 +172,27 @@
         <div class="col-md-8 blog-main form-group">
           <form action="{% url 'edit_new' %}" method="post">
               {% csrf_token %}
+              {% if article %}
+              <input type="hidden" name="article_id" value="{{ article.id }}" >
+              <div class="form-group">
+                  <label>Title</label>
+                  <input type="text" class="form-control" name="title" value="{{ article.title }}">
+              </div>
+              <div class="form-group">
+                  <label>Content</label>
+                  <textarea class="form-control" rows="3" name="content">{{ article.content }}</textarea>
+              </div>
+              {% else %}
+              <input type="hidden" name="article_id" value="0" >
               <div class="form-group">
                   <label>Title</label>
                   <input type="text" class="form-control" name="title">
               </div>
               <div class="form-group">
                   <label>Content</label>
-                  <textarea class="form-control" rows="3" name="content"></textarea>
+                  <textarea class="form-control" rows="3" name="content""></textarea>
               </div>
+              {% endif %}
               <input type="submit" class="btn btn-primary">
           </form>
         </div><!-- /.blog-main -->
