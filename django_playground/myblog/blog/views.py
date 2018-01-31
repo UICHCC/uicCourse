@@ -12,5 +12,5 @@ def article_page(request, article_id):
     return render(request, 'post.html', {'article': article})
 
 
-
-
+def edit_page(request):
+    return render(request, 'edit.html')
