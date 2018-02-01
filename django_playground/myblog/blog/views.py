@@ -33,4 +33,3 @@ def edit_page_db(request):
     modify_article.content = content
     modify_article.save()
     return render(request, 'post.html', {'article': modify_article})
-
