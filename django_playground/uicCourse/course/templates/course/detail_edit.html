@@ -43,10 +43,10 @@
           {% csrf_token %}
       <div class="card-body ">
           <div class="form-group">
-        <input type="text" class="form-control" value="{{ coursedata.course_name_en }}" name="cne">
+        <input type="text" class="form-control" value="{{ coursedata.course_name_en }}" name="cne" placeholder="Course English Name">
           </div>
 <div class="form-group">
-        <input type="text" class="form-control" value="{{ coursedata.course_name_cn }}" name="cnc">
+        <input type="text" class="form-control" value="{{ coursedata.course_name_cn }}" name="cnc" placeholder="Course Chinese Name">
 </div>
           <div class="row">
               <div class="col">
@@ -54,7 +54,7 @@
                 <div class="card-body text-primary">
                   <h5 class="card-title">Course Code</h5>
                     <div class="form-group">
-        <input type="text" class="form-control" value="{{ coursedata.course_code | upper }}" name="cc">
+        <input type="text" class="form-control" value="{{ coursedata.course_code | upper }}" name="cc" placeholder="Course Code">
 </div>
                 </div>
               </div>
@@ -64,7 +64,7 @@
                 <div class="card-body text-success">
                   <h5 class="card-title">Course Class</h5>
                     <div class="form-group">
-        <input type="text" class="form-control" value="{{ coursedata.course_class | upper }}" name="cclass">
+        <input type="text" class="form-control" value="{{ coursedata.course_class | upper }}" name="cclass" placeholder="Course Class">
 </div>
                 </div>
               </div>
@@ -74,7 +74,7 @@
                 <div class="card-body text-danger">
                   <h5 class="card-title">Course Units</h5>
                     <div class="form-group">
-        <input type="number" class="form-control" value="{{ coursedata.course_units }}" name="cu">
+        <input type="number" class="form-control" value="{{ coursedata.course_units }}" name="cu" placeholder="Course Units">
 </div>
                 </div>
               </div>
@@ -82,8 +82,13 @@
           </div>
           <hr>
           <div class="form-group">
+              <label>Course Descriptions:</label>
         <textarea class="form-control" rows="5" name="cd">{{ coursedata.course_descriptions }}</textarea>
+              {% if article %}
               <input type="hidden" name="cid" value="{{ coursedata.id }}">
+              {% else %}
+              <input type="hidden" name="cid" value="0">
+              {% endif %}
 </div>
     </div>
           <div class="form-group text-center">

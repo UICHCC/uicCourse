@@ -61,34 +61,40 @@ def course_edit(request, course_id):
         return redirect('/')
     else:
         userdata = request.user
-        course_solo = models.Course.objects.get(pk=course_id)
-        return render(request, 'course/detail_edit.html', {'userdata': userdata, 'coursedata': course_solo})
+        if str(course_id) == '0':
+            return render(request, 'course/detail_edit.html', {'userdata': userdata})
+        else:
+            course_solo = models.Course.objects.get(pk=course_id)
+            return render(request, 'course/detail_edit.html', {'userdata': userdata, 'coursedata': course_solo})
 
 
 def course_edit_submit(request):
-    course_name_en = request.POST.get('cne')
-    course_name_cn = request.POST.get('cnc')
-    course_code = request.POST.get('cc')
-    course_class = request.POST.get('cclass')
-    course_units = request.POST.get('cu')
-    course_descriptions = request.POST.get('cd')
-    course_id = request.POST.get('cid')
-    if course_id == '0':
-        models.Course.objects.create(
-            course_name_en=course_name_en,
-            course_name_cn=course_name_cn,
-            course_code=course_code,
-            course_class=course_class,
-            course_units=course_units,
-            course_descriptions=course_descriptions,
-        )
+    if not request.user.is_authenticated:
+        return redirect('/')
     else:
-        modify_course = models.Course.objects.get(pk=course_id)
-        modify_course.course_name_en = course_name_en
-        modify_course.course_name_cn = course_name_cn
-        modify_course.course_code = course_code
-        modify_course.course_class = course_class
-        modify_course.course_units = course_units
-        modify_course.course_descriptions = course_descriptions
-        modify_course.save()
-    return redirect('/')
+        course_name_en = request.POST.get('cne')
+        course_name_cn = request.POST.get('cnc')
+        course_code = request.POST.get('cc')
+        course_class = request.POST.get('cclass')
+        course_units = request.POST.get('cu')
+        course_descriptions = request.POST.get('cd')
+        course_id = request.POST.get('cid')
+        if course_id == '0':
+            models.Course.objects.create(
+                course_name_en=course_name_en,
+                course_name_cn=course_name_cn,
+                course_code=course_code,
+                course_class=course_class,
+                course_units=course_units,
+                course_descriptions=course_descriptions,
+            )
+        else:
+            modify_course = models.Course.objects.get(pk=course_id)
+            modify_course.course_name_en = course_name_en
+            modify_course.course_name_cn = course_name_cn
+            modify_course.course_code = course_code
+            modify_course.course_class = course_class
+            modify_course.course_units = course_units
+            modify_course.course_descriptions = course_descriptions
+            modify_course.save()
+        return redirect('/')
