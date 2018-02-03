@@ -98,3 +98,15 @@ def course_edit_submit(request):
             modify_course.course_descriptions = course_descriptions
             modify_course.save()
         return redirect('/')
+
+
+def delete_course(request, course_id):
+    if not request.user.is_authenticated:
+        return redirect('/course/')
+    else:
+        if course_id == '0':
+            pass
+        else:
+            predelete = models.Course.objects.get(pk=course_id)
+            predelete.delete()
+        return redirect('/course/')

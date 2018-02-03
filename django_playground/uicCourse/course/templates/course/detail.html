@@ -74,7 +74,7 @@
     </div>
     </div>
         <br>
-        <a href="{% url 'course_detail_edit' coursedata.id %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'course_detail_edit' coursedata.id %}" class="btn btn-primary">Edit</a> <a href="javascript:AlertIt();" class="btn btn-danger">Delete</a>
     </main>
 
     <footer class="footer">
@@ -90,5 +90,13 @@
     {% load static %}
     <script src="{% static "js/popper.min.js" %}"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        function AlertIt() {
+            var answer = confirm("Are you sure you want to delete this course record?.");
+            if (answer) {
+                window.location = "{% url 'course_delete' coursedata.id %}"
+            }
+        }
+    </script>
   </body>
 </html>
