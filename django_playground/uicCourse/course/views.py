@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 import hashlib
 import random
@@ -127,13 +129,26 @@ def signup_check(request):
     un = request.POST.get('username')
     pw = request.POST.get('password')
     ic = request.POST.get('invitationcode')
-    return HttpResponse(email+un+pw+ic)
+    try:
+        models.InvitationCode.objects.get(invitation_code=ic)
+    except ObjectDoesNotExist:
+        return redirect('/')
+
+    user = User.objects.create_user(
+        username=un,
+        password=pw,
+        email=email,
+    )
+    if user is not None:
+        login(request, user)
+        return redirect('/course/')
 
 
 def invitation_code(request):
     if not request.user.is_authenticated:
         return redirect('/')
     else:
+        userdata = request.user
         times = request.POST.get('amount')
         if times:
             for i in range(int(times)):
@@ -143,16 +158,16 @@ def invitation_code(request):
                     usability=True,
                 )
         code_all = models.InvitationCode.objects.all()
-        return render(request, 'course/newic.html', {'codes': code_all})
+        return render(request, 'course/newic.html', {'userdata': userdata, 'codes': code_all})
 
 
 def invitation_code_invalid(request, code_id):
     if not request.user.is_authenticated:
         return redirect('/')
     else:
+        userdata = request.user
         deleting_code = models.InvitationCode.objects.get(pk=code_id)
-        deleting_code.usability = False
-        deleting_code.save()
+        deleting_code.delete()
         code_all = models.InvitationCode.objects.all()
-        return render(request, 'course/newic.html', {'codes': code_all})
+        return render(request, 'course/newic.html', {'userdata': userdata, 'codes': code_all})
 

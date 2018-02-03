@@ -74,7 +74,7 @@
                 {% for code in codes %}
                     <tr>
                         <th scope="row">{{ code.id }}</th>
-                        <td>{{ code.invitation_code }}</td>
+                        <td>{{ code.invitation_code}}</td>
                         <td>
                             {% if code.usability %}
                                 Valid
@@ -82,7 +82,12 @@
                                 Invalid
                             {% endif %}
                         </td>
-                        <td><a href="{% url 'invitation_code_invalid' code.id %}" class="btn-danger btn-sm">Delete</a></td>
+                        <td>
+                            {% if code.usability %}
+                                <a href="{% url 'invitation_code_invalid' code.id %}" class="btn-danger btn-sm">Invalid it</a>
+                            {% else %}
+                            {% endif %}
+                        </td>
                     {% endfor %}
                     </tr>
 
