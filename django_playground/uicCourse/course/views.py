@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 
+import hashlib
+import random
+
 from . import models
 
 
@@ -102,7 +105,7 @@ def course_edit_submit(request):
 
 def delete_course(request, course_id):
     if not request.user.is_authenticated:
-        return redirect('/course/')
+        return redirect('/')
     else:
         if course_id == '0':
             pass
@@ -110,3 +113,46 @@ def delete_course(request, course_id):
             predelete = models.Course.objects.get(pk=course_id)
             predelete.delete()
         return redirect('/course/')
+
+
+def signup_invite(request):
+    if not request.user.is_authenticated:
+        return render(request, 'course/signup.html')
+    else:
+        return redirect('/course/')
+
+
+def signup_check(request):
+    email = request.POST.get('email')
+    un = request.POST.get('username')
+    pw = request.POST.get('password')
+    ic = request.POST.get('invitationcode')
+    return HttpResponse(email+un+pw+ic)
+
+
+def invitation_code(request):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    else:
+        times = request.POST.get('amount')
+        if times:
+            for i in range(int(times)):
+                generated_code = hashlib.md5(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
+                models.InvitationCode.objects.create(
+                    invitation_code=generated_code,
+                    usability=True,
+                )
+        code_all = models.InvitationCode.objects.all()
+        return render(request, 'course/newic.html', {'codes': code_all})
+
+
+def invitation_code_invalid(request, code_id):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    else:
+        deleting_code = models.InvitationCode.objects.get(pk=code_id)
+        deleting_code.usability = False
+        deleting_code.save()
+        code_all = models.InvitationCode.objects.all()
+        return render(request, 'course/newic.html', {'codes': code_all})
+
