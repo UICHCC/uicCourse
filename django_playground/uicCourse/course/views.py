@@ -139,6 +139,8 @@ def signup_check(request):
         password=pw,
         email=email,
     )
+    deleting_code = models.InvitationCode.objects.get(invitation_code=ic)
+    deleting_code.delete()
     if user is not None:
         login(request, user)
         return redirect('/course/')
