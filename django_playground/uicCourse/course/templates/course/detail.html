@@ -88,7 +88,9 @@
     </div>
     </div>
         <br>
-        <a href="{% url 'course_detail_edit' coursedata.id %}" class="btn btn-primary">Edit</a> <a href="javascript:AlertIt();" class="btn btn-danger">Delete</a>
+        {% if userdata.groups.all.0.name == "course_master" %}
+            <a href="{% url 'course_detail_edit' coursedata.id %}" class="btn btn-primary">Edit</a> <a href="javascript:AlertIt();" class="btn btn-danger">Delete</a>
+        {% endif %}
     </main>
 
     <footer class="footer">

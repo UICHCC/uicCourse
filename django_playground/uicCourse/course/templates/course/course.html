@@ -51,7 +51,9 @@
     <!-- Begin page content -->
     <main role="main" class="container">
         <h1><pre>C0urse L1st</pre></h1>
+    {% if userdata.groups.all.0.name == "course_master" %}
         <a href="{% url 'course_detail_edit' '0' %}" class="btn btn-primary">New Course</a>
+    {% endif %}
         <table class="table table-hover" style="margin-top: 1rem;">
             <thead>
                 <tr>

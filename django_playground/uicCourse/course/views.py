@@ -147,7 +147,7 @@ def signup_check(request):
 
 
 def invitation_code(request):
-    if not request.user.is_authenticated:
+    if not request.user.is_superuser:
         return redirect('/')
     else:
         userdata = request.user
@@ -164,7 +164,7 @@ def invitation_code(request):
 
 
 def invitation_code_invalid(request, code_id):
-    if not request.user.is_authenticated:
+    if not request.user.is_superuser:
         return redirect('/')
     else:
         userdata = request.user
