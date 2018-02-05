@@ -173,3 +173,10 @@ def invitation_code_invalid(request, code_id):
         code_all = models.InvitationCode.objects.all()
         return render(request, 'course/newic.html', {'userdata': userdata, 'codes': code_all})
 
+
+def account_info_view(request):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    else:
+        userdata = request.user
+        return render(request, 'account/info.html', {'userdata': userdata})

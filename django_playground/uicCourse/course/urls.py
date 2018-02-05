@@ -16,4 +16,5 @@ urlpatterns = [
     path('signup/check/', views.signup_check, name='signup_receiver'),
     path('tools/invitation/', views.invitation_code, name='invitation_code'),
     path('tools/invitation/invalid/<int:code_id>', views.invitation_code_invalid, name='invitation_code_invalid'),
+    path('account/', views.account_info_view, name='account_info_view')
 ]
