@@ -50,7 +50,7 @@
     <main role="main" class="container">
         <br>
     <div class="card">
-      <div class="card-header text-white bg-dark">User ID: {{ userdata.id }}</div>
+      <div class="card-header text-white bg-dark">User ID: {{ userdata.id }} </div>
       <div class="card-body">
           <label>Name:</label>
         <h1 class="card-title">{{ userdata.first_name }} <b>{{ userdata.last_name | upper }}</b></h1>
@@ -83,9 +83,26 @@
               </div>
           </div>
           <hr>
+          <label>Account Status</label>
+          <p>
+              {% if userdata.is_active %}
+                        <span class="btn btn-success">ACTIVE</span>
+              {% else %}
+                        <span class="btn btn-warning">Unable to login</span>
+              {% endif %}
+              {% if userdata.is_staff %}
+              <span class="btn btn-primary">STAFF</span>
+              {% else %}
+              {% endif %}
+          {% if userdata.is_superuser %}
+              <span class="btn btn-warning">SUPERUSER</span>
+              {% else %}
+              {% endif %}
+          </p>
+          <hr>
           <label>Functions:</label>
           <p>
-            <button class="btn btn-warning" disabled>Change Password (Coming soon)</button>
+            <button class="btn btn-warning" disabled>Change Password (Coming soon)</button> <button class="btn btn-primary" disabled>Change Profile (Coming soon)</button>
           </p>
     </div>
     </div>
