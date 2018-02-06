@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -180,3 +180,32 @@ def account_info_view(request):
     else:
         userdata = request.user
         return render(request, 'account/info.html', {'userdata': userdata})
+
+
+def account_info_edit(request):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    else:
+        userdata = request.user
+        return render(request, 'account/edit.html', {'userdata': userdata})
+
+
+def account_info_submit(request):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    else:
+        first_name = request.POST.get('fn')
+        last_name = request.POST.get('ln')
+        user = User.objects.get(id=request.user.id)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+        return redirect('/account')
+
+
+def account_password_edit(request):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    else:
+        userdata = request.user
+        return render(request, 'account/password.html', {'userdata': userdata})
