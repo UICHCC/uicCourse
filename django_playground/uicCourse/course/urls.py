@@ -17,7 +17,8 @@ urlpatterns = [
     path('tools/invitation/', views.invitation_code, name='invitation_code'),
     path('tools/invitation/invalid/<int:code_id>', views.invitation_code_invalid, name='invitation_code_invalid'),
     path('account/', views.account_info_view, name='account_info_view'),
-    path('account/edit', views.account_info_edit, name='account_info_edit'),
-    path('account/edit_submit', views.account_info_submit, name='account_info_submit'),
-    path('account/password', views.account_password_edit, name='account_password_edit'),
+    path('account/edit/', views.account_info_edit, name='account_info_edit'),
+    path('account/edit_submit/', views.account_info_submit, name='account_info_submit'),
+    path('account/password/', views.account_password_edit, name='account_password_edit'),
+    path('account/password/submit/', views.account_password_submit, name='account_password_submit'),
 ]

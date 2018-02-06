@@ -209,3 +209,19 @@ def account_password_edit(request):
     else:
         userdata = request.user
         return render(request, 'account/password.html', {'userdata': userdata})
+
+
+def account_password_submit(request):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    else:
+        old_password = request.POST.get('opw')
+        if request.user.check_password(old_password):
+            user = User.objects.get(id=request.user.id)
+            user.set_password(request.POST.get('pw'))
+            user.save()
+            # user.save() is required after change password
+            logout(request)
+            return redirect('/')
+        else:
+            return redirect('/account/password/')
