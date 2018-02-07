@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 import hashlib
 import random
@@ -40,6 +41,7 @@ def login_receiver(request):
 
 def logout_receiver(request):
     logout(request)
+    messages.add_message(request, messages.SUCCESS, 'Logout successfully.')
     return redirect('/')
 
 

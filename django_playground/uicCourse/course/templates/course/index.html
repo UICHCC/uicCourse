@@ -46,20 +46,34 @@
 <div class="site-wrapper-inner" style="background-color: rgba(0, 0, 0, 0.7);">
     <!-- Begin page content -->
     <main role="main" class="container">
-        {% if errormessage != NULL %}
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{ errormessage }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-        {% endif %}
     <br>
       <h1 class="mt-5 text-white">UIC Index</h1>
       <small class="text-secondary">For a more transparent future</small>
       <hr style="border-color: #FFFFFF;">
 <div class="row">
     <div class="col-8">
+        {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {% else %}
+                {% if message.tags == 'warning' %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {% else %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {% else %}
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    {% endif %}
         <h4 class="text-white">Sorry, this site is still under construction.<br>Login is required.</h4>
         <p class="text-white">This is a course database for Beijing Normal University - Hong Kong Baptist University United International College.</p>
         <p class="text-white">This site is develop and maintain by <a href="https://uichcc.com">UIC HCC Computer Society</a>, If you want to get a test account, please feel free to contact us.</p>
