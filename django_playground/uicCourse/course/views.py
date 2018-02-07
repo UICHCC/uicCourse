@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.contrib.messages import get_messages
 
 import hashlib
 import random
@@ -16,16 +17,10 @@ def index(request):
         return render(request, 'course/index.html')
     else:
         userdata = request.user
+        if get_messages(request):
+            message = get_messages(request)
+            messages.add_message(request, message.tags, message)
         return redirect('/course/')
-
-
-def index_error(request, error_number):
-    if str(error_number) == '1':
-        return render(request, 'course/index.html', {'errormessage': 'Wrong Username or password.'})
-    elif str(error_number) == '2':
-        return render(request, 'course/index.html', {'errormessage': 'Logout successfully.'})
-    else:
-        return render(request, 'course/index.html', {'errormessage': "Don't Play that error number!"})
 
 
 def login_receiver(request):
@@ -36,6 +31,7 @@ def login_receiver(request):
         login(request, user)
         return redirect('/course/')
     else:
+        messages.add_message(request, messages.ERROR, 'Wrong username or password.')
         return redirect('/')
 
 
@@ -47,6 +43,7 @@ def logout_receiver(request):
 
 def course_list(request):
     if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
         userdata = request.user
@@ -56,6 +53,7 @@ def course_list(request):
 
 def course_detail(request, course_id):
     if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
         userdata = request.user
@@ -65,6 +63,7 @@ def course_detail(request, course_id):
 
 def course_edit(request, course_id):
     if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
         userdata = request.user
@@ -77,6 +76,7 @@ def course_edit(request, course_id):
 
 def course_edit_submit(request):
     if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
         course_name_en = request.POST.get('cne')
@@ -109,6 +109,7 @@ def course_edit_submit(request):
 
 def delete_course(request, course_id):
     if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
         if course_id == '0':
@@ -150,6 +151,7 @@ def signup_check(request):
 
 def invitation_code(request):
     if not request.user.is_superuser:
+        messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
         userdata = request.user
@@ -167,6 +169,7 @@ def invitation_code(request):
 
 def invitation_code_invalid(request, code_id):
     if not request.user.is_superuser:
+        messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
         userdata = request.user
@@ -186,6 +189,7 @@ def account_info_view(request):
 
 def account_info_edit(request):
     if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
         userdata = request.user
@@ -194,6 +198,7 @@ def account_info_edit(request):
 
 def account_info_submit(request):
     if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
         first_name = request.POST.get('fn')
@@ -207,6 +212,7 @@ def account_info_submit(request):
 
 def account_password_edit(request):
     if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
         userdata = request.user
@@ -215,6 +221,7 @@ def account_password_edit(request):
 
 def account_password_submit(request):
     if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
         old_password = request.POST.get('opw')
