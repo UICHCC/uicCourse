@@ -169,7 +169,8 @@ def invitation_code(request):
                     usability=True,
                 )
         code_all = models.InvitationCode.objects.all()
-        messages.add_message(request, messages.INFO, 'Generated '+times+' new invitation code(s).')
+        if times is not None:
+            messages.add_message(request, messages.INFO, 'Generated '+str(times)+' new invitation code(s).')
     return render(request, 'course/newic.html', {'userdata': userdata, 'codes': code_all})
 
 
@@ -216,6 +217,7 @@ def account_info_submit(request):
         user.first_name = first_name
         user.last_name = last_name
         user.save()
+        messages.add_message(request, messages.SUCCESS, 'Modify successfully.')
         return redirect('/account')
 
 
