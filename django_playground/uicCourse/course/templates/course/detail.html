@@ -109,12 +109,20 @@
           <p class="card-text">{{ coursedata.course_descriptions }}</p>
     </div>
     </div>
+    <br>
+    <div class="card">
+    <div class="card-header text-white bg-dark">Course Comments</div>
+    <div class="card-body">
+        <p class="card-text text-center">Coming soon</p>
+    </div>
+    </div>
         <br>
         {% if userdata.groups.all.0.name == "course_master" %}
             <a href="{% url 'course_detail_edit' coursedata.id %}" class="btn btn-primary">Edit</a> <a href="javascript:AlertIt();" class="btn btn-danger">Delete</a>
         {% endif %}
     </main>
-
+<br>
+    <br>
     <footer class="footer">
       <div class="container">
         <span class="text-muted">&copy; 2018 UIC HCC Computer Society</span>
