@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.contrib.messages import get_messages
+# from django.contrib.messages import get_messages
 
 import hashlib
 import random
@@ -17,9 +17,6 @@ def index(request):
         return render(request, 'course/index.html')
     else:
         userdata = request.user
-        if get_messages(request):
-            message = get_messages(request)
-            messages.add_message(request, message.tags, message)
         return redirect('/course/')
 
 
@@ -29,6 +26,7 @@ def login_receiver(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
+        messages.add_message(request, messages.SUCCESS, 'Logout successfully.')
         return redirect('/course/')
     else:
         messages.add_message(request, messages.ERROR, 'Wrong username or password.')
@@ -63,7 +61,7 @@ def course_detail(request, course_id):
 
 def course_edit(request, course_id):
     if not request.user.is_authenticated:
-        messages.add_message(request, messages.ERROR, 'Login required.')
+        messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
         userdata = request.user
@@ -76,7 +74,7 @@ def course_edit(request, course_id):
 
 def course_edit_submit(request):
     if not request.user.is_authenticated:
-        messages.add_message(request, messages.ERROR, 'Login required.')
+        messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
         course_name_en = request.POST.get('cne')
@@ -104,19 +102,22 @@ def course_edit_submit(request):
             modify_course.course_units = course_units
             modify_course.course_descriptions = course_descriptions
             modify_course.save()
+        messages.add_message(request, messages.SUCCESS, 'Modify the course information successfully.')
         return redirect('/')
 
 
 def delete_course(request, course_id):
     if not request.user.is_authenticated:
-        messages.add_message(request, messages.ERROR, 'Login required.')
+        messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
         if course_id == '0':
             pass
         else:
             predelete = models.Course.objects.get(pk=course_id)
+            predelete_name = predelete.course_name_en
             predelete.delete()
+            messages.add_message(request, messages.SUCCESS, 'Delete the course: '+predelete_name+' successfully.')
         return redirect('/course/')
 
 
@@ -124,6 +125,7 @@ def signup_invite(request):
     if not request.user.is_authenticated:
         return render(request, 'course/signup.html')
     else:
+        messages.add_message(request, messages.WARNING, 'You are logged in.')
         return redirect('/course/')
 
 
@@ -135,6 +137,7 @@ def signup_check(request):
     try:
         models.InvitationCode.objects.get(invitation_code=ic)
     except ObjectDoesNotExist:
+        messages.add_message(request, messages.ERROR, 'Invalid invitation code.')
         return redirect('/')
 
     user = User.objects.create_user(
@@ -146,6 +149,7 @@ def signup_check(request):
     deleting_code.delete()
     if user is not None:
         login(request, user)
+        messages.add_message(request, messages.SUCCESS, 'Signup Successfully.')
         return redirect('/course/')
 
 
@@ -164,7 +168,8 @@ def invitation_code(request):
                     usability=True,
                 )
         code_all = models.InvitationCode.objects.all()
-        return render(request, 'course/newic.html', {'userdata': userdata, 'codes': code_all})
+        messages.add_message(request, messages.INFO, 'Generated '+times+' new invitation code(s).')
+    return render(request, 'course/newic.html', {'userdata': userdata, 'codes': code_all})
 
 
 def invitation_code_invalid(request, code_id):
@@ -174,13 +179,16 @@ def invitation_code_invalid(request, code_id):
     else:
         userdata = request.user
         deleting_code = models.InvitationCode.objects.get(pk=code_id)
+        deleted_code = deleting_code.invitation_code
         deleting_code.delete()
         code_all = models.InvitationCode.objects.all()
+        messages.add_message(request, messages.SUCCESS, 'Code: '+deleted_code+' invalided.')
         return render(request, 'course/newic.html', {'userdata': userdata, 'codes': code_all})
 
 
 def account_info_view(request):
     if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
         userdata = request.user
@@ -189,7 +197,7 @@ def account_info_view(request):
 
 def account_info_edit(request):
     if not request.user.is_authenticated:
-        messages.add_message(request, messages.ERROR, 'Login required.')
+        messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
         userdata = request.user
@@ -198,7 +206,7 @@ def account_info_edit(request):
 
 def account_info_submit(request):
     if not request.user.is_authenticated:
-        messages.add_message(request, messages.ERROR, 'Login required.')
+        messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
         first_name = request.POST.get('fn')
@@ -212,7 +220,7 @@ def account_info_submit(request):
 
 def account_password_edit(request):
     if not request.user.is_authenticated:
-        messages.add_message(request, messages.ERROR, 'Login required.')
+        messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
         userdata = request.user
@@ -221,7 +229,7 @@ def account_password_edit(request):
 
 def account_password_submit(request):
     if not request.user.is_authenticated:
-        messages.add_message(request, messages.ERROR, 'Login required.')
+        messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
         old_password = request.POST.get('opw')
@@ -231,6 +239,9 @@ def account_password_submit(request):
             user.save()
             # user.save() is required after change password
             logout(request)
+            messages.add_message(request, messages.SUCCESS, 'Change password successfully.')
+            messages.add_message(request, messages.INFO, 'Need to re-login')
             return redirect('/')
         else:
+            messages.add_message(request, messages.WARNING, 'Old password does not match.')
             return redirect('/account/password/')
