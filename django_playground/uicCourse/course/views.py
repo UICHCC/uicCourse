@@ -84,7 +84,7 @@ def course_edit_submit(request):
         course_units = request.POST.get('cu')
         course_descriptions = request.POST.get('cd')
         course_id = request.POST.get('cid')
-        if course_id == '0':
+        if str(course_id) == '0':
             models.Course.objects.create(
                 course_name_en=course_name_en,
                 course_name_cn=course_name_cn,
@@ -93,6 +93,7 @@ def course_edit_submit(request):
                 course_units=course_units,
                 course_descriptions=course_descriptions,
             )
+            messages.add_message(request, messages.SUCCESS, 'Created course information successfully.')
         else:
             modify_course = models.Course.objects.get(pk=course_id)
             modify_course.course_name_en = course_name_en
@@ -102,7 +103,7 @@ def course_edit_submit(request):
             modify_course.course_units = course_units
             modify_course.course_descriptions = course_descriptions
             modify_course.save()
-        messages.add_message(request, messages.SUCCESS, 'Modify the course information successfully.')
+            messages.add_message(request, messages.SUCCESS, 'Modify the course information successfully.')
         return redirect('/')
 
 

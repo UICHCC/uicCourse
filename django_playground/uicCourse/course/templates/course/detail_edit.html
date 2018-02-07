@@ -120,10 +120,10 @@
           <div class="form-group">
               <label>Course Descriptions:</label>
         <textarea class="form-control" rows="5" name="cd">{{ coursedata.course_descriptions }}</textarea>
-              {% if article %}
-              <input type="hidden" name="cid" value="{{ coursedata.id }}">
+              {% if coursedata %}
+                <input type="hidden" name="cid" value="{{ coursedata.id }}">
               {% else %}
-              <input type="hidden" name="cid" value="0">
+                <input type="hidden" name="cid" value="0">
               {% endif %}
 </div>
     </div>
