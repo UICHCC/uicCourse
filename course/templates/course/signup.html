@@ -20,102 +20,77 @@
               width: 100%;
               height: 100%;
             }
+            .signup-card{
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+            }
       </style>
 </head>
-  <body>
-
-    <header>
-      <!-- Fixed navbar -->
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="{% url 'home_page' %}">UIC Course Index</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'home_page' %}">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'course_list' %}">Course</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-<div class="site-wrapper-inner" style="background-color: rgba(0, 0, 0, 0.7);">
-    <!-- Begin page content -->
-    <main role="main" class="container">
-        {% if errormessage != NULL %}
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{ errormessage }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-        {% endif %}
-    <br>
-      <h1 class="mt-5 text-white">Sign up · UIC Index</h1>
-      <small class="text-secondary">For a more transparent future</small>
-      <hr style="border-color: #FFFFFF;">
-<div class="row">
-    <div class="col-8">
-        {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {% else %}
-                {% if message.tags == 'warning' %}
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                {% else %}
-                    {% if message.tags == 'error' %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <body>
+    <div class="site-wrapper-inner" style="background-color: rgba(0, 0, 0, 0.7);">
+        <div class="container d-flex justify-content-center align-items-center">
+        <div class="d-flex p-2">
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {% else %}
-                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        {% if message.tags == 'warning' %}
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {% else %}
+                            {% if message.tags == 'error' %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {% else %}
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            {% endif %}
+                        {% endif %}
                     {% endif %}
-                {% endif %}
+                    {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                {% endfor %}
             {% endif %}
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
-        {% endfor %}
-    {% endif %}
-        <h4 class="text-white">You need an invitation code to register.</h4>
+        <div class="card text-white bg-dark mb-3 signup-card" style="width: 412px;">
+            <div class="card-body">
+                <h4 title="card-title">Signup to uicCourse</h4>
+                <br>
+                <form action="{% url 'signup_receiver' %}" method="post">
+                {% csrf_token %}
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Username" name="username">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Invitation code" name="invitationcode">
+                    </div>
+                    <button type="submit" class="btn btn-success">Sign up</button> <a href="{% url 'home_page' %}" class="btn btn-primary">Back</a>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <a href="https://uichcc.com">
+                        <img src="https://uichcc.com/img/uichccwhite.svg" style="height: 30px; margin-left: 1rem;" title="UIC HCC Computer Society">
+                    </a>
+                    <span class="d-flex align-items-center text-white" style="margin-left: 1rem;: ">uicCourse
+                        <span class="badge badge-warning" style="margin: 0 0.5rem;" data-toggle="tooltip" data-placement="right" title="Login is required.">
+                        Early Access
+                        </span>
+                    </span>
+                </div>
+            </div>
         </div>
-    <div class="col-4">
-<div>
-      <form action="{% url 'signup_receiver' %}" method="post">
-          {% csrf_token %}
-          <div class="form-group">
-            <label class="text-white">Email</label>
-            <input type="email" class="form-control" placeholder="Email" name="email">
-          </div>
-          <div class="form-group">
-            <label class="text-white">Username</label>
-            <input type="text" class="form-control" placeholder="ID" name="username">
-          </div>
-          <div class="form-group">
-            <label class="text-white">Password</label>
-            <input type="password" class="form-control" placeholder="Password" name="password">
-          </div>
-          <div class="form-group">
-            <label class="text-white">Invitation code</label>
-            <input type="text" class="form-control" placeholder="Invitation code" name="invitationcode">
-          </div>
-          <button type="submit" class="btn btn-primary">Sign up</button>
-        </form>
-    </div>
     </div>
 </div>
-    </main>
-</div>
-    <footer class="footer">
-      <div class="container">
-        <span class="text-muted">&copy; 2018 UIC HCC Computer Society</span>
-      </div>
-    </footer>
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
