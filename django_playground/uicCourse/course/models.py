@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Course(models.Model):
@@ -19,3 +20,21 @@ class InvitationCode(models.Model):
 
     def __str__(self):
         return self.invitation_code
+
+
+class Comments(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    pub_date = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+    is_recommend = models.BooleanField(default=False)
+    is_banned = models.BooleanField(default=False)
+    up_vote = models.IntegerField(default=0)
+    down_vote = models.IntegerField(default=0)
+    pid = models.ForeignKey('self', blank=True, null=True,on_delete=models.DO_NOTHING)
+
+    class Meta:
+        ordering = ['up_vote', '-pub_date']
+
+    def __str__(self):
+        return str(self.id)
