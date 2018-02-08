@@ -56,7 +56,11 @@ def course_detail(request, course_id):
     else:
         userdata = request.user
         course_solo = models.Course.objects.get(pk=course_id)
-        return render(request, 'course/detail.html', {'userdata': userdata, 'coursedata': course_solo})
+        course_comment = models.Comments.objects.filter(course=course_id)
+        return render(request, 'course/detail.html', {'userdata': userdata,
+                                                      'coursedata': course_solo,
+                                                      'coursecomments': course_comment,
+                                                      })
 
 
 def course_edit(request, course_id):

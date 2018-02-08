@@ -113,12 +113,37 @@
     <div class="card">
     <div class="card-header text-white bg-dark">Course Comments</div>
     <div class="card-body">
-        <p class="card-text text-center">Coming soon</p>
+        {% if coursecomments %}
+            <div class="card-columns">
+            {% for comment in coursecomments %}
+                {% if comment.is_banned %}
+                {% else %}
+                    <div class="card">
+                        <div class="card-body">
+                            <p>{{ comment.content }}</p>
+                            <footer class="blockquote-footer">{{ comment.sender }} <cite>{{ comment.pub_date }}</cite></footer>
+                        </div>
+                    {% if userdata.groups.all.0.name == "course_master" %}
+                        <div class="card-footer">
+                        <button class="btn btn-danger btn-sm" disabled>Ban</button>
+                        <button class="btn btn-success btn-sm" disabled>Recommend</button>
+                        <button class="btn btn-warning btn-sm" disabled>Delete</button>
+                            <p class="card-text text-right">#{{ comment.id }}</p>
+                        </div>
+                    {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% else %}
+        <p class="card-text text-center">No comment here. You can add your comment for this course</p>
+        {% endif %}
     </div>
     </div>
         <br>
+    <button class="btn btn-primary" disabled>Comment</button>
         {% if userdata.groups.all.0.name == "course_master" %}
-            <a href="{% url 'course_detail_edit' coursedata.id %}" class="btn btn-primary">Edit</a> <a href="javascript:AlertIt();" class="btn btn-danger">Delete</a>
+            <a href="{% url 'course_detail_edit' coursedata.id %}" class="btn btn-warning">Edit</a> <a href="javascript:AlertIt();" class="btn btn-danger">Delete</a>
         {% endif %}
     </main>
 <br>
