@@ -171,7 +171,7 @@ def invitation_code(request):
         code_all = models.InvitationCode.objects.all()
         if times is not None:
             messages.add_message(request, messages.INFO, 'Generated '+str(times)+' new invitation code(s).')
-    return render(request, 'course/newic.html', {'userdata': userdata, 'codes': code_all})
+    return render(request, 'tools/newic.html', {'userdata': userdata, 'codes': code_all})
 
 
 def invitation_code_invalid(request, code_id):
@@ -185,7 +185,7 @@ def invitation_code_invalid(request, code_id):
         deleting_code.delete()
         code_all = models.InvitationCode.objects.all()
         messages.add_message(request, messages.SUCCESS, 'Code: '+deleted_code+' invalided.')
-        return render(request, 'course/newic.html', {'userdata': userdata, 'codes': code_all})
+        return render(request, 'tools/newic.html', {'userdata': userdata, 'codes': code_all})
 
 
 def account_info_view(request):

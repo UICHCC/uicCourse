@@ -120,10 +120,7 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'uicCourse/static')
 
-## Session
-
-SESSION_COOKIE_AGE = 10*60
+# Session Setting
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-# Session Expire time 10 mins
 # Session Expire at browser is close
