@@ -143,7 +143,7 @@ def signup_check(request):
         models.InvitationCode.objects.get(invitation_code=ic)
     except ObjectDoesNotExist:
         messages.add_message(request, messages.ERROR, 'Invalid invitation code.')
-        return redirect('/')
+        return redirect('/signup/')
 
     user = User.objects.create_user(
         username=un,
