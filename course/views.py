@@ -252,3 +252,11 @@ def account_password_submit(request):
         else:
             messages.add_message(request, messages.WARNING, 'Old password does not match.')
             return redirect('/account/password/')
+
+
+def comment_new(request, course_id):
+    if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'No Permission.')
+        return redirect('/')
+    else:
+        pass

@@ -118,17 +118,29 @@
             {% for comment in coursecomments %}
                 {% if comment.is_banned %}
                 {% else %}
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card {% if comment.is_recommend %} border-danger {% endif %}">
+                    {% if userdata.groups.all.0.name == "course_master" %}
+                        <div class="card-header">
+                            <p class="card-text">#{{ comment.id }}</p>
+                        </div>
+                    {% endif %}
+                        <div class="card-body {% if comment.is_recommend %} text-danger {% endif %} ">
                             <p>{{ comment.content }}</p>
                             <footer class="blockquote-footer">{{ comment.sender }} <cite>{{ comment.pub_date }}</cite></footer>
                         </div>
                     {% if userdata.groups.all.0.name == "course_master" %}
                         <div class="card-footer">
-                        <button class="btn btn-danger btn-sm" disabled>Ban</button>
-                        <button class="btn btn-success btn-sm" disabled>Recommend</button>
+                            {% if comment.is_banned %}
+                                <button class="btn btn-success btn-sm" disabled>Undo-Ban</button>
+                            {% else %}
+                                <button class="btn btn-danger btn-sm" disabled>Ban</button>
+                            {% endif %}
+                            {% if comment.is_recommend %}
+                                <button class="btn btn-success btn-sm" disabled>Undo-Recommend</button>
+                            {% else %}
+                                <button class="btn btn-success btn-sm" disabled>Recommend</button>
+                            {% endif %}
                         <button class="btn btn-warning btn-sm" disabled>Delete</button>
-                            <p class="card-text text-right">#{{ comment.id }}</p>
                         </div>
                     {% endif %}
                     </div>
