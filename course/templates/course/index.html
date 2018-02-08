@@ -1,116 +1,101 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Login request | Course Index</title>
-    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-
-    {% load static %}
-    <link href="{% static "course/css/login_page.css" %}" rel="stylesheet">
-      <style>
-          body{
-              background-image: url("https://source.unsplash.com/daily");
-              background-size: cover;
-          }
-          .site-wrapper-inner {
-              position:fixed;
-              width: 100%;
-              height: 100%;
-            }
-      </style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>Login request | Course Index</title>
+	<link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+	{% load static %}
+	<link href="{% static "course/css/login_page.css" %}" rel="stylesheet">
+		<style>
+			body{
+				background-image: url("https://source.unsplash.com/daily");
+				background-size: cover;
+			}
+			.site-wrapper-inner {
+				position:fixed;
+				width: 100%;
+				height: 100%;
+			}
+			.login-card{
+				position: absolute;
+        		top: 50%;
+        		transform: translateY(-50%);
+			}
+		  </style>
 </head>
-  <body>
-
-    <header>
-      <!-- Fixed navbar -->
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="{% url 'home_page' %}">UIC Course Index</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'home_page' %}">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'course_list' %}">Course</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-<div class="site-wrapper-inner" style="background-color: rgba(0, 0, 0, 0.7);">
-    <!-- Begin page content -->
-    <main role="main" class="container">
-    <br>
-      <h1 class="mt-5 text-white">UIC Index</h1>
-      <small class="text-secondary">For a more transparent future</small>
-      <hr style="border-color: #FFFFFF;">
-<div class="row">
-    <div class="col-8">
-        {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {% else %}
-                {% if message.tags == 'warning' %}
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                {% else %}
-                    {% if message.tags == 'error' %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {% else %}
-                        <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    {% endif %}
-                {% endif %}
-            {% endif %}
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        {% endfor %}
-    {% endif %}
-        <h4 class="text-white">Sorry, this site is still under construction.<br>Login is required.</h4>
-        <p class="text-white">This is a course database for Beijing Normal University - Hong Kong Baptist University United International College.</p>
-        <p class="text-white">This site is develop and maintain by <a href="https://uichcc.com">UIC HCC Computer Society</a>, If you want to get a test account, please feel free to contact us.</p>
-        <a href="mailto:hi@uichcc.com">Our Email: hi@uichcc.com</a>
-        </div>
-    <div class="col-4">
-<div>
-      <form action="{% url 'login_receiver' %}" method="post">
-          {% csrf_token %}
-          <div class="form-group">
-            <label class="text-white">Username</label>
-            <input type="text" class="form-control" placeholder="ID" name="username">
-          </div>
-          <div class="form-group">
-            <label class="text-white">Password</label>
-            <input type="password" class="form-control" placeholder="Password" name="password">
-          </div>
-          <button type="submit" class="btn btn-primary">Login</button> <a href="{% url 'signup_invite' %}" class="btn btn-success">Sign up</a>
-        </form>
-    </div>
-    </div>
+<body style="display: relative;">
+<div class="site-wrapper-inner" style="background-color: rgba(0, 0, 0, 0.5);">
+	<div class="container d-flex justify-content-center align-items-center">
+		<div class="d-flex p-2">
+			{% if messages %}
+				{% for message in messages %}
+					{% if message.tags == 'success' %}
+						<div class="alert alert-success alert-dismissible fade show" role="alert">
+					{% else %}
+						{% if message.tags == 'warning' %}
+							<div class="alert alert-warning alert-dismissible fade show" role="alert">
+						{% else %}
+							{% if message.tags == 'error' %}
+								<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							{% else %}
+								<div class="alert alert-info alert-dismissible fade show" role="alert">
+							{% endif %}
+						{% endif %}
+					{% endif %}
+					{{ message }}
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="card text-white bg-dark mb-3 login-card" style="width: 412px;">
+			<div class="card-body">
+				<form action="{% url 'login_receiver' %}" method="post">
+					{% csrf_token %}
+					<div class="form-group">
+						<label class="text-white">Username</label>
+						<input type="text" class="form-control" placeholder="ID" name="username">
+					</div>
+					<div class="form-group">
+						<label class="text-white">Password</label>
+						<input type="password" class="form-control" placeholder="Password" name="password">
+					</div>
+					<button type="submit" class="btn btn-primary">Login</button> <a href="{% url 'signup_invite' %}" class="btn btn-success">Sign up</a>
+				</form>
+			</div>
+			<div class="card-footer">
+				<div class="row">
+					<a href="https://uichcc.com">
+						<img src="https://uichcc.com/img/uichccwhite.svg" style="height: 30px; margin-left: 1rem;">
+					</a>
+					<span class="d-flex align-items-center text-white" style="margin-left: 1rem;: ">uicCourse
+						<span class="badge badge-warning" style="margin: 0 0.5rem;" data-toggle="tooltip" data-placement="right" title="Login is required.">
+						Early Access
+						</span>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-    </main>
 </div>
-    <footer class="footer">
-      <div class="container">
-        <span class="text-muted">&copy; 2018 UIC HCC Computer Society</span>
-        <span class="text-muted text-right"> | Daily image from: <a href="https://unsplash.com/">Unsplash</a></span>
-      </div>
-    </footer>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
-    {% load static %}
-    <script src="{% static "js/popper.min.js" %}"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  </body>
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+	{% load static %}
+	<script src="{% static "js/popper.min.js" %}"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script>
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+		})
+	</script>
+</body>
 </html>
