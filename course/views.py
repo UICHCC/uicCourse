@@ -254,9 +254,17 @@ def account_password_submit(request):
             return redirect('/account/password/')
 
 
-def comment_new(request, course_id):
+def course_comments_submit(request):
     if not request.user.is_authenticated:
-        messages.add_message(request, messages.ERROR, 'No Permission.')
+        messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
-        pass
+        comments = request.POST.get('comments')
+        course_code = request.POST.get('course_id')
+        course_object = models.Course.objects.get(pk=course_code)
+        user_object = request.user
+        models.Comments.objects.create(course=course_object,
+                                       sender=user_object,
+                                       content=comments)
+        messages.add_message(request, messages.SUCCESS, 'Comments submitted.')
+        return redirect('/course/'+course_code+'/')

@@ -142,6 +142,30 @@
             <div class="card-columns">
             {% for comment in coursecomments %}
                 {% if comment.is_banned %}
+                    {% if userdata.groups.all.0.name == "course_master" %}
+                        <div class="card bg-danger text-white {% if comment.is_recommend %} border-danger {% endif %}">
+                        <div class="card-header">
+                            <p class="card-text">#{{ comment.id }}</p>
+                        </div>
+                        <div class="card-body {% if comment.is_recommend %} text-danger {% endif %} ">
+                            <p>{{ comment.content }}</p>
+                            <footer class="blockquote-footer">{{ comment.sender }} <cite>{{ comment.pub_date }}</cite></footer>
+                        </div>
+                        <div class="card-footer">
+                            {% if comment.is_banned %}
+                                <button class="btn btn-danger btn-sm" disabled>Undo-Ban</button>
+                            {% else %}
+                                <button class="btn btn-danger btn-sm" disabled>Ban</button>
+                            {% endif %}
+                            {% if comment.is_recommend %}
+                                <button class="btn btn-success btn-sm" disabled>Undo-Recommend</button>
+                            {% else %}
+                                <button class="btn btn-success btn-sm" disabled>Recommend</button>
+                            {% endif %}
+                        <button class="btn btn-warning btn-sm" disabled>Delete</button>
+                        </div>
+                        </div>
+                    {% endif %}
                 {% else %}
                     <div class="card {% if comment.is_recommend %} border-danger {% endif %}">
                     {% if userdata.groups.all.0.name == "course_master" %}
@@ -173,12 +197,12 @@
             {% endfor %}
             </div>
         {% else %}
-        <p class="card-text text-center">No comment here. You can add your comment for this course</p>
+            <p class="card-text text-center">No comment here. You can add your comment for this course</p>
         {% endif %}
-    </div>
+        </div>
     </div>
         <br>
-    <button class="btn btn-primary" disabled>Comment</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Comment</button>
     </main>
 <br>
     <br>
@@ -187,6 +211,31 @@
         <span class="text-muted">&copy; 2018 UIC HCC Computer Society</span>
       </div>
     </footer>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Comment course: {{ coursedata.course_name_en }}</h5>
+      </div>
+        <form action="{% url 'course_comments_submit' %}" method="post">
+      <div class="modal-body">
+
+            {% csrf_token %}
+          <label>Notice: Please keep <b>objective</b> when you comment on the course. Comments <b>may be deleted</b> if there is an insult to the teacher.</label>
+            <div class="form-group">
+                <textarea class="form-control" rows="5" placeholder="Comments" name="comments"></textarea>
+            </div>
+          <input type="hidden" name="course_id" value="{{ coursedata.id }}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Summit</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
