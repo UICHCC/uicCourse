@@ -10,6 +10,20 @@
 
     {% load static %}
     <link href="{% static "course/css/login_page.css" %}" rel="stylesheet">
+  <style>
+          html, body {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
+.text-white-50 { color: rgba(255, 255, 255, .5); }
+
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.lh-100 { line-height: 1; }
+.lh-125 { line-height: 1.25; }
+      </style>
 </head>
   <body>
 
@@ -73,42 +87,53 @@
         {% endfor %}
     {% endif %}
         <br>
-    <div class="card">
-      <div class="card-header text-white bg-dark">Course Detail: {{ coursedata.course_code | upper }}</div>
-      <div class="card-body">
-        <h1 class="card-title">{{ coursedata.course_name_en }}</h1>
-        <h2 class="card-title">{{ coursedata.course_name_cn }}</h2>
-          <div class="row">
-              <div class="col">
-              <div class="card border-primary">
-                <div class="card-body text-primary">
-                  <h5 class="card-title">Course Code</h5>
-                  <p class="card-text">{{ coursedata.course_code | upper }}</p>
-                </div>
-              </div>
-              </div>
-              <div class="col">
-              <div class="card border-success">
-                <div class="card-body text-success">
-                  <h5 class="card-title">Course Class</h5>
-                  <p class="card-text">{{ coursedata.course_class | upper }}</p>
-                </div>
-              </div>
-              </div>
-              <div class="col">
-              <div class="card border-danger">
-                <div class="card-body text-danger">
-                  <h5 class="card-title">Course Units</h5>
-                  <p class="card-text">{{ coursedata.course_units }}</p>
-                </div>
-              </div>
-              </div>
-          </div>
-          <hr>
-          <label>Course Descriptions:</label>
-          <p class="card-text">{{ coursedata.course_descriptions }}</p>
-    </div>
-    </div>
+
+
+<div class="d-flex align-items-center p-3 my-3 text-white-50 bg-info rounded box-shadow">
+        <div class="lh-100" style="width: 100%;">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="mb-0 text-white lh-100">{{ coursedata.course_code | upper }}: {{ coursedata.course_name_en }}</h1>
+            </div>
+          <h2 class="text-white" style="margin-bottom: 0;">{{ coursedata.course_name_cn }}</h2>
+        </div>
+      </div>
+    <div class="my-3 p-3 bg-white rounded box-shadow">
+        <h6 class="border-bottom border-gray pb-2 mb-0">Basic Info</h6>
+        <div class="media text-muted pt-3">
+            <img src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/code.svg" class="mr-2 rounded" style="width: 32px; height: 32px;">
+          <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark">Course Code</strong>
+            {{ coursedata.course_code | upper }}
+          </p>
+        </div>
+        <div class="media text-muted pt-3">
+            <img src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/box.svg" class="mr-2 rounded" style="width: 32px; height: 32px;">
+          <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark">Course Class</strong>
+            {{ coursedata.course_class | upper }}
+          </p>
+        </div>
+        <div class="media text-muted pt-3">
+            <img src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/lightbulb.svg" class="mr-2 rounded" style="width: 32px; height: 32px;">
+          <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark">Course Units</strong>
+            {{ coursedata.course_units }}
+          </p>
+        </div>
+        <div class="media text-muted pt-3">
+        <img src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/info.svg" class="mr-2 rounded" style="width: 32px; height: 32px;">
+          <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark">Course Descriptions</strong>
+            {{ coursedata.course_descriptions }}
+          </p>
+        </div>
+        <small class="d-block text-right mt-3">
+        {% if userdata.groups.all.0.name == "course_master" %}
+            <a href="{% url 'course_detail_edit' coursedata.id %}">Update Information</a> | <a href="javascript:AlertIt();">Delete This course</a>
+        {% endif %}
+        </small>
+      </div>
+
     <br>
     <div class="card">
     <div class="card-header text-white bg-dark">Course Comments</div>
@@ -154,9 +179,6 @@
     </div>
         <br>
     <button class="btn btn-primary" disabled>Comment</button>
-        {% if userdata.groups.all.0.name == "course_master" %}
-            <a href="{% url 'course_detail_edit' coursedata.id %}" class="btn btn-warning">Edit</a> <a href="javascript:AlertIt();" class="btn btn-danger">Delete</a>
-        {% endif %}
     </main>
 <br>
     <br>
@@ -175,7 +197,7 @@
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
         function AlertIt() {
-            var answer = confirm("Are you sure you want to delete this course record?.");
+            var answer = confirm("Are you sure you want to delete this course record?");
             if (answer) {
                 window.location = "{% url 'course_delete' coursedata.id %}"
             }
