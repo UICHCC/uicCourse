@@ -31,7 +31,7 @@ class Comments(models.Model):
     is_banned = models.BooleanField(default=False)
     up_vote = models.IntegerField(default=0)
     down_vote = models.IntegerField(default=0)
-    pid = models.ForeignKey('self', blank=True, null=True,on_delete=models.DO_NOTHING)
+    pid = models.ForeignKey('self', blank=True, null=True, on_delete=models.DO_NOTHING)
 
     class Meta:
         ordering = ['up_vote', '-pub_date']
