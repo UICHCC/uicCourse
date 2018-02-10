@@ -57,9 +57,16 @@ def course_detail(request, course_id):
         userdata = request.user
         course_solo = models.Course.objects.get(pk=course_id)
         course_comment = models.Comments.objects.filter(course=course_id)
+        is_commented = True
+        try:
+            user_comment = models.Comments.objects.get(course=course_solo, sender=request.user)
+        except ObjectDoesNotExist:
+            is_commented = False
         return render(request, 'course/detail.html', {'userdata': userdata,
                                                       'coursedata': course_solo,
                                                       'coursecomments': course_comment,
+                                                      'is_commented': is_commented,
+                                                      'user_comment': user_comment,
                                                       })
 
 
@@ -109,6 +116,29 @@ def course_edit_submit(request):
             modify_course.save()
             messages.add_message(request, messages.SUCCESS, 'Modify the course information successfully.')
         return redirect('/')
+
+
+def course_comments_submit(request):
+    if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'No permission.')
+        return redirect('/')
+    else:
+        comment_id = request.POST.get('comment_id')
+        comments = request.POST.get('comments')
+        course_code = request.POST.get('course_id')
+        if comment_id is not '':
+            comment_object = models.Comments.objects.get(id=comment_id)
+            comment_object.content = comments
+            comment_object.save()
+            messages.add_message(request, messages.SUCCESS, 'Comments edited.')
+        else:
+            course_object = models.Course.objects.get(pk=course_code)
+            user_object = request.user
+            models.Comments.objects.create(course=course_object,
+                                           sender=user_object,
+                                           content=comments)
+            messages.add_message(request, messages.SUCCESS, 'Comments submitted.')
+        return redirect('/course/' + course_code + '/')
 
 
 def delete_course(request, course_id):
@@ -254,17 +284,29 @@ def account_password_submit(request):
             return redirect('/account/password/')
 
 
-def course_comments_submit(request):
+def comment_operation(request, comment_id):
     if not request.user.is_authenticated:
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
-        comments = request.POST.get('comments')
-        course_code = request.POST.get('course_id')
-        course_object = models.Course.objects.get(pk=course_code)
-        user_object = request.user
-        models.Comments.objects.create(course=course_object,
-                                       sender=user_object,
-                                       content=comments)
-        messages.add_message(request, messages.SUCCESS, 'Comments submitted.')
-        return redirect('/course/' + course_code + '/')
+        comment_object = models.Comments.objects.get(pk=comment_id)
+        operation = request.POST.get('operation')
+        if operation == 'ban':
+            comment_object.is_banned = True
+            messages.add_message(request, messages.INFO, str('Comment' + str(comment_id) + ' Banned Successfully.'))
+        elif operation == 'undoban':
+            comment_object.is_banned = False
+            messages.add_message(request, messages.INFO, str('Comment' + str(comment_id) + ' Undo Ban Successfully.'))
+        elif operation == 'recommend':
+            comment_object.is_recommend = True
+            messages.add_message(request, messages.INFO, str('Comment' + str(comment_id) + ' Recommend Successfully.'))
+        elif operation == 'undorecommend':
+            comment_object.is_recommend = False
+            messages.add_message(request, messages.INFO, str('Comment' + str(comment_id) + ' Undo Recommend Successfully.'))
+        comment_object.save()
+    return redirect('/course/' + str(comment_object.course.id) + '/')
+
+
+
+
+

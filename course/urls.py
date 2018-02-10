@@ -21,4 +21,5 @@ urlpatterns = [
     path('account/edit_submit/', views.account_info_submit, name='account_info_submit'),
     path('account/password/', views.account_password_edit, name='account_password_edit'),
     path('account/password/submit/', views.account_password_submit, name='account_password_submit'),
+    path('comments/<int:comment_id>/', views.comment_operation, name='comment_operation'),
 ]

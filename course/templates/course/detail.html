@@ -161,27 +161,42 @@
                     {% for comment in coursecomments %}
                         {% if comment.is_banned %}
                             {% if userdata.groups.all.0.name == "course_master" %}
-                                <div class="card bg-danger text-white {% if comment.is_recommend %} border-danger {% endif %}">
+                                <div class="card bg-dark text-white {% if comment.is_recommend %} border-danger {% endif %}">
                                     <div class="card-header">
-                                        <p class="card-text">#{{ comment.id }}</p>
+                                        <p class="card-text">#{{ comment.id }} [BANED COMMENT]</p>
                                     </div>
                                     <div class="card-body {% if comment.is_recommend %} text-danger {% endif %} ">
                                         <p>{{ comment.content }}</p>
                                         <footer class="blockquote-footer">{{ comment.sender }}
                                             <cite>{{ comment.pub_date }}</cite></footer>
                                     </div>
-                                    <div class="card-footer">
+                                    <div class="card-footer d-flex justify-content-around">
                                         {% if comment.is_banned %}
-                                            <button class="btn btn-danger btn-sm" disabled>Undo-Ban</button>
+                                            <form action="{% url 'comment_operation' comment.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="operation" value="undoban">
+                                                <input type="submit" class="btn btn-outline-danger btn-sm" value="Undo-Ban">
+                                            </form>
                                         {% else %}
-                                            <button class="btn btn-danger btn-sm" disabled>Ban</button>
+                                            <form action="{% url 'comment_operation' comment.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="operation" value="ban">
+                                                <input type="submit" class="btn btn-danger btn-sm" value="Ban">
+                                            </form>
                                         {% endif %}
                                         {% if comment.is_recommend %}
-                                            <button class="btn btn-success btn-sm" disabled>Undo-Recommend</button>
+                                            <form action="{% url 'comment_operation' comment.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="operation" value="undorecommend">
+                                                <input type="submit" class="btn btn-outline-success btn-sm" value="Undo-Recommend">
+                                            </form>
                                         {% else %}
-                                            <button class="btn btn-success btn-sm" disabled>Recommend</button>
+                                            <form action="{% url 'comment_operation' comment.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="operation" value="recommend">
+                                                <input type="submit" class="btn btn-success btn-sm" value="Recommend">
+                                            </form>
                                         {% endif %}
-                                        <button class="btn btn-warning btn-sm" disabled>Delete</button>
                                     </div>
                                 </div>
                             {% endif %}
@@ -198,18 +213,33 @@
                                         <cite>{{ comment.pub_date }}</cite></footer>
                                 </div>
                                 {% if userdata.groups.all.0.name == "course_master" %}
-                                    <div class="card-footer">
+                                    <div class="card-footer d-flex justify-content-around">
                                         {% if comment.is_banned %}
-                                            <button class="btn btn-success btn-sm" disabled>Undo-Ban</button>
+                                            <form action="{% url 'comment_operation' comment.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="operation" value="undoban">
+                                                <input type="submit" class="btn btn-outline-danger btn-sm" value="Undo-Ban">
+                                            </form>
                                         {% else %}
-                                            <button class="btn btn-danger btn-sm" disabled>Ban</button>
+                                            <form action="{% url 'comment_operation' comment.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="operation" value="ban">
+                                                <input type="submit" class="btn btn-danger btn-sm" value="Ban">
+                                            </form>
                                         {% endif %}
                                         {% if comment.is_recommend %}
-                                            <button class="btn btn-success btn-sm" disabled>Undo-Recommend</button>
+                                            <form action="{% url 'comment_operation' comment.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="operation" value="undorecommend">
+                                                <input type="submit" class="btn btn-outline-success btn-sm" value="Undo-Recommend">
+                                            </form>
                                         {% else %}
-                                            <button class="btn btn-success btn-sm" disabled>Recommend</button>
+                                            <form action="{% url 'comment_operation' comment.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="operation" value="recommend">
+                                                <input type="submit" class="btn btn-success btn-sm" value="Recommend">
+                                            </form>
                                         {% endif %}
-                                        <button class="btn btn-warning btn-sm" disabled>Delete</button>
                                     </div>
                                 {% endif %}
                             </div>
@@ -222,7 +252,11 @@
         </div>
     </div>
     <br>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Comment</button>
+    {% if is_commented %}
+        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenter">Edit your comment</button>
+    {% else %}
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Comment</button>
+    {% endif %}
 </main>
 <br>
 <br>
@@ -241,12 +275,12 @@
             </div>
             <form action="{% url 'course_comments_submit' %}" method="post">
                 <div class="modal-body">
-
                     {% csrf_token %}
                     <label>Notice: Please keep <b>objective</b> when you comment on the course. Comments <b>may be
                         deleted</b> if there is an insult to the teacher.</label>
+                    <input type="hidden" value="{{ user_comment.id }}" name="comment_id">
                     <div class="form-group">
-                        <textarea class="form-control" rows="5" placeholder="Comments" name="comments"></textarea>
+                        <textarea class="form-control" rows="5" placeholder="Comments" name="comments">{{ user_comment.content }}</textarea>
                     </div>
                     <input type="hidden" name="course_id" value="{{ coursedata.id }}">
                 </div>
