@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -11,45 +11,47 @@
     {% load static %}
     <link href="{% static "course/css/login_page.css" %}" rel="stylesheet">
 </head>
-  <body>
+<body>
 
-    <header>
-      <!-- Fixed navbar -->
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="{% url 'home_page' %}">UIC Course Index</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'home_page' %}">Home</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'course_list' %}">Course <span class="sr-only">(current)</span></a>
-            </li>
-          </ul>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home_page' %}">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'course_list' %}">Course <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown show">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{ userdata.username }}</a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-                    {% if userdata.is_superuser %}
-                    <h6 class="dropdown-header">Admin function</h6>
-                    <a class="dropdown-item" href="{% url 'invitation_code' %}">Invitation Code</a>
-                    <div class="dropdown-divider"></div>
-                    {% endif %}
-                    <h6 class="dropdown-header">Account Relative</h6>
-                    <a class="dropdown-item" href="{% url 'account_info_view' %}">Account Information</a>
-                    <a class="dropdown-item" href="{% url 'logout_receiver' %}">Logout</a>
-                </div>
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true">{{ userdata.username }}</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
+                        {% if userdata.is_superuser %}
+                            <h6 class="dropdown-header">Admin function</h6>
+                            <a class="dropdown-item" href="{% url 'invitation_code' %}">Invitation Code</a>
+                            <div class="dropdown-divider"></div>
+                        {% endif %}
+                        <h6 class="dropdown-header">Account Relative</h6>
+                        <a class="dropdown-item" href="{% url 'account_info_view' %}">Account Information</a>
+                        <a class="dropdown-item" href="{% url 'logout_receiver' %}">Logout</a>
+                    </div>
                 </li>
             </ul>
         </div>
-      </nav>
-    </header>
+    </nav>
+</header>
 
-    <!-- Begin page content -->
-    <main role="main" class="container">
+<!-- Begin page content -->
+<main role="main" class="container">
     {% if messages %}
         {% for message in messages %}
             {% if message.tags == 'success' %}
@@ -65,51 +67,53 @@
                     {% endif %}
                 {% endif %}
             {% endif %}
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         </div>
         {% endfor %}
     {% endif %}
-        <h1><pre>C0urse L1st</pre></h1>
+    <h1>
+        <pre>C0urse L1st</pre>
+    </h1>
     {% if userdata.groups.all.0.name == "course_master" %}
         <a href="{% url 'course_detail_edit' '0' %}" class="btn btn-primary">New Course</a>
     {% endif %}
-        <table class="table table-hover" style="margin-top: 1rem;">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Course Name</th>
-                    <th scope="col">Course Code</th>
-                    <th scope="col">Course Unit(s)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for course in courses %}
-                    <tr>
-                        <th scope="row">{{ course.id }}</th>
-                        <td><a href="{% url 'course_detail' course.id %}">{{ course.course_name_en }}</a></td>
-                        <td>{{ course.course_code }}</td>
-                        <td>{{ course.course_units }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </main>
+    <table class="table table-hover" style="margin-top: 1rem;">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Course Code</th>
+            <th scope="col">Course Unit(s)</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for course in courses %}
+            <tr>
+                <th scope="row">{{ course.id }}</th>
+                <td><a href="{% url 'course_detail' course.id %}">{{ course.course_name_en }}</a></td>
+                <td>{{ course.course_code }}</td>
+                <td>{{ course.course_units }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</main>
 
-    <footer class="footer">
-      <div class="container">
+<footer class="footer">
+    <div class="container">
         <span class="text-muted">&copy; 2018 UIC HCC Computer Society</span>
-      </div>
-    </footer>
+    </div>
+</footer>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
-    {% load static %}
-    <script src="{% static "js/popper.min.js" %}"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  </body>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+{% load static %}
+<script src="{% static "js/popper.min.js" %}"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
 </html>
