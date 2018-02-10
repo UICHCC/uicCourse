@@ -80,10 +80,9 @@
     {% if userdata.groups.all.0.name == "course_master" %}
         <a href="{% url 'course_detail_edit' '0' %}" class="btn btn-primary">New Course</a>
     {% endif %}
-    <table class="table table-hover" style="margin-top: 1rem;">
+    <table class="table table-hover" style="margin-top: 1rem; margin-bottom: 5rem;">
         <thead>
         <tr>
-            <th scope="col">#</th>
             <th scope="col">Course Name</th>
             <th scope="col">Course Code</th>
             <th scope="col">Course Unit(s)</th>
@@ -92,7 +91,6 @@
         <tbody>
         {% for course in courses %}
             <tr>
-                <th scope="row">{{ course.id }}</th>
                 <td><a href="{% url 'course_detail' course.id %}">{{ course.course_name_en }}</a></td>
                 <td>{{ course.course_code }}</td>
                 <td>{{ course.course_units }}</td>
