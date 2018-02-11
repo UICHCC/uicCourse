@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.http import Http404
 # from django.contrib.messages import get_messages
 
 import hashlib
@@ -305,6 +306,10 @@ def comment_operation(request, comment_id):
     return redirect('/course/' + str(comment_object.course.id) + '/')
 
 
+def handler404(request):
+    return render(request, 'error/404.html', status=404)
 
 
+def handler500(request):
+    return render(request, 'error/500.html', status=500)
 
