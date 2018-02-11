@@ -26,7 +26,7 @@ def login_receiver(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        messages.add_message(request, messages.SUCCESS, 'Logout successfully.')
+        messages.add_message(request, messages.SUCCESS, 'Login successfully.')
         return redirect('/course/')
     else:
         messages.add_message(request, messages.ERROR, 'Wrong username or password.')
@@ -166,27 +166,34 @@ def signup_invite(request):
 
 
 def signup_check(request):
-    email = request.POST.get('email')
-    un = request.POST.get('username')
-    pw = request.POST.get('password')
-    ic = request.POST.get('invitationcode')
-    try:
-        models.InvitationCode.objects.get(invitation_code=ic)
-    except ObjectDoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Invalid invitation code.')
-        return redirect('/signup/')
-
-    user = User.objects.create_user(
-        username=un,
-        password=pw,
-        email=email,
-    )
-    deleting_code = models.InvitationCode.objects.get(invitation_code=ic)
-    deleting_code.delete()
-    if user is not None:
-        login(request, user)
-        messages.add_message(request, messages.SUCCESS, 'Signup Successfully.')
+    if request.user.is_authenticated:
         return redirect('/course/')
+    else:
+        email = request.POST.get('email')
+        un = request.POST.get('username')
+        pw = request.POST.get('password')
+        ic = request.POST.get('invitationcode')
+        try:
+            models.InvitationCode.objects.get(invitation_code=ic)
+        except ObjectDoesNotExist:
+            messages.add_message(request, messages.ERROR, 'Invalid invitation code.')
+            return redirect('/signup/')
+
+        user = User.objects.create_user(
+            username=un,
+            password=pw,
+            email=email,
+        )
+        deleting_code = models.InvitationCode.objects.get(invitation_code=ic)
+        deleting_code.delete()
+        if user is not None:
+            login(request, user)
+            messages.add_message(request, messages.SUCCESS, 'Signup Successfully.')
+            return redirect('/course/')
+
+
+def admin_tools(request):
+    return render(request, 'tools/index.html')
 
 
 def invitation_code(request):
