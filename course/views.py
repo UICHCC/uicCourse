@@ -16,7 +16,6 @@ def index(request):
     if not request.user.is_authenticated:
         return render(request, 'course/index.html')
     else:
-        userdata = request.user
         return redirect('/course/')
 
 
@@ -44,9 +43,8 @@ def course_list(request):
         messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
-        userdata = request.user
         course_all = models.Course.objects.all()
-        return render(request, 'course/course.html', {'userdata': userdata, 'courses': course_all})
+        return render(request, 'course/course.html', {'courses': course_all})
 
 
 def course_detail(request, course_id):
@@ -54,7 +52,6 @@ def course_detail(request, course_id):
         messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
-        userdata = request.user
         course_solo = models.Course.objects.get(pk=course_id)
         course_comment = models.Comments.objects.filter(course=course_id)
         is_commented = True
@@ -63,8 +60,7 @@ def course_detail(request, course_id):
         except ObjectDoesNotExist:
             user_comment = models.Comments.objects.filter(course=course_solo, sender=request.user)
             is_commented = False
-        return render(request, 'course/detail.html', {'userdata': userdata,
-                                                      'coursedata': course_solo,
+        return render(request, 'course/detail.html', {'coursedata': course_solo,
                                                       'coursecomments': course_comment,
                                                       'is_commented': is_commented,
                                                       'user_comment': user_comment,
@@ -76,12 +72,11 @@ def course_edit(request, course_id):
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
-        userdata = request.user
         if str(course_id) == '0':
-            return render(request, 'course/detail_edit.html', {'userdata': userdata})
+            return render(request, 'course/detail_edit.html')
         else:
             course_solo = models.Course.objects.get(pk=course_id)
-            return render(request, 'course/detail_edit.html', {'userdata': userdata, 'coursedata': course_solo})
+            return render(request, 'course/detail_edit.html', {'coursedata': course_solo})
 
 
 def course_edit_submit(request):
@@ -201,7 +196,6 @@ def invitation_code(request):
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
-        userdata = request.user
         times = request.POST.get('amount')
         if times:
             for i in range(int(times)):
@@ -213,7 +207,7 @@ def invitation_code(request):
         code_all = models.InvitationCode.objects.all()
         if times is not None:
             messages.add_message(request, messages.INFO, 'Generated ' + str(times) + ' new invitation code(s).')
-    return render(request, 'tools/newic.html', {'userdata': userdata, 'codes': code_all})
+    return render(request, 'tools/newic.html', {'codes': code_all})
 
 
 def invitation_code_invalid(request, code_id):
@@ -221,13 +215,12 @@ def invitation_code_invalid(request, code_id):
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
-        userdata = request.user
         deleting_code = models.InvitationCode.objects.get(pk=code_id)
         deleted_code = deleting_code.invitation_code
         deleting_code.delete()
         code_all = models.InvitationCode.objects.all()
         messages.add_message(request, messages.SUCCESS, 'Code: ' + deleted_code + ' invalided.')
-        return render(request, 'tools/newic.html', {'userdata': userdata, 'codes': code_all})
+        return render(request, 'tools/newic.html', {'codes': code_all})
 
 
 def account_info_view(request):
@@ -235,8 +228,7 @@ def account_info_view(request):
         messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
-        userdata = request.user
-        return render(request, 'account/info.html', {'userdata': userdata})
+        return render(request, 'account/info.html')
 
 
 def account_info_edit(request):
@@ -244,8 +236,7 @@ def account_info_edit(request):
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
-        userdata = request.user
-        return render(request, 'account/edit.html', {'userdata': userdata})
+        return render(request, 'account/edit.html')
 
 
 def account_info_submit(request):
@@ -268,8 +259,7 @@ def account_password_edit(request):
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
-        userdata = request.user
-        return render(request, 'account/password.html', {'userdata': userdata})
+        return render(request, 'account/password.html')
 
 
 def account_password_submit(request):

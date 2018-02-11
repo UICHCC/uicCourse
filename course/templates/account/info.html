@@ -62,9 +62,9 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown show">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="true">{{ userdata.username }}</a>
+                       aria-haspopup="true" aria-expanded="true">{{ user.username }}</a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-                        {% if userdata.is_superuser %}
+                        {% if user.is_superuser %}
                             <h6 class="dropdown-header">Admin function</h6>
                             <a class="dropdown-item" href="{% url 'invitation_code' %}">Invitation Code</a>
                             <div class="dropdown-divider"></div>
@@ -108,11 +108,11 @@
     <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow">
         <div class="lh-100" style="width: 100%;">
             <div class="d-flex justify-content-between align-items-center">
-                <h3 class="mb-0 text-white lh-100">{{ userdata.first_name }} <b>{{ userdata.last_name | upper }}</b>
+                <h3 class="mb-0 text-white lh-100">{{ user.first_name }} <b>{{ user.last_name | upper }}</b>
                 </h3>
-                <h3 class="mb-0 text-white lh-100"># {{ userdata.id }}</h3>
+                <h3 class="mb-0 text-white lh-100"># {{ user.id }}</h3>
             </div>
-            <h4 style="margin-bottom: 0;">@ {{ userdata.username }}</h4>
+            <h4 style="margin-bottom: 0;">@ {{ user.username }}</h4>
         </div>
     </div>
 
@@ -123,7 +123,7 @@
                  src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/envelope-closed.svg">
             <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <strong class="d-block text-gray-dark">Email Account</strong>
-                {{ userdata.email }}
+                {{ user.email }}
             </p>
         </div>
         <div class="media text-muted pt-3">
@@ -131,7 +131,7 @@
                  src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/timer.svg">
             <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <strong class="d-block text-gray-dark">Last Login Time</strong>
-                {{ userdata.last_login }}
+                {{ user.last_login }}
             </p>
         </div>
         <div class="media text-muted pt-3">
@@ -139,7 +139,7 @@
                  src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/account-login.svg">
             <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <strong class="d-block text-gray-dark">Date Join:</strong>
-                {{ userdata.date_joined }}
+                {{ user.date_joined }}
             </p>
         </div>
         <div class="media text-muted pt-3">
@@ -147,19 +147,19 @@
                  src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/badge.svg">
             <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <strong class="d-block text-gray-dark">Permissions:</strong>
-                {% if userdata.is_active %}
+                {% if user.is_active %}
                     <span class="badge badge-success">ACTIVE</span>
                 {% else %}
                     <span class="badge badge-danger">Unable to login</span>
                 {% endif %}
-                {% if userdata.is_staff %}
+                {% if user.is_staff %}
                     <span class="badge badge-info">STAFF</span>
                 {% endif %}
-                {% if userdata.is_superuser %}
+                {% if user.is_superuser %}
                     <span class="badge badge-warning">SUPERUSER</span>
 
                 {% endif %}
-                {% if userdata.groups.all.0.name == "course_master" %}
+                {% if user.groups.all.0.name == "course_master" %}
                     <span class="badge badge-dark">COURSE MANAGER</span>
                 {% endif %}
             </p>

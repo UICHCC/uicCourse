@@ -58,9 +58,9 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown show">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="true">{{ userdata.username }}</a>
+                       aria-haspopup="true" aria-expanded="true">{{ user.username }}</a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-                        {% if userdata.is_superuser %}
+                        {% if user.is_superuser %}
                             <h6 class="dropdown-header">Admin function</h6>
                             <a class="dropdown-item" href="{% url 'invitation_code' %}">Invitation Code</a>
                             <div class="dropdown-divider"></div>
@@ -145,7 +145,7 @@
             </p>
         </div>
         <small class="d-block text-right mt-3">
-            {% if userdata.groups.all.0.name == "course_master" %}
+            {% if user.groups.all.0.name == "course_master" %}
                 <a href="{% url 'course_detail_edit' coursedata.id %}">Update Information</a> |
                 <a href="javascript:AlertIt();">Delete This course</a>
             {% endif %}
@@ -160,7 +160,7 @@
                 <div class="card-columns">
                     {% for comment in coursecomments %}
                         {% if comment.is_banned %}
-                            {% if userdata.groups.all.0.name == "course_master" %}
+                            {% if user.groups.all.0.name == "course_master" %}
                                 <div class="card bg-dark text-white {% if comment.is_recommend %} border-danger {% endif %}">
                                     <div class="card-header">
                                         <p class="card-text">#{{ comment.id }} [BANED COMMENT]</p>
@@ -202,7 +202,7 @@
                             {% endif %}
                         {% else %}
                             <div class="card {% if comment.is_recommend %} border-danger {% endif %}">
-                                {% if userdata.groups.all.0.name == "course_master" %}
+                                {% if user.groups.all.0.name == "course_master" %}
                                     <div class="card-header">
                                         <p class="card-text">#{{ comment.id }}</p>
                                     </div>
@@ -212,7 +212,7 @@
                                     <footer class="blockquote-footer">{{ comment.sender }}
                                         <cite>{{ comment.pub_date }}</cite></footer>
                                 </div>
-                                {% if userdata.groups.all.0.name == "course_master" %}
+                                {% if user.groups.all.0.name == "course_master" %}
                                     <div class="card-footer d-flex justify-content-around">
                                         {% if comment.is_banned %}
                                             <form action="{% url 'comment_operation' comment.id %}" method="post">
