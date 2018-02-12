@@ -10,6 +10,11 @@
 
     {% load static %}
     <link href="{% static "course/css/login_page.css" %}" rel="stylesheet">
+    <style>
+        .box-shadow {
+            box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+        }
+    </style>
 </head>
 <body>
 
@@ -74,30 +79,48 @@
         </div>
         {% endfor %}
     {% endif %}
-    <h1>
-        <pre>C0urse L1st</pre>
-    </h1>
-    {% if user.groups.all.0.name == "course_master" %}
-        <a href="{% url 'course_detail_edit' '0' %}" class="btn btn-primary">New Course</a>
-    {% endif %}
-    <table class="table table-hover" style="margin-top: 1rem; margin-bottom: 5rem;">
-        <thead>
-        <tr>
-            <th scope="col">Course Name</th>
-            <th scope="col">Course Code</th>
-            <th scope="col">Course Unit(s)</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="card-columns" style="margin-top: 2rem">
+        {% if user.groups.all.0.name == "course_master" %}
+            <div class="card border-light box-shadow text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Admin Tools</h5>
+                    <a href="{% url 'course_detail_edit' '0' %}" class="btn btn-primary">New Course</a>
+                </div>
+            </div>
+        {% endif %}
         {% for course in courses %}
-            <tr>
-                <td><a href="{% url 'course_detail' course.id %}">{{ course.course_name_en }}</a></td>
-                <td>{{ course.course_code }}</td>
-                <td>{{ course.course_units }}</td>
-            </tr>
+            <a href="{% url 'course_detail' course.id %}">
+            {% if 123456|make_list|random == '1' %}
+                <div class="card border-light box-shadow text-dark">
+            {% else %}
+                {% if 123456|make_list|random == '2' %}
+                    <div class="card border-light box-shadow text-dark">
+                {% else %}
+                    {% if 23456|make_list|random == '3' %}
+                        <div class="card border-light box-shadow text-dark">
+                    {% else %}
+                        {% if 123456|make_list|random == '4' %}
+                            <div class="card border-light box-shadow text-dark">
+                        {% else %}
+                            {% if 123456|make_list|random == '5' %}
+                                <div class="card border-light box-shadow text-dark">
+                            {% else %}
+                                <div class="card border-light box-shadow text-dark">
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+
+            <div class="card-body">
+                <h5 class="card-title">{{ course.course_name_cn }}</h5>
+                <h4 class="card-title">{{ course.course_name_en }}</h4>
+                <p class="card-text">{{ course.course_code }}</p>
+            </div>
+        </div>
+        </a>
         {% endfor %}
-        </tbody>
-    </table>
+    </div>
 </main>
 
 <footer class="footer">
