@@ -88,45 +88,102 @@
                     <input type="text" class="form-control" value="{{ coursedata.course_name_cn }}" name="cnc"
                            placeholder="Course Chinese Name">
                 </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" value="{{ coursedata.course_code | upper }}"
+                           name="cc" placeholder="Course Code">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control"
+                           value="{{ coursedata.course_class | upper }}" name="cclass"
+                           placeholder="Course Class">
+                </div>
+                <div class="form-group">
+                    <label for="id_course_units">Course Units</label>
+                    {% if coursedata.course_units == 3 %}
+                        <select class="form-control" name="cu" id="id_course_units">
+                            <option value="3" selected>Three Units</option>
+                            <option value="1">One Unit</option>
+                        </select>
+                    {% else %}
+                        <select class="form-control" name="cu" id="id_course_units">
+                            <option value="3">Three Units</option>
+                            <option value="1" selected>One Unit</option>
+                        </select>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_course_category">Course Category</label>
+                    <select class="form-control" name="course_category" id="id_course_category">
+                        <option value="BBAC">BBA (Hons) Core</option>
+                        <option value="MR">Major Required</option>
+                        <option value="ME">Major Elective</option>
+                        <option value="GEC">General Education Core</option>
+                        <option value="GED">General Education Distribution</option>
+                        <option value="WPEX">Whole Person Education Experiential Learning Modules</option>
+                        <option value="FE">Free Elective</option>
+                    </select>
+                </div>
                 <div class="row">
                     <div class="col">
-                        <div class="card border-primary">
-                            <div class="card-body text-primary">
-                                <h5 class="card-title">Course Code</h5>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" value="{{ coursedata.course_code | upper }}"
-                                           name="cc" placeholder="Course Code">
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label for="id_course_division">Course Division</label>
+                            <select class="form-control" name="course_division" id="id_course_division">
+                                <option value="DST">Division of Science and Technology</option>
+                                <option value="DBM">Division of Business and Management</option>
+                                <option value="DHSS">Division of Humanities and Social Sciences</option>
+                                <option value="DCC">Division of Culture and Creativity</option>
+                                <option value="ALL">All Division</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card border-success">
-                            <div class="card-body text-success">
-                                <h5 class="card-title">Course Class</h5>
-                                <div class="form-group">
-                                    <input type="text" class="form-control"
-                                           value="{{ coursedata.course_class | upper }}" name="cclass"
-                                           placeholder="Course Class">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card border-danger">
-                            <div class="card-body text-danger">
-                                <h5 class="card-title">Course Units</h5>
-                                <div class="form-group">
-                                    <input type="number" class="form-control" value="{{ coursedata.course_units }}"
-                                           name="cu" placeholder="Course Units">
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label for="id_course_major">Course Major</label>
+                            <select class="form-control" name="course_major" id="id_course_major">
+                                <optgroup label="DST">
+                                    <option value="FST">Food Science and Technology</option>
+                                    <option value="ENVS">Environmental Science</option>
+                                    <option value="APSY">Applied Psychology</option>
+                                    <option value="STAT">Statistics</option>
+                                    <option value="FM">Financial Mathematics</option>
+                                    <option value="CST">Computer Science and Technology</option>
+                                    <option value="DS">Data Science</option>
+                                    <option value="ALLDST">All DST Major</option>
+                                </optgroup>
+                                <optgroup label="DBM">
+                                    <option value="ACCT">Accounting</option>
+                                    <option value="FIN">Finance</option>
+                                    <option value="AE">Applied Economics</option>
+                                    <option value="EBIS">e-Business Management and Information Systems</option>
+                                    <option value="MHR">Management of Human Resources</option>
+                                    <option value="MKT">Marketing Management</option>
+                                    <option value="EPIN">Entrepreneurship and Innovation</option>
+                                    <option value="ALLDBM">All DBM Major</option>
+                                </optgroup>
+                                <optgroup label="DCC">
+                                    <option value="CCM">Culture, Creativity and Management</option>
+                                    <option value="CTV">Cinema and Television</option>
+                                    <option value="MAD">Media Arts and Design</option>
+                                    <option value="ALLDCC">All DCC Major</option>
+                                </optgroup>
+                                <optgroup label="DHSS">
+                                    <option value="GIR">Government and International Relations</option>
+                                    <option value="SWSA">Social Work and Social Administration</option>
+                                    <option value="IJ">International Journalism</option>
+                                    <option value="PRA">Public Relations and Advertising</option>
+                                    <option value="ATS">Applied Translation Studies</option>
+                                    <option value="ELLS">English Language and Literature Studies</option>
+                                    <option value="ALLDHSS">All DHSS Major</option>
+                                </optgroup>
+                                <option value="ALL">ALL Major</option>
+                            </select>
                         </div>
                     </div>
                 </div>
+
                 <hr>
                 <div class="form-group">
-                    <label>Course Descriptions:</label>
                     <textarea class="form-control" rows="5" name="cd">{{ coursedata.course_descriptions }}</textarea>
                     {% if coursedata %}
                         <input type="hidden" name="cid" value="{{ coursedata.id }}">
@@ -155,5 +212,22 @@
 {% load static %}
 <script src="{% static "js/popper.min.js" %}"></script>
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+    function selectValue(id, aim_value){
+        select = document.getElementById(id);
+        for (var i=0; i < select.length; i++){
+            if(select.options[i].value == aim_value){
+                select.options[i].selected = true;
+                return 0;
+            }
+        }
+    }
+    function run(){
+        selectValue('id_course_major' , '{{ coursedata.course_major }}');
+        selectValue('id_course_division' , '{{ coursedata.course_division }}');
+        selectValue('id_course_category' , '{{ coursedata.course_category }}');
+    }
+    window.onload=run();
+</script>
 </body>
 </html>

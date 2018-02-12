@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 # from django.contrib.messages import get_messages
+from . import forms
 
 import hashlib
 import random
@@ -91,6 +92,9 @@ def course_edit_submit(request):
         course_units = request.POST.get('cu')
         course_descriptions = request.POST.get('cd')
         course_id = request.POST.get('cid')
+        course_category = request.POST.get('course_category')
+        course_major = request.POST.get('course_major')
+        course_division = request.POST.get('course_division')
         if str(course_id) == '0':
             models.Course.objects.create(
                 course_name_en=course_name_en,
@@ -99,8 +103,12 @@ def course_edit_submit(request):
                 course_class=course_class,
                 course_units=course_units,
                 course_descriptions=course_descriptions,
+                course_category=course_category,
+                course_major=course_major,
+                course_division=course_division,
             )
             messages.add_message(request, messages.SUCCESS, 'Created course information successfully.')
+            return redirect('/')
         else:
             modify_course = models.Course.objects.get(pk=course_id)
             modify_course.course_name_en = course_name_en
@@ -108,10 +116,13 @@ def course_edit_submit(request):
             modify_course.course_code = course_code
             modify_course.course_class = course_class
             modify_course.course_units = course_units
+            modify_course.course_category = course_category
+            modify_course.course_major = course_major
+            modify_course.course_division = course_division
             modify_course.course_descriptions = course_descriptions
             modify_course.save()
             messages.add_message(request, messages.SUCCESS, 'Modify the course information successfully.')
-        return redirect('/')
+            return redirect('/course/'+str(modify_course.id)+'/')
 
 
 def course_comments_submit(request):
