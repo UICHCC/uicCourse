@@ -209,7 +209,7 @@
                                 {% endif %}
                                 <div class="card-body {% if comment.is_recommend %} text-danger {% endif %} ">
                                     <p>{{ comment.content }}</p>
-                                    <footer class="blockquote-footer">{{ comment.sender }}
+                                    <footer class="blockquote-footer"><a href="{% url 'user_info_view' comment.sender.id %}">{{ comment.sender }}</a>
                                         <cite>{{ comment.pub_date }}</cite></footer>
                                 </div>
                                 {% if user.groups.all.0.name == "course_master" %}
