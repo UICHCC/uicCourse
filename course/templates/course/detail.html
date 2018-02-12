@@ -124,8 +124,8 @@
             <img src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/box.svg" class="mr-2 rounded"
                  style="width: 32px; height: 32px;">
             <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray">
-                <strong class="d-block text-gray-dark">Course Class</strong>
-                {{ coursedata.course_class | upper }}
+                <strong class="d-block text-gray-dark">Course Category</strong>
+                {{ coursedata.course_category }}
             </p>
         </div>
         <div class="media text-muted pt-3">
@@ -134,6 +134,14 @@
             <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray">
                 <strong class="d-block text-gray-dark">Course Units</strong>
                 {{ coursedata.course_units }}
+            </p>
+        </div>
+        <div class="media text-muted pt-3">
+            <img src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/chat.svg" class="mr-2 rounded"
+                 style="width: 32px; height: 32px;">
+            <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray">
+                <strong class="d-block text-gray-dark">Major/Division</strong>
+                {{ coursedata.course_major }} / {{ coursedata.course_division }}
             </p>
         </div>
         <div class="media text-muted pt-3">
