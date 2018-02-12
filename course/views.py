@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.http import Http404
 # from django.contrib.messages import get_messages
 
 import hashlib
@@ -281,6 +280,18 @@ def account_password_submit(request):
         else:
             messages.add_message(request, messages.WARNING, 'Old password does not match.')
             return redirect('/account/password/')
+
+
+def user_info_view(request,user_id):
+    if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'No permission.')
+        return redirect('/')
+    else:
+        if str(user_id) == str(request.user.id):
+            return redirect('/account/')
+        else:
+            request_userdata = models.User.objects.get(pk=user_id)
+            return render(request, 'account/see.html', {'aim_user': request_userdata})
 
 
 def comment_operation(request, comment_id):
