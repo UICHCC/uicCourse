@@ -61,6 +61,8 @@ def course_detail(request, course_id):
         except ObjectDoesNotExist:
             user_comment = models.Comments.objects.filter(course=course_solo, sender=request.user)
             is_commented = False
+        course_solo.view_times += 1
+        course_solo.save()
         return render(request, 'course/detail.html', {'coursedata': course_solo,
                                                       'coursecomments': course_comment,
                                                       'is_commented': is_commented,
