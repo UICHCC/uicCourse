@@ -19,14 +19,13 @@
             color: rgba(255, 255, 255, .5);
         }
 
-        .orange-pink{
+        .orange-pink {
             background: #FF5579;
             background: -webkit-gradient(linear, left top, left bottom, from(#FF7C5A), to(#FF5579));
             background: -webkit-linear-gradient(#FF7C5A, #FF5579);
             background: -o-linear-gradient(#FF7C5A, #FF5579);
             background: linear-gradient(#FF7C5A, #FF5579);
         }
-
 
         .border-bottom {
             border-bottom: 1px solid #e5e5e5;
@@ -43,7 +42,6 @@
         .lh-125 {
             line-height: 1.25;
         }
-
 
 
     </style>
@@ -112,74 +110,137 @@
         {% endfor %}
     {% endif %}
     <br>
-{% if user.is_staff or user.is_superuser or user.groups.all.0.name == "course_master" %}
-    <div class="d-flex align-items-center p-3 my-3 text-white-50 orange-pink rounded box-shadow">
-        <div class="lh-100" style="width: 100%;">
-            <div class="d-flex justify-content-between align-items-center">
-                <h3 class="mb-0 text-white lh-100">{{ aim_user.first_name }} <b>{{ aim_user.last_name | upper }}</b>
-                </h3>
-                <h3 class="mb-0 text-white lh-100"># {{ aim_user.id }}</h3>
-            </div>
-            <h4 style="margin-bottom: 0;">@ {{ aim_user.username }}</h4>
-        </div>
-    </div>
-    <div class="my-3 p-3 bg-white rounded box-shadow">
-        <h6 class="border-bottom border-gray pb-2 mb-0">Basic Info</h6>
-        <div class="media text-muted pt-3">
-            <img class="mr-2 rounded" style="width: 32px; height: 32px;"
-                 src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/account-login.svg">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                <strong class="d-block text-gray-dark">Date Join:</strong>
-                {{ aim_user.date_joined }}
-            </p>
-        </div>
-        <div class="media text-muted pt-3">
-            <img class="mr-2 rounded" style="width: 32px; height: 32px;"
-                 src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/badge.svg">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                <strong class="d-block text-gray-dark">Permissions:</strong>
-                {% if aim_user.is_active %}
-                    <span class="badge badge-success">ACTIVE</span>
-                {% else %}
-                    <span class="badge badge-danger">Unable to login</span>
-                {% endif %}
-                {% if aim_user.is_staff %}
-                    <span class="badge badge-info">STAFF</span>
-                {% endif %}
-                {% if aim_user.is_superuser %}
-                    <span class="badge badge-warning">SUPERUSER</span>
-
-                {% endif %}
-                {% if aim_user.groups.all.0.name == "course_master" %}
-                    <span class="badge badge-dark">COURSE MANAGER</span>
-                {% endif %}
-            </p>
-        </div>
-    </div>
-    <div class="my-3 p-3 bg-white rounded box-shadow">
-        <h6 class="border-bottom border-gray pb-2 mb-0">Others</h6>
-        <div class="media text-muted pt-3">
-            <img class="mr-2 rounded" style="width: 32px; height: 32px;"
-                 src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/layers.svg">
-            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                <div class="d-flex justify-content-between align-items-center w-100">
-                    <strong class="text-gray-dark">His/Her Comment(s)</strong>
-                    <a class="text-muted" href="#">Coming Soon</a>
+    {% if aim_user.is_staff or aim_user.is_superuser or aim_user.groups.all.0.name == "course_master" %}
+        {% if user.is_staff or user.is_superuser or user.groups.all.0.name == "course_master" %}
+            <div class="d-flex align-items-center p-3 my-3 text-white-50 orange-pink rounded box-shadow">
+                <div class="lh-100" style="width: 100%;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0 text-white lh-100">{{ aim_user.first_name }}
+                            <b>{{ aim_user.last_name | upper }}</b>
+                        </h3>
+                        <h3 class="mb-0 text-white lh-100"># {{ aim_user.id }}</h3>
+                    </div>
+                    <h4 style="margin-bottom: 0;">@ {{ aim_user.username }}</h4>
                 </div>
-                <span class="d-block">他 / 她的评论</span>
             </div>
-        </div>
-    </div>
-    </div>
-{% else %}
-    <div class="d-flex align-items-center p-3 my-3 text-white-50 orange-pink rounded box-shadow">
-        <div class="lh-100" style="width: 100%;">
-            <div class="d-flex justify-content-center align-items-center">
-                <h3 class="mb-0 text-white lh-100">You do not have access to this user's information</h3>
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <h6 class="border-bottom border-gray pb-2 mb-0">Basic Info</h6>
+                <div class="media text-muted pt-3">
+                    <img class="mr-2 rounded" style="width: 32px; height: 32px;"
+                         src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/account-login.svg">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark">Date Join:</strong>
+                        {{ aim_user.date_joined }}
+                    </p>
+                </div>
+                <div class="media text-muted pt-3">
+                    <img class="mr-2 rounded" style="width: 32px; height: 32px;"
+                         src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/badge.svg">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark">Permissions:</strong>
+                        {% if aim_user.is_active %}
+                            <span class="badge badge-success">ACTIVE</span>
+                        {% else %}
+                            <span class="badge badge-danger">Unable to login</span>
+                        {% endif %}
+                        {% if aim_user.is_staff %}
+                            <span class="badge badge-info">STAFF</span>
+                        {% endif %}
+                        {% if aim_user.is_superuser %}
+                            <span class="badge badge-warning">SUPERUSER</span>
+
+                        {% endif %}
+                        {% if aim_user.groups.all.0.name == "course_master" %}
+                            <span class="badge badge-dark">COURSE MANAGER</span>
+                        {% endif %}
+                    </p>
+                </div>
             </div>
-        </div>
-    </div>
-{% endif %}
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <h6 class="border-bottom border-gray pb-2 mb-0">Others</h6>
+                <div class="media text-muted pt-3">
+                    <img class="mr-2 rounded" style="width: 32px; height: 32px;"
+                         src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/layers.svg">
+                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <strong class="text-gray-dark">His/Her Comment(s)</strong>
+                            <a class="text-muted" href="#">Coming Soon</a>
+                        </div>
+                        <span class="d-block">他 / 她的评论</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+        {% else %}
+            <div class="d-flex align-items-center p-3 my-3 text-white-50 orange-pink rounded box-shadow">
+                <div class="lh-100" style="width: 100%;">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <h3 class="mb-0 text-white lh-100">You do not have access to this user's information</h3>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% else %}
+            <div class="d-flex align-items-center p-3 my-3 text-white-50 orange-pink rounded box-shadow">
+                <div class="lh-100" style="width: 100%;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0 text-white lh-100">{{ aim_user.first_name }}
+                            <b>{{ aim_user.last_name | upper }}</b>
+                        </h3>
+                        <h3 class="mb-0 text-white lh-100"># {{ aim_user.id }}</h3>
+                    </div>
+                    <h4 style="margin-bottom: 0;">@ {{ aim_user.username }}</h4>
+                </div>
+            </div>
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <h6 class="border-bottom border-gray pb-2 mb-0">Basic Info</h6>
+                <div class="media text-muted pt-3">
+                    <img class="mr-2 rounded" style="width: 32px; height: 32px;"
+                         src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/account-login.svg">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark">Date Join:</strong>
+                        {{ aim_user.date_joined }}
+                    </p>
+                </div>
+                <div class="media text-muted pt-3">
+                    <img class="mr-2 rounded" style="width: 32px; height: 32px;"
+                         src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/badge.svg">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark">Permissions:</strong>
+                        {% if aim_user.is_active %}
+                            <span class="badge badge-success">ACTIVE</span>
+                        {% else %}
+                            <span class="badge badge-danger">Unable to login</span>
+                        {% endif %}
+                        {% if aim_user.is_staff %}
+                            <span class="badge badge-info">STAFF</span>
+                        {% endif %}
+                        {% if aim_user.is_superuser %}
+                            <span class="badge badge-warning">SUPERUSER</span>
+
+                        {% endif %}
+                        {% if aim_user.groups.all.0.name == "course_master" %}
+                            <span class="badge badge-dark">COURSE MANAGER</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <h6 class="border-bottom border-gray pb-2 mb-0">Others</h6>
+                <div class="media text-muted pt-3">
+                    <img class="mr-2 rounded" style="width: 32px; height: 32px;"
+                         src="https://cdn.bootcss.com/open-iconic/1.1.1/svg/layers.svg">
+                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <strong class="text-gray-dark">His/Her Comment(s)</strong>
+                            <a class="text-muted" href="#">Coming Soon</a>
+                        </div>
+                        <span class="d-block">他 / 她的评论</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+    {% endif %}
 </main>
 
 <footer class="footer">
