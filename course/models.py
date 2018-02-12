@@ -3,15 +3,71 @@ from django.contrib.auth.models import User
 
 
 class Course(models.Model):
-    course_name_en = models.TextField(null=True)
-    course_name_cn = models.TextField(null=True)
-    course_code = models.CharField(max_length=32, default='EMPTY_COURSE_CODE')
-    course_units = models.IntegerField()
+    UIC_DIVISION = (('DST', 'Division of Science and Technology'),
+                    ('DBM', 'Division of Business and Management'),
+                    ('DHSS', 'Division of Humanities and Social Sciences'),
+                    ('DCC', 'Division of Culture and Creativity'),
+                    ('ALL', 'All Division'))
+    UIC_MAJOR = (
+        ('DST', (
+            ('FST', 'Food Science and Technology'),
+            ('ENVS', 'Environmental Science'),
+            ('APSY', 'Applied Psychology'),
+            ('STAT', 'Statistics'),
+            ('FM', 'Financial Mathematics'),
+            ('CST', 'Computer Science and Technology'),
+            ('DS', 'Data Science'),
+            ('ALLDST', 'All DST Major')
+        )),
+        ('DBM', (
+            ('ACCT', 'Accounting'),
+            ('FIN', 'Finance'),
+            ('AE', 'Applied Economics'),
+            ('EBIS', 'e-Business Management and Information Systems'),
+            ('MHR', 'Management of Human Resources'),
+            ('MKT', 'Marketing Management'),
+            ('EPIN', 'Entrepreneurship and Innovation'),
+            ('ALLDBM', 'All DBM Major')
+        )),
+        ('DCC', (
+            ('CCM', 'Culture, Creativity and Management'),
+            ('CTV', 'Cinema and Television'),
+            ('MAD', 'Media Arts and Design'),
+            ('ALLDCC', 'All DCC Major')
+        )),
+        ('DHSS', (
+            ('GIR', 'Government and International Relations'),
+            ('SWSA', 'Social Work and Social Administration'),
+            ('IJ', 'International Journalism'),
+            ('PRA', 'Public Relations and Advertising'),
+            ('ATS', 'Applied Translation Studies '),
+            ('ELLS', 'English Language and Literature Studies'),
+            ('ALLDHSS', 'All DHSS Major')
+        )),
+        ('ALL', 'ALL Major')
+    )
+    UIC_COURSE_CATEGORY = (
+        ('BBAC', 'BBA (Hons) Core'),
+        ('MR', 'Major Required'),
+        ('ME', 'Major Elective'),
+        ('GEC', 'General Education Core'),
+        ('GED', 'General Education Distribution'),
+        ('WPEX', 'Whole Person Education Experiential Learning Modules'),
+        ('FE', 'Free Elective')
+    )
+    UIC_COURSE_UNITS = (
+        (3, 'Three Units'),
+        (1, 'One Unit')
+    )
+    course_name_en = models.CharField(max_length=128, null=True)
+    course_name_cn = models.CharField(max_length=128, null=True)
+    course_code = models.CharField(max_length=32, default='EMPY1003')
+    course_units = models.IntegerField(default=3, choices=UIC_COURSE_UNITS)
     course_class = models.CharField(max_length=32, default='DEFAULT_CLASS')
-    course_major = models.CharField(max_length=32, default='ALL')
-    course_division = models.CharField(max_length=32, default='ALL')
-    course_category = models.CharField(max_length=32, default='FE')
-    course_descriptions = models.TextField(null=True)
+    course_major = models.CharField(max_length=32, default='ALL', choices=UIC_MAJOR)
+    course_division = models.CharField(max_length=32, default='ALL', choices=UIC_DIVISION)
+    course_category = models.CharField(max_length=32, default='FE', choices=UIC_COURSE_CATEGORY)
+    course_descriptions = models.TextField(null=True, default='To be added')
     up_vote = models.IntegerField(default=0)
     down_vote = models.IntegerField(default=0)
     update_time = models.DateTimeField(auto_now=True)
