@@ -8,7 +8,14 @@ class Course(models.Model):
     course_code = models.CharField(max_length=32, default='EMPTY_COURSE_CODE')
     course_units = models.IntegerField()
     course_class = models.CharField(max_length=32, default='DEFAULT_CLASS')
+    course_major = models.CharField(max_length=32, default='ALL')
+    course_division = models.CharField(max_length=32, default='ALL')
+    course_category = models.CharField(max_length=32, default='FE')
     course_descriptions = models.TextField(null=True)
+    up_vote = models.IntegerField(default=0)
+    down_vote = models.IntegerField(default=0)
+    update_time = models.DateTimeField(auto_now=True)
+    view_times = models.IntegerField(default=0)
 
     def __str__(self):
         return self.course_name_en
