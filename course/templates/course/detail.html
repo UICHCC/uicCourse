@@ -142,7 +142,8 @@
                  style="width: 32px; height: 32px;">
             <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray">
                 <strong class="d-block text-gray-dark">Division · Major</strong>
-                <label class="badge badge-warning">{{ coursedata.course_division }}</label> · <label class="badge badge-primary">{{ coursedata.course_major }}</label>
+                <label class="badge badge-warning">{{ coursedata.course_division }}</label> · <label
+                    class="badge badge-primary">{{ coursedata.course_major }}</label>
             </p>
         </div>
         <div class="media text-muted pt-3">
@@ -176,7 +177,8 @@
                                     </div>
                                     <div class="card-body {% if comment.is_recommend %} text-danger {% endif %} ">
                                         <p>{{ comment.content }}</p>
-                                        <footer class="blockquote-footer"><a href="{% url 'user_info_view' comment.sender.id %}">{{ comment.sender }}</a>
+                                        <footer class="blockquote-footer"><a
+                                                href="{% url 'user_info_view' comment.sender.id %}">{{ comment.sender }}</a>
                                             <cite>{{ comment.pub_date }}</cite></footer>
                                     </div>
                                     <div class="card-footer d-flex justify-content-around">
@@ -184,7 +186,8 @@
                                             <form action="{% url 'comment_operation' comment.id %}" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="operation" value="undoban">
-                                                <input type="submit" class="btn btn-outline-danger btn-sm" value="Undo-Ban">
+                                                <input type="submit" class="btn btn-outline-danger btn-sm"
+                                                       value="Undo-Ban">
                                             </form>
                                         {% else %}
                                             <form action="{% url 'comment_operation' comment.id %}" method="post">
@@ -197,7 +200,8 @@
                                             <form action="{% url 'comment_operation' comment.id %}" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="operation" value="undorecommend">
-                                                <input type="submit" class="btn btn-outline-success btn-sm" value="Undo-Recommend">
+                                                <input type="submit" class="btn btn-outline-success btn-sm"
+                                                       value="Undo-Recommend">
                                             </form>
                                         {% else %}
                                             <form action="{% url 'comment_operation' comment.id %}" method="post">
@@ -218,7 +222,8 @@
                                 {% endif %}
                                 <div class="card-body {% if comment.is_recommend %} text-danger {% endif %} ">
                                     <p>{{ comment.content }}</p>
-                                    <footer class="blockquote-footer"><a href="{% url 'user_info_view' comment.sender.id %}">{{ comment.sender }}</a>
+                                    <footer class="blockquote-footer"><a
+                                            href="{% url 'user_info_view' comment.sender.id %}">{{ comment.sender }}</a>
                                         <cite>{{ comment.pub_date }}</cite></footer>
                                 </div>
                                 {% if user.groups.all.0.name == "course_master" %}
@@ -227,7 +232,8 @@
                                             <form action="{% url 'comment_operation' comment.id %}" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="operation" value="undoban">
-                                                <input type="submit" class="btn btn-outline-danger btn-sm" value="Undo-Ban">
+                                                <input type="submit" class="btn btn-outline-danger btn-sm"
+                                                       value="Undo-Ban">
                                             </form>
                                         {% else %}
                                             <form action="{% url 'comment_operation' comment.id %}" method="post">
@@ -240,7 +246,8 @@
                                             <form action="{% url 'comment_operation' comment.id %}" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="operation" value="undorecommend">
-                                                <input type="submit" class="btn btn-outline-success btn-sm" value="Undo-Recommend">
+                                                <input type="submit" class="btn btn-outline-success btn-sm"
+                                                       value="Undo-Recommend">
                                             </form>
                                         {% else %}
                                             <form action="{% url 'comment_operation' comment.id %}" method="post">
@@ -262,9 +269,12 @@
     </div>
     <br>
     {% if is_commented %}
-        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenter">Edit your comment</button>
+        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenter">Edit
+            your comment
+        </button>
     {% else %}
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Comment</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Comment
+        </button>
     {% endif %}
 </main>
 <br>
@@ -282,14 +292,16 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Comment course: {{ coursedata.course_name_en }}</h5>
             </div>
-            <form action="{% url 'course_comments_submit' %}" method="post" onsubmit="return validateForm();" name="commentsform">
+            <form action="{% url 'course_comments_submit' %}" method="post" onsubmit="return validateForm();"
+                  name="commentsform">
                 <div class="modal-body">
                     {% csrf_token %}
                     <label>Notice: Please keep <b>objective</b> when you comment on the course. Comments <b>may be
                         deleted</b> if there is an insult to the teacher.</label>
                     <input type="hidden" value="{{ user_comment.id }}" name="comment_id">
                     <div class="form-group">
-                        <textarea class="form-control" rows="5" placeholder="Comments" name="comments">{{ user_comment.content }}</textarea>
+                        <textarea class="form-control" rows="5" placeholder="Comments"
+                                  name="comments">{{ user_comment.content }}</textarea>
                     </div>
                     <input type="hidden" name="course_id" value="{{ coursedata.id }}">
                 </div>
@@ -317,9 +329,9 @@
         }
     }
 
-    function validateForm(){
+    function validateForm() {
         var x = document.forms["commentsform"]["comments"].value;
-        if ( x == null || x == ""){
+        if (x == null || x == "") {
             alert("Comment must be filled out");
             return false;
         }

@@ -63,16 +63,16 @@
                     <form action="{% url 'signup_receiver' %}" method="post">
                         {% csrf_token %}
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Email" name="email">
+                            <input type="email" class="form-control" placeholder="Email" name="email" id="id_email">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Username" name="username">
+                            <input type="text" class="form-control" placeholder="Username" name="username" id="id_username">
                         </div>
                         <div class="form-group">
                             <input type="password" class="form-control" placeholder="Password" name="password">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Invitation code" name="invitationcode">
+                            <input type="text" class="form-control" placeholder="Invitation code" name="invitationcode" id="id_invitationcode">
                         </div>
                         <button type="submit" class="btn btn-success">Sign up</button>
                         <a href="{% url 'home_page' %}" class="btn btn-primary">Back</a>
@@ -96,13 +96,72 @@
             </div>
             </div>
         </div>
-
+    </div>
+</div>
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
         {% load static %}
         <script src="{% static "js/popper.min.js" %}"></script>
         <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script>
+            $("#id_email").change(function (){
+                var email = $(this).val();
+
+                $.ajax({
+                    url: '{% url 'validate_email' %}',
+                    data:{
+                        'email': email
+                    },
+                    dataType: 'json',
+                    success: function (data){
+                        if (data.is_taken){
+                            alert("A user with this email already exists.")
+                        }else{
+                            alert("This email is ready to go.")
+                        }
+                    }
+                });
+            });
+
+            $("#id_username").change(function (){
+                var username = $(this).val();
+
+                $.ajax({
+                    url: '{% url 'validate_user' %}',
+                    data:{
+                        'username': username
+                    },
+                    dataType: 'json',
+                    success: function (data){
+                        if (data.is_taken){
+                            alert("This username already exists.")
+                        }else{
+                            alert("This username is ready to go.")
+                        }
+                    }
+                });
+            });
+
+            $("#id_invitationcode").change(function (){
+                var invitationcode = $(this).val();
+
+                $.ajax({
+                    url: '{% url 'validate_invitationcode' %}',
+                    data:{
+                        'invitationcode': invitationcode
+                    },
+                    dataType: 'json',
+                    success: function (data){
+                        if (data.is_valid){
+                            alert("This Invitation Code is valid.")
+                        }else{
+                            alert("This Invitation Code is invalid.")
+                        }
+                    }
+                });
+            });
+        </script>
 </body>
 </html>

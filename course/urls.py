@@ -24,4 +24,7 @@ urlpatterns = [
     path('account/password/', views.account_password_edit, name='account_password_edit'),
     path('account/password/submit/', views.account_password_submit, name='account_password_submit'),
     path('comments/<int:comment_id>/', views.comment_operation, name='comment_operation'),
+    path('validate/email/', views.validate_email, name='validate_email'),
+    path('validate/username/', views.validate_user, name='validate_user'),
+    path('validate/invitationcode/', views.validate_invitationcode, name='validate_invitationcode'),
 ]

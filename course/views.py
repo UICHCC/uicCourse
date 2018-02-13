@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 # from django.contrib.messages import get_messages
-from . import forms
+from django.http import JsonResponse
 
 import hashlib
 import random
@@ -337,3 +337,29 @@ def handler404(request):
 def handler500(request):
     return render(request, 'error/500.html', status=500)
 
+
+# Following Code is Ajax Json Respond Area
+
+
+def validate_email(request):
+    email = request.GET.get('email')
+    data = {
+        'is_taken': User.objects.filter(email__exact=email).exists()
+    }
+    return JsonResponse(data)
+
+
+def validate_user(request):
+    username = request.GET.get('username')
+    data = {
+        'is_taken': User.objects.filter(username__exact=username).exists()
+    }
+    return JsonResponse(data)
+
+
+def validate_invitationcode(request):
+    invitationcode = request.GET.get('invitationcode')
+    data = {
+        'is_valid': models.InvitationCode.objects.filter(invitation_code__exact=invitationcode).exists()
+    }
+    return JsonResponse(data)
