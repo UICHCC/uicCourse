@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>[EDITING] {{ coursedata.course_name_en }} | Course Index</title>
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    {% load myfilters %}
+    {% load static %}
+    <link href="{% static "course/css/login_page.css" %}" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="{% url 'home_page' %}">UIC Course Index</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home_page' %}">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'course_list' %}">Course <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown show">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true">{{ user.username }}</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
+                        {% if user.is_superuser %}
+                            <h6 class="dropdown-header">Admin function</h6>
+                            <a class="dropdown-item" href="{% url 'invitation_code' %}">Invitation Code</a>
+                            <div class="dropdown-divider"></div>
+                        {% endif %}
+                        <h6 class="dropdown-header">Account Relative</h6>
+                        <a class="dropdown-item" href="{% url 'account_info_view' %}">Account Information</a>
+                        <a class="dropdown-item" href="{% url 'logout_receiver' %}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- Begin page content -->
+<main role="main" class="container">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {% else %}
+                {% if message.tags == 'warning' %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {% else %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {% else %}
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        {% endfor %}
+    {% endif %}
+    <br>
+    <div class="card" style="margin-bottom: 2rem">
+        <div class="card-header text-white bg-dark">Course Edit: {{ coursedata.course_code | upper }}</div>
+        <form action="{% url 'course_edit_submit' %}" method="post">
+            {% csrf_token %}
+            <table class="table">
+                {{ form.as_table }}
+            </table>
+            <div class="form-group text-center">
+                <input type="submit" class="btn btn-primary" value="Save Edit">
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <span class="text-muted">&copy; 2018 UIC HCC Computer Society</span>
+    </div>
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+{% load static %}
+<script src="{% static "js/popper.min.js" %}"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
