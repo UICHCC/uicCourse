@@ -278,7 +278,7 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Comment
         </button>
     {% endif %}
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalCenterVote">Vote
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalCenterVote">Quick Vote
         </button>
 </main>
 <br>
@@ -328,11 +328,11 @@
                 <h5 class="modal-title" id="exampleModalLongTitle">Vote course: {{ coursedata.course_name_en }}</h5>
             </div>
                 <div class="modal-body">
-                    <button class="btn btn-outline-success" style="margin-right: 1rem">
+                    <button class="btn btn-outline-success" style="margin-right: 1rem" id="upvote_btn">
                         <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                         {{ coursedata.up_vote }}
                     </button>
-                    <button class="btn btn-outline-danger"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+                    <button class="btn btn-outline-danger" id="downvote_btn"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
                 </div>
             </div>
         </div>
@@ -342,10 +342,11 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 {% load static %}
 <script src="{% static "js/popper.min.js" %}"></script>
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/limonte-sweetalert2/7.11.0/sweetalert2.all.min.js"></script>
 <script>
     function AlertIt() {
         var answer = confirm("Are you sure you want to delete this course record?");
@@ -361,6 +362,51 @@
             return false;
         }
     }
+    var voted = 0;
+    $("#upvote_btn").click(function () {
+        if (!voted){
+            $.ajax({
+                url: '{% url 'vote_course' coursedata.id %}',
+                data: {
+                    'vote_action': 'upvote'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.is_success){
+                        $("#upvote_btn").html("<i class=\"fa fa-thumbs-up\" aria-hidden=\"true\"></i>\n" + (parseInt({{ coursedata.up_vote }})+1));
+                        voted = 1;
+                        swal(
+                          'Voted!',
+                          'You have successfully given this class an Up vote.',
+                          'success'
+                        )
+                    }
+                }
+            });
+        }
+    });
+    $("#downvote_btn").click(function () {
+        if (!voted){
+            $.ajax({
+                url: '{% url 'vote_course' coursedata.id %}',
+                data: {
+                    'vote_action': 'downvote'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.is_success){
+                        $("#downvote_btn").html("<i class=\"fa fa-thumbs-down\" aria-hidden=\"true\"></i>\n");
+                        voted = 1;
+                        swal(
+                          'Voted!',
+                          'You have successfully given this class an Down vote.',
+                          'success'
+                        )
+                    }
+                }
+            });
+        }
+    });
 </script>
 </body>
 </html>

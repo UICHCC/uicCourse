@@ -363,3 +363,27 @@ def validate_invitationcode(request):
         'is_valid': models.InvitationCode.objects.filter(invitation_code__exact=invitationcode).exists()
     }
     return JsonResponse(data)
+
+
+def vote_course(request, course_id):
+    if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'No permission.')
+        return redirect('/')
+    else:
+        data = {
+            'is_success': False
+        }
+        aimcourse = models.Course.objects.get(pk=course_id)
+        action = request.GET.get('vote_action')
+        if action == 'upvote':
+            aimcourse.up_vote += 1
+            data = {
+                'is_success': True
+            }
+        elif action == 'downvote':
+            aimcourse.down_vote -= 1
+            data = {
+                'is_success': True
+            }
+        aimcourse.save()
+    return JsonResponse(data)

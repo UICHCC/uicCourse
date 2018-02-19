@@ -27,4 +27,5 @@ urlpatterns = [
     path('validate/email/', views.validate_email, name='validate_email'),
     path('validate/username/', views.validate_user, name='validate_user'),
     path('validate/invitationcode/', views.validate_invitationcode, name='validate_invitationcode'),
+    path('vote/course/<int:course_id>', views.vote_course, name='vote_course'),
 ]
