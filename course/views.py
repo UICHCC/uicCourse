@@ -387,3 +387,12 @@ def vote_course(request, course_id):
             }
         aimcourse.save()
     return JsonResponse(data)
+
+
+def view_comment(request):
+    if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'Login required.')
+        return redirect('/')
+    else:
+        comment = models.Comments.objects.filter(sender = request.user)
+        return render(request, 'tools/allcomment.html', {'comments': comment})
