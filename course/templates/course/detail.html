@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <title>{{ coursedata.course_name_en }} | Course Index</title>
     <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     {% load static %}
     <link href="{% static "course/css/login_page.css" %}" rel="stylesheet">
     <style>
@@ -100,15 +100,17 @@
         {% endfor %}
     {% endif %}
     <br>
-
-
-    <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-info rounded box-shadow">
-        <div class="lh-100" style="width: 100%;">
-            <div class="d-flex justify-content-between align-items-center">
-                <h1 class="mb-0 text-white lh-100">{{ coursedata.course_code | upper }}: {{ coursedata.course_name_en }}</h1>
-                <h4 class="mb-0 text-white lh-100">hits: {{ coursedata.view_times }}</h4>
+        <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-info rounded box-shadow">
+            <div class="lh-100" style="width: 100%;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="mb-0 text-white lh-100">{{ coursedata.course_code | upper }}: {{ coursedata.course_name_en }}</h1>
+                    <h4 class="mb-0 text-white lh-100">hits: {{ coursedata.view_times }}</h4>
+                </div>
+                <div class="d-flex justify-content-between align-items-center" style="margin-left: 0.5rem">
+                    <h2 class="text-white" style="margin-bottom: 0;">{{ coursedata.course_name_cn }}</h2>
+                </div>
             </div>
-            <h2 class="text-white" style="margin-bottom: 0;">{{ coursedata.course_name_cn }}</h2>
+        </div>
         </div>
     </div>
     <div class="my-3 p-3 bg-white rounded box-shadow">
@@ -276,6 +278,8 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Comment
         </button>
     {% endif %}
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalCenterVote">Vote
+        </button>
 </main>
 <br>
 <br>
@@ -310,6 +314,27 @@
                     <button type="submit" class="btn btn-primary">Summit</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="ModalCenterVote" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Vote course: {{ coursedata.course_name_en }}</h5>
+            </div>
+                <div class="modal-body">
+                    <button class="btn btn-outline-success" style="margin-right: 1rem">
+                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        {{ coursedata.up_vote }}
+                    </button>
+                    <button class="btn btn-outline-danger"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
