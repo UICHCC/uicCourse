@@ -381,7 +381,7 @@ def vote_course(request, course_id):
                 'is_success': True
             }
         elif action == 'downvote':
-            aimcourse.down_vote -= 1
+            aimcourse.down_vote += 1
             data = {
                 'is_success': True
             }
