@@ -396,3 +396,15 @@ def view_comment(request):
     else:
         comment = models.Comments.objects.filter(sender = request.user)
         return render(request, 'tools/allcomment.html', {'comments': comment})
+
+
+def view_your_comment(request, user_id):
+    if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'No permission.')
+        return redirect('/')
+    else:
+        if str(user_id) == str(request.user.id):
+            return redirect('/tools/comments/')
+        comment = models.Comments.objects.filter(sender = user_id)
+        aim_user = User.objects.get(pk=user_id)
+        return render(request, 'tools/onecomment.html', {'comments': comment, 'aim_user': aim_user})
