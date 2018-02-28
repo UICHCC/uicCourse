@@ -68,8 +68,10 @@ class Course(models.Model):
     course_division = models.CharField(max_length=32, default='ALL', choices=UIC_DIVISION)
     course_category = models.CharField(max_length=32, default='FE', choices=UIC_COURSE_CATEGORY)
     course_descriptions = models.TextField(null=True, default='To be added')
+    course_pre_request = models.ForeignKey('self', blank=True, null=True, on_delete=models.DO_NOTHING)
     up_vote = models.IntegerField(default=0)
     down_vote = models.IntegerField(default=0)
+    pub_date = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
     view_times = models.IntegerField(default=0)
 
