@@ -126,7 +126,7 @@
                     </ul>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">{{coursedata.course_descriptions}}
+                    <li class="list-group-item">Course Descriptions: {{coursedata.course_descriptions}}
                     </li>
                 </ul>
             </div>
@@ -149,7 +149,7 @@
                     <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
                         <button class="btn btn-outline-success" id="upvote_btn">
                             <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                            15
+                            {{ coursedata.up_vote }}
                         </button>
                         <button class="btn btn-outline-danger" id="downvote_btn"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
                     </div>
@@ -279,8 +279,6 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Comment
         </button>
     {% endif %}
-<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalCenterVote">Quick Vote
-        </button>
 </main>
 <br>
 <br>
@@ -319,26 +317,6 @@
     </div>
 </div>
 
-
-
-<div class="modal fade" id="ModalCenterVote" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Vote course: {{ coursedata.course_name_en }}</h5>
-            </div>
-                <div class="modal-body">
-                    <button class="btn btn-outline-success" style="margin-right: 1rem" id="upvote_btn">
-                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                        {{ coursedata.up_vote }}
-                    </button>
-                    <button class="btn btn-outline-danger" id="downvote_btn"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
