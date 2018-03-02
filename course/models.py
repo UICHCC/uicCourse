@@ -74,6 +74,7 @@ class Course(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
     view_times = models.IntegerField(default=0)
+    is_display_score= models.BooleanField(default=True)
 
     def __str__(self):
         return self.course_name_en
@@ -115,3 +116,13 @@ class QuickVotes(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class Tags(models.Model):
+    tag_name_en = models.CharField(max_length=128, null=True)
+    tag_name_cn = models.CharField(max_length=128, null=True)
+    tag_descriptions = models.TextField(null=True, default='To be added')
+    tag_weighted = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return str(self.tag_name_en)
