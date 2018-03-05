@@ -408,3 +408,11 @@ def view_your_comment(request, user_id):
         comment = models.Comments.objects.filter(sender = user_id)
         aim_user = User.objects.get(pk=user_id)
         return render(request, 'tools/onecomment.html', {'comments': comment, 'aim_user': aim_user})
+
+
+def dashboard_interface(request):
+    if not request.user.is_authenticated:
+        messages.add_message(request, messages.ERROR, 'No permission.')
+        return redirect('/')
+    else:
+        return render(request, 'tools/dashboard.html')
