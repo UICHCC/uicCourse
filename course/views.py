@@ -415,4 +415,5 @@ def dashboard_interface(request):
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
-        return render(request, 'tools/dashboard.html')
+        courses = models.Course.objects.all()
+        return render(request, 'tools/dashboard.html', {'courses': courses})
