@@ -318,13 +318,13 @@
                         </thead>
                         <tbody>
                         {% for course in courses %}
-                        <tr>
-                            <td>{{ course.id }}</td>
-                            <td>{{ course.course_name_en }}</td>
-                            <td>{{ course.course_code }}</td>
-                            <td>{{ course.course_category }}</td>
-                            <td>{{ course.course_division }} / {{ course.course_major }}</td>
-                        </tr>
+                            <tr>
+                                <td>{{ course.id }}</td>
+                                <td>{{ course.course_name_en }}</td>
+                                <td>{{ course.course_code }}</td>
+                                <td>{{ course.course_category }}</td>
+                                <td>{{ course.course_division }} / {{ course.course_major }}</td>
+                            </tr>
                         {% endfor %}
                         </tbody>
                     </table>
