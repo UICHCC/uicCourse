@@ -30,4 +30,5 @@ urlpatterns = [
     path('validate/username/', views.validate_user, name='validate_user'),
     path('validate/invitationcode/', views.validate_invitationcode, name='validate_invitationcode'),
     path('vote/course/<int:course_id>', views.vote_course, name='vote_course'),
+    path('dashboard/>', views.dashboard_interface, name='dashboard_interface'),
 ]
