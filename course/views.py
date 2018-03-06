@@ -220,7 +220,7 @@ def invitation_code(request):
         code_all = models.InvitationCode.objects.all()
         if times is not None:
             messages.add_message(request, messages.INFO, 'Generated ' + str(times) + ' new invitation code(s).')
-    return render(request, 'tools/newic.html', {'codes': code_all})
+    return render(request, 'tools/invitation.html', {'codes': code_all})
 
 
 def invitation_code_invalid(request, code_id):
