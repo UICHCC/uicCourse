@@ -83,7 +83,7 @@ class Course(models.Model):
 class InvitationCode(models.Model):
     invitation_code = models.TextField(null=True, unique=True)
     usability = models.BooleanField(default=True)
-    who_register = models.ForeignKey(User, on_delete=models.CASCADE)
+    who_register = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.invitation_code
