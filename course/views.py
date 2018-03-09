@@ -187,13 +187,20 @@ def signup_check(request):
             messages.add_message(request, messages.ERROR, 'Invalid invitation code.')
             return redirect('/signup/')
 
-        user = User.objects.create_user(
-            username=un,
-            password=pw,
-            email=email,
-        )
-        deleting_code = models.InvitationCode.objects.get(invitation_code=ic)
-        deleting_code.delete()
+        input_code = models.InvitationCode.objects.get(invitation_code=ic)
+        if input_code.usability == 0:
+            messages.add_message(request, messages.ERROR, 'Invalid invitation code.')
+            return redirect('/signup/')
+        else:
+            user = User.objects.create_user(
+                username=un,
+                password=pw,
+                email=email,
+            )
+            using_code = models.InvitationCode.objects.get(invitation_code=ic)
+            using_code.usability = False
+            using_code.who_register = user
+            using_code.save()
         if user is not None:
             login(request, user)
             messages.add_message(request, messages.SUCCESS, 'Signup Successfully.')

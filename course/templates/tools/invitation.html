@@ -319,6 +319,7 @@
                             <th>#</th>
                             <th>Code</th>
                             <th>Usability</th>
+                            <th>Assigned</th>
                             <th>Operation</th>
                         </tr>
                         </thead>
@@ -328,7 +329,12 @@
                                 <td>{{ code.id }}</td>
                                 <td>{{ code.invitation_code }}</td>
                                 <td>{{ code.usability }}</td>
-                                <td><a href="{% url 'invitation_code_invalid' code.id %}">Delete</a></td>
+                                <td>{{ code.who_register.username }}</td>
+                                <td>
+                                    {% if code.usability %}
+                                        <a href="{% url 'invitation_code_invalid' code.id %}">Delete</a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
