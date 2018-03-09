@@ -85,6 +85,9 @@ class InvitationCode(models.Model):
     usability = models.BooleanField(default=True)
     who_register = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['usability']
+
     def __str__(self):
         return self.invitation_code
 
