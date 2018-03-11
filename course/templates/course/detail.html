@@ -300,7 +300,7 @@
                 <div class="modal-body">
                     {% csrf_token %}
                     <label>Notice: Please keep <b>objective</b> when you comment on the course. Comments <b>may be
-                        deleted</b> if there is an insult to the teacher.</label>
+                        deleted</b> if there is an insult to the teacher. (Comment function will remove in the future version)</label>
                     <input type="hidden" value="{{ user_comment.id }}" name="comment_id">
                     <div class="form-group">
                         <textarea class="form-control" rows="5" placeholder="Comments"
