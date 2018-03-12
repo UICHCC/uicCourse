@@ -137,7 +137,7 @@
                     <h4 class="card-text text-center">Overall Score</h4>
                 </div>
                 <div class="card-body">
-                    <p class="card-text text-center text-dark" style="font-size: 5rem">10/<span
+                    <p class="card-text text-center text-dark" style="font-size: 5rem">{{ course_vote_status.score|floatformat:1 }}/<span
                             class="h2 text-secondary">10</span></p>
                 </div>
             </div>
@@ -147,11 +147,42 @@
                 </div>
                 <div class="card-body mx-auto">
                     <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
-                        <button class="btn btn-outline-success" id="upvote_btn">
+                        {% if user_vote.vote_status == 0 %}
+                            <button class="btn btn-outline-success" id="upvote_btn">
                             <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                            {{ coursedata.up_vote }}
-                        </button>
-                        <button class="btn btn-outline-danger" id="downvote_btn"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+                                {{course_vote_status.upvote}}
+                            </button>
+                            <button class="btn btn-outline-danger" id="downvote_btn">
+                                <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                {% if user.groups.all.0.name == "course_master" %}
+                                    {{course_vote_status.downvote}}
+                                {% endif %}
+                            </button>
+                        {% else %}
+                            {% if user_vote.vote_status == 1 %}
+                                <button class="btn btn-outline-success" id="upvote_btn">
+                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                    {{course_vote_status.upvote}}
+                                </button>
+                                <button class="btn btn-outline-danger" id="downvote_btn">
+                                <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                                {% if user.groups.all.0.name == "course_master" %}
+                                    {{course_vote_status.downvote}}
+                                {% endif %}
+                            </button>
+                            {% else %}
+                                <button class="btn btn-outline-success" id="upvote_btn">
+                                <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                {{course_vote_status.upvote}}
+                                </button>
+                                <button class="btn btn-outline-danger" id="downvote_btn">
+                                <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                                {% if user.groups.all.0.name == "course_master" %}
+                                    {{course_vote_status.downvote}}
+                                {% endif %}
+                            </button>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             </div>

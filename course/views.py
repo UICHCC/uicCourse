@@ -56,17 +56,33 @@ def course_detail(request, course_id):
         course_solo = models.Course.objects.get(pk=course_id)
         course_comment = models.Comments.objects.filter(course=course_id)
         is_commented = True
+        is_voted = True
         try:
             user_comment = models.Comments.objects.get(course=course_solo, sender=request.user)
         except ObjectDoesNotExist:
             user_comment = models.Comments.objects.filter(course=course_solo, sender=request.user)
             is_commented = False
+        try:
+            user_vote = models.QuickVotes.objects.get(course=course_solo, voter=request.user)
+        except ObjectDoesNotExist:
+            user_vote = models.QuickVotes.objects.filter(course=course_solo, voter=request.user)
+            is_voted = False
+        valid_upvote = models.QuickVotes.objects.filter(vote_status=True, is_invalid_vote=0).count()
+        valid_downvote = models.QuickVotes.objects.filter(vote_status=False, is_invalid_vote=0).count()
+        vote_status = {
+            'upvote': valid_upvote,  # True = up vote, False = down vote
+            'downvote': valid_downvote,
+            'score': 2+8*(valid_upvote/(valid_upvote+valid_downvote))
+        }
         course_solo.view_times += 1
         course_solo.save()
         return render(request, 'course/detail.html', {'coursedata': course_solo,
                                                       'coursecomments': course_comment,
                                                       'is_commented': is_commented,
                                                       'user_comment': user_comment,
+                                                      'is_voted': is_voted,
+                                                      'user_vote': user_vote,
+                                                      'course_vote_status': vote_status,
                                                       })
 
 
@@ -377,23 +393,29 @@ def vote_course(request, course_id):
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
-        data = {
-            'is_success': False
-        }
-        aimcourse = models.Course.objects.get(pk=course_id)
-        action = request.GET.get('vote_action')
-        if action == 'upvote':
-            aimcourse.up_vote += 1
-            data = {
-                'is_success': True
-            }
-        elif action == 'downvote':
-            aimcourse.down_vote += 1
-            data = {
-                'is_success': True
-            }
-        aimcourse.save()
-    return JsonResponse(data)
+        pass
+    #     try:
+    #         user_quickvote = models.QuickVotes.objects.get(course=course_id, voter=request.user)
+    #     except ObjectDoesNotExist:
+    #         user_quickvote = models.QuickVotes.objects.filter(course=course_id, voter=request.user)
+    #         data = {
+    #             'is_success': False,
+    #             'is_change': False
+    #         }
+    #     aimcourse = models.Course.objects.get(pk=course_id)
+    #     action = request.GET.get('vote_action')
+    #     if action == 'upvote':
+    #         aimcourse.up_vote += 1
+    #         data = {
+    #             'is_success': True
+    #         }
+    #     elif action == 'downvote':
+    #         aimcourse.down_vote += 1
+    #         data = {
+    #             'is_success': True
+    #         }
+    #     aimcourse.save()
+    # return JsonResponse(data)
 
 
 def view_comment(request):
