@@ -402,30 +402,39 @@ def vote_course(request, course_id):
         return redirect('/')
     else:
         action = request.GET.get('vote_action')
+        current_course = models.Course.objects.get(pk=course_id)
         try:
-            user_quickvote = models.QuickVotes.objects.get(course=course_id, voter=request.user)
+            user_quickvote = models.QuickVotes.objects.get(course=current_course, voter=request.user.id)
         except ObjectDoesNotExist:
             if action == 'upvote':
                 models.QuickVotes.objects.create(
-                    course=course_id,
+                    course=current_course,
                     voter=request.user,
                     vote_status=1,
                 )
             elif action == 'downvote':
                 models.QuickVotes.objects.create(
-                    course=course_id,
+                    course=current_course,
                     voter=request.user,
                     vote_status=0,
                 )
+            data = {
+                'is_success': True,
+                'new_upvote': models.QuickVotes.objects.filter(course=course_id, vote_status=True,
+                                                               is_invalid_vote=0).count(),
+            }
+            return JsonResponse(data)
         if action == 'upvote':
             user_quickvote.vote_status = 1
         elif action == 'downvote':
             user_quickvote.vote_status = 0
         user_quickvote.save()
-
-
-
-    return JsonResponse()
+        data = {
+            'is_success': True,
+            'new_upvote': models.QuickVotes.objects.filter(course=course_id, vote_status=False,
+                                                           is_invalid_vote=0).count(),
+        }
+    return JsonResponse(data)
 
     #     try:
     #         user_quickvote = models.QuickVotes.objects.get(course=course_id, voter=request.user)
