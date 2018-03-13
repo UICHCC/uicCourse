@@ -401,7 +401,32 @@ def vote_course(request, course_id):
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
-        pass
+        action = request.GET.get('vote_action')
+        try:
+            user_quickvote = models.QuickVotes.objects.get(course=course_id, voter=request.user)
+        except ObjectDoesNotExist:
+            if action == 'upvote':
+                models.QuickVotes.objects.create(
+                    course=course_id,
+                    voter=request.user,
+                    vote_status=1,
+                )
+            elif action == 'downvote':
+                models.QuickVotes.objects.create(
+                    course=course_id,
+                    voter=request.user,
+                    vote_status=0,
+                )
+        if action == 'upvote':
+            user_quickvote.vote_status = 1
+        elif action == 'downvote':
+            user_quickvote.vote_status = 0
+        user_quickvote.save()
+
+
+
+    return JsonResponse()
+
     #     try:
     #         user_quickvote = models.QuickVotes.objects.get(course=course_id, voter=request.user)
     #     except ObjectDoesNotExist:
