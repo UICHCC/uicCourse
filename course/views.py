@@ -431,8 +431,9 @@ def vote_course(request, course_id):
         user_quickvote.save()
         data = {
             'is_success': True,
-            'new_upvote': models.QuickVotes.objects.filter(course=course_id, vote_status=False,
-                                                           is_invalid_vote=0).count(),
+            'new_upvote': int(models.QuickVotes.objects.filter(course=course_id, vote_status=True,
+                                                           is_invalid_vote=0).count()),
+            'current_vote': user_quickvote.vote_status,
         }
     return JsonResponse(data)
 

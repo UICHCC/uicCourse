@@ -154,9 +154,6 @@
                             </button>
                             <button class="btn btn-outline-danger" id="downvote_btn">
                                 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                                {% if user.groups.all.0.name == "course_master" %}
-                                    {{course_vote_status.downvote}}
-                                {% endif %}
                             </button>
                         {% else %}
                             {% if user_vote.vote_status == 1 %}
@@ -166,9 +163,6 @@
                                 </button>
                                 <button class="btn btn-outline-danger" id="downvote_btn">
                                 <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-                                {% if user.groups.all.0.name == "course_master" %}
-                                    {{course_vote_status.downvote}}
-                                {% endif %}
                             </button>
                             {% else %}
                                 <button class="btn btn-outline-success" id="upvote_btn">
@@ -177,9 +171,6 @@
                                 </button>
                                 <button class="btn btn-outline-danger" id="downvote_btn">
                                 <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-                                {% if user.groups.all.0.name == "course_master" %}
-                                    {{course_vote_status.downvote}}
-                                {% endif %}
                             </button>
                             {% endif %}
                         {% endif %}
@@ -383,11 +374,13 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.is_success){
-                        $("#upvote_btn").html("<i class=\"fa fa-thumbs-up\" aria-hidden=\"true\"></i>\n" + (parseInt({{ coursedata.up_vote }})+1));
+                        console.log(data.new_upvote)
+                        $("#upvote_btn").html("<i class=\"fa fa-thumbs-up\" aria-hidden=\"true\"></i>\n" + (parseInt(data.new_upvote)));
+                        $("#downvote_btn").html("<i class=\"fa fa-thumbs-o-down\" aria-hidden=\"true\"></i>\n");
                         voted = 1;
                         swal(
                           'Voted!',
-                          'You have successfully given this class an Up vote.',
+                          'You have successfully given this class an up vote.',
                           'success'
                         )
                     }
@@ -405,11 +398,13 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.is_success){
+                        console.log(data.new_upvote)
+                        $("#upvote_btn").html("<i class=\"fa fa-thumbs-o-up\" aria-hidden=\"true\"></i>\n" + (parseInt(data.new_upvote)));
                         $("#downvote_btn").html("<i class=\"fa fa-thumbs-down\" aria-hidden=\"true\"></i>\n");
                         voted = 1;
                         swal(
                           'Voted!',
-                          'You have successfully given this class an Down vote.',
+                          'You have successfully given this class a down vote.',
                           'success'
                         )
                     }
