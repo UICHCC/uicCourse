@@ -67,12 +67,20 @@ def course_detail(request, course_id):
         except ObjectDoesNotExist:
             user_vote = models.QuickVotes.objects.filter(course=course_solo, voter=request.user)
             is_voted = False
-        valid_upvote = models.QuickVotes.objects.filter(vote_status=True, is_invalid_vote=0).count()
-        valid_downvote = models.QuickVotes.objects.filter(vote_status=False, is_invalid_vote=0).count()
+        valid_upvote = models.QuickVotes.objects.filter(course=course_solo, vote_status=True, is_invalid_vote=0).count()
+        valid_downvote = models.QuickVotes.objects.filter(course=course_solo, vote_status=False, is_invalid_vote=0).count()
+        if valid_upvote + valid_downvote == 0:
+            course_score = 5
+        elif valid_downvote == 0:
+            course_score = 10
+        elif valid_upvote == 0:
+            course_score = 2
+        else:
+            course_score = 2 + 8 * (valid_upvote / (valid_upvote + valid_downvote))
         vote_status = {
             'upvote': valid_upvote,  # True = up vote, False = down vote
             'downvote': valid_downvote,
-            'score': 2+8*(valid_upvote/(valid_upvote+valid_downvote))
+            'score': course_score,
         }
         course_solo.view_times += 1
         course_solo.save()
