@@ -137,7 +137,7 @@
                     <h4 class="card-text text-center">Overall Score</h4>
                 </div>
                 <div class="card-body">
-                    <p class="card-text text-center text-dark" style="font-size: 5rem">{{ course_vote_status.score|floatformat:1 }}/<span
+                    <p class="card-text text-center text-dark" style="font-size: 5rem"><span id="current_score">{{ course_vote_status.score|floatformat:1 }}</span>/<span
                             class="h2 text-secondary">10</span></p>
                 </div>
             </div>
@@ -378,6 +378,7 @@
                         $("#upvote_btn").html("<i class=\"fa fa-thumbs-up\" aria-hidden=\"true\"></i>\n" + (parseInt(data.new_upvote)));
                         $("#downvote_btn").html("<i class=\"fa fa-thumbs-o-down\" aria-hidden=\"true\"></i>\n");
                         voted = 1;
+                        $("#current_score").html(data.current_score.toFixed(1));
                         swal(
                           'Voted!',
                           'You have successfully given this class an up vote.',
@@ -402,6 +403,7 @@
                         $("#upvote_btn").html("<i class=\"fa fa-thumbs-o-up\" aria-hidden=\"true\"></i>\n" + (parseInt(data.new_upvote)));
                         $("#downvote_btn").html("<i class=\"fa fa-thumbs-down\" aria-hidden=\"true\"></i>\n");
                         voted = 1;
+                        $("#current_score").html(data.current_score.toFixed(1));
                         swal(
                           'Voted!',
                           'You have successfully given this class a down vote.',

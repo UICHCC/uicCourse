@@ -429,11 +429,22 @@ def vote_course(request, course_id):
         elif action == 'downvote':
             user_quickvote.vote_status = 0
         user_quickvote.save()
+        valid_upvote = models.QuickVotes.objects.filter(course=course_id, vote_status=True, is_invalid_vote=0).count()
+        valid_downvote = models.QuickVotes.objects.filter(course=course_id, vote_status=False,
+                                                          is_invalid_vote=0).count()
+        if valid_upvote + valid_downvote == 0:
+            course_score = 5
+        elif valid_downvote == 0:
+            course_score = 10
+        elif valid_upvote == 0:
+            course_score = 2
+        else:
+            course_score = 2 + 8 * (valid_upvote / (valid_upvote + valid_downvote))
         data = {
             'is_success': True,
             'new_upvote': int(models.QuickVotes.objects.filter(course=course_id, vote_status=True,
                                                            is_invalid_vote=0).count()),
-            'current_vote': user_quickvote.vote_status,
+            'current_score': course_score,
         }
     return JsonResponse(data)
 
