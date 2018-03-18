@@ -483,7 +483,7 @@ def view_your_comment(request, user_id):
 
 
 def dashboard_interface(request):
-    if not request.user.is_authenticated:
+    if not (request.user.groups.filter(name='course_master').exists()):
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
     else:
