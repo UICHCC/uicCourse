@@ -186,6 +186,57 @@
             {% endif %}
         </small>
     </div>
+    <br>
+    <div class="card box-shadow">
+        <div class="card-header text-white bg-dark">Tag</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4 class="text-md-center">Rigorousness</h4>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="rigorousnessRadio1" name="rigorousnessRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="rigorousnessRadio1">The teacher is very strict</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="rigorousnessRadio2" name="rigorousnessRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="rigorousnessRadio2">The teacher is not strict</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="text-md-center">Homework</h4>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="homeworkRadio1" name="homeworkRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="homeworkRadio1">Too many homework</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="homeworkRadio2" name="homeworkRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="homeworkRadio2">default homework</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="text-md-center">Killer?</h4>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="killerRadio1" name="killerRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="killerRadio1">Absolutely killer</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="killerRadio2" name="killerRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="killerRadio2">Not a killer</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col text-center">
+                    <button type="button" class="btn btn-primary" onclick="swal(
+                          'Not working',
+                          'This function is still under construction',
+                          'warning'
+                        );">Submit your tag set</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <br>
     <div class="card box-shadow">
