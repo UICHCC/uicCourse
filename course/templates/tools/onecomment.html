@@ -113,7 +113,7 @@
     <div class="d-flex align-items-center p-3 my-3 text-white-50 lightyellow-yellow rounded box-shadow">
         <div class="lh-100" style="width: 100%;">
             <div class="d-flex justify-content-between align-items-center">
-                <h3 class="mb-0 text-dark lh-100">{{ aim_user.get_full_name }}'s Comment(s)
+                <h3 class="mb-0 text-dark lh-100">{{ aim_user.get_username }}'s Comment(s)
                 </h3>
             </div>
         </div>
@@ -143,6 +143,7 @@
             <h3 class="text-center">You do not have access to this user's comments</h3>
         {% endif %}
         {% else %}
+            {% if comments %}
             {% for comment in comments %}
                 <div class="media text-muted pt-3">
                 {% if comment.is_banned %}
@@ -156,6 +157,9 @@
                 {% endif %}
                 </div>
             {% endfor %}
+                {% else %}
+                <h3 class="text-center">No comment here.</h3>
+                {% endif %}
     {% endif %}
     </div>
 </main>
