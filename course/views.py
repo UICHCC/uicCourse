@@ -500,3 +500,21 @@ def dashboard_interface(request):
     else:
         courses = models.Course.objects.all()
         return render(request, 'tools/dashboard.html', {'courses': courses})
+
+
+def dashboard_tags(request):
+    if not (request.user.groups.filter(name='course_master').exists()):
+        messages.add_message(request, messages.ERROR, 'No permission.')
+        return redirect('/')
+    else:
+        course_tags = models.Tags.objects.all()
+        return render(request, 'tools/tags.html', {'course_tags': course_tags})
+
+
+def dashboard_users(request):
+    if not (request.user.groups.filter(name='course_master').exists()):
+        messages.add_message(request, messages.ERROR, 'No permission.')
+        return redirect('/')
+    else:
+        user_set = models.User.objects.all()
+        return render(request, 'tools/users.html', {'system_users': user_set})

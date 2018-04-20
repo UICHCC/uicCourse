@@ -31,4 +31,6 @@ urlpatterns = [
     path('validate/invitationcode/', views.validate_invitationcode, name='validate_invitationcode'),
     path('vote/course/<int:course_id>', views.vote_course, name='vote_course'),
     path('dashboard/', views.dashboard_interface, name='dashboard_interface'),
+    path('dashboard/tags', views.dashboard_tags, name='dashboard_tags'),
+    path('dashboard/users', views.dashboard_users, name='dashboard_users'),
 ]
