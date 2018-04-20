@@ -127,6 +127,18 @@ class Tags(models.Model):
     tag_name_cn = models.CharField(max_length=128, null=True)
     tag_descriptions = models.TextField(null=True, default='To be added')
     tag_weighted = models.FloatField(default=0.0)
+    tag_opposite = models.ForeignKey('self', blank=True, null=True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.tag_name_en)
+
+
+class Voting(models.Model):
+    voter = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    tag_set = models.ManyToManyField(Tags)
+    vote_date = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.course.course_name_en + " vote by " + self.voter.username)
