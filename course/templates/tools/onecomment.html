@@ -120,10 +120,10 @@
     </div>
     <div class="my-3 p-3 bg-white rounded box-shadow">
         {% if aim_user.is_staff or aim_user.is_superuser or aim_user.groups.all.0.name == "course_master" %}
-        {% if user.is_staff or user.is_superuser or user.groups.all.0.name == "course_master" %}
-            {% for comment in comments %}
-                <div class="media text-muted pt-3">
-                    <p class="media-body border-bottom border-gray">
+            {% if user.is_staff or user.is_superuser or user.groups.all.0.name == "course_master" %}
+                {% for comment in comments %}
+                    <div class="media text-muted pt-3">
+                        <p class="media-body border-bottom border-gray">
                 <span>Comment ID: {{ comment.id }}
                     {% if comment.is_recommend %}
                         <span class="badge badge-info">This comment has been recommended by the system</span>
@@ -132,35 +132,37 @@
                         <span class="badge badge-danger">This comment has been collapsed by the system and will not be displayed under the course page.</span>
                     {% endif %}
                 </span><br>
-                        <span>Content: {{ comment.content }}</span><br>
-                        <span>{{ comment.pub_date }} @ {{ comment.course }}</span><br>
-                    <p><a href="{% url 'course_detail' comment.course.id %}" class="btn btn-primary">View details »</a>
-                    </p>
-                    </p>
-                </div>
-            {% endfor %}
-        {% else %}
-            <h3 class="text-center">You do not have access to this user's comments</h3>
-        {% endif %}
+                            <span>Content: {{ comment.content }}</span><br>
+                            <span>{{ comment.pub_date }} @ {{ comment.course }}</span><br>
+                        <p><a href="{% url 'course_detail' comment.course.id %}" class="btn btn-primary">View details
+                            »</a>
+                        </p>
+                        </p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h3 class="text-center">You do not have access to this user's comments</h3>
+            {% endif %}
         {% else %}
             {% if comments %}
-            {% for comment in comments %}
-                <div class="media text-muted pt-3">
-                {% if comment.is_banned %}
-                    {% else %}
-                    <p class="media-body border-bottom border-gray">
-                        <span>Comment ID: {{ comment.id }}</span><br>
-                        <span>Content: {{ comment.content }}</span><br>
-                        <span>{{ comment.pub_date }} @ {{ comment.course }}</span><br>
-                        <p><a href="{% url 'course_detail' comment.course.id %}" class="btn btn-primary">View details »</a></p>
-                    </p>
-                {% endif %}
-                </div>
-            {% endfor %}
-                {% else %}
+                {% for comment in comments %}
+                    <div class="media text-muted pt-3">
+                        {% if comment.is_banned %}
+                        {% else %}
+                            <p class="media-body border-bottom border-gray">
+                                <span>Comment ID: {{ comment.id }}</span><br>
+                                <span>Content: {{ comment.content }}</span><br>
+                                <span>{{ comment.pub_date }} @ {{ comment.course }}</span><br>
+                            <p><a href="{% url 'course_detail' comment.course.id %}" class="btn btn-primary">View
+                                details »</a></p>
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
                 <h3 class="text-center">No comment here.</h3>
-                {% endif %}
-    {% endif %}
+            {% endif %}
+        {% endif %}
     </div>
 </main>
 

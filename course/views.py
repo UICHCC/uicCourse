@@ -68,7 +68,8 @@ def course_detail(request, course_id):
             user_vote = models.QuickVotes.objects.filter(course=course_solo, voter=request.user)
             is_voted = False
         valid_upvote = models.QuickVotes.objects.filter(course=course_solo, vote_status=True, is_invalid_vote=0).count()
-        valid_downvote = models.QuickVotes.objects.filter(course=course_solo, vote_status=False, is_invalid_vote=0).count()
+        valid_downvote = models.QuickVotes.objects.filter(course=course_solo, vote_status=False,
+                                                          is_invalid_vote=0).count()
         if valid_upvote + valid_downvote == 0:
             course_score = 5
         elif valid_downvote == 0:
@@ -148,7 +149,7 @@ def course_edit_submit(request):
             modify_course.course_descriptions = course_descriptions
             modify_course.save()
             messages.add_message(request, messages.SUCCESS, 'Modify the course information successfully.')
-            return redirect('/course/'+str(modify_course.id)+'/')
+            return redirect('/course/' + str(modify_course.id) + '/')
 
 
 def course_comments_submit(request):
@@ -326,7 +327,7 @@ def account_password_submit(request):
             return redirect('/account/password/')
 
 
-def user_info_view(request,user_id):
+def user_info_view(request, user_id):
     if not request.user.is_authenticated:
         messages.add_message(request, messages.ERROR, 'No permission.')
         return redirect('/')
@@ -356,7 +357,8 @@ def comment_operation(request, comment_id):
             messages.add_message(request, messages.INFO, str('Comment' + str(comment_id) + ' Recommend Successfully.'))
         elif operation == 'undorecommend':
             comment_object.is_recommend = False
-            messages.add_message(request, messages.INFO, str('Comment' + str(comment_id) + ' Undo Recommend Successfully.'))
+            messages.add_message(request, messages.INFO,
+                                 str('Comment' + str(comment_id) + ' Undo Recommend Successfully.'))
         comment_object.save()
     return redirect('/course/' + str(comment_object.course.id) + '/')
 
@@ -443,7 +445,7 @@ def vote_course(request, course_id):
         data = {
             'is_success': True,
             'new_upvote': int(models.QuickVotes.objects.filter(course=course_id, vote_status=True,
-                                                           is_invalid_vote=0).count()),
+                                                               is_invalid_vote=0).count()),
             'current_score': course_score,
         }
     return JsonResponse(data)
@@ -477,7 +479,7 @@ def view_comment(request):
         messages.add_message(request, messages.ERROR, 'Login required.')
         return redirect('/')
     else:
-        comment = models.Comments.objects.filter(sender = request.user)
+        comment = models.Comments.objects.filter(sender=request.user)
         return render(request, 'tools/allcomment.html', {'comments': comment})
 
 
@@ -488,7 +490,7 @@ def view_your_comment(request, user_id):
     else:
         if str(user_id) == str(request.user.id):
             return redirect('/tools/comments/')
-        comment = models.Comments.objects.filter(sender = user_id)
+        comment = models.Comments.objects.filter(sender=user_id)
         aim_user = User.objects.get(pk=user_id)
         return render(request, 'tools/onecomment.html', {'comments': comment, 'aim_user': aim_user})
 

@@ -90,14 +90,14 @@
         {% endif %}
         {% for course in courses %}
             <a href="{% url 'course_detail' course.id %}">
-            <div class="card border-light box-shadow text-dark">
-            <div class="card-body">
-                <h5 class="card-title">{{ course.course_name_cn }}</h5>
-                <h4 class="card-title">{{ course.course_name_en }}</h4>
-                <p class="card-text">{{ course.course_code }}</p>
-            </div>
-        </div>
-        </a>
+                <div class="card border-light box-shadow text-dark">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.course_name_cn }}</h5>
+                        <h4 class="card-title">{{ course.course_name_en }}</h4>
+                        <p class="card-text">{{ course.course_code }}</p>
+                    </div>
+                </div>
+            </a>
         {% endfor %}
     </div>
 </main>

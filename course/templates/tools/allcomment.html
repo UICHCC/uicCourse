@@ -19,7 +19,7 @@
             color: rgba(255, 255, 255, .5);
         }
 
-        .lightyellow-yellow{
+        .lightyellow-yellow {
             background: #FEA116;
             background: -webkit-gradient(linear, left top, left bottom, from(#F7DC58), to(#FEA116));
             background: -webkit-linear-gradient(#F7DC58, #FEA116);
@@ -120,21 +120,21 @@
     </div>
     <div class="my-3 p-3 bg-white rounded box-shadow">
         {% for comment in comments %}
-        <div class="media text-muted pt-3">
-            <p class="media-body border-bottom border-gray">
+            <div class="media text-muted pt-3">
+                <p class="media-body border-bottom border-gray">
                 <span>Comment ID: {{ comment.id }}
                     {% if comment.is_recommend %}
                         <span class="badge badge-info">This comment has been recommended by the system</span>
                     {% endif %}
-                {% if comment.is_banned %}
-                    <span class="badge badge-danger">This comment has been collapsed by the system and will not be displayed under the course page.</span>
+                    {% if comment.is_banned %}
+                        <span class="badge badge-danger">This comment has been collapsed by the system and will not be displayed under the course page.</span>
                     {% endif %}
                 </span><br>
-                <span>Content: {{ comment.content }}</span><br>
-                <span>{{ comment.pub_date }} @ {{ comment.course }}</span><br>
+                    <span>Content: {{ comment.content }}</span><br>
+                    <span>{{ comment.pub_date }} @ {{ comment.course }}</span><br>
                 <p><a href="{% url 'course_detail' comment.course.id %}" class="btn btn-primary">View details »</a></p>
-            </p>
-        </div>
+                </p>
+            </div>
         {% endfor %}
     </div>
 </main>

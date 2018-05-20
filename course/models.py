@@ -74,7 +74,7 @@ class Course(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
     view_times = models.IntegerField(default=0)
-    is_display_score= models.BooleanField(default=True)
+    is_display_score = models.BooleanField(default=True)
 
     def __str__(self):
         return self.course_name_en
