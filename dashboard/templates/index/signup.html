@@ -68,7 +68,7 @@
     }
 
     function isPasswordValid(password) {
-        var regex = /^(?!([a-zA-Z]+|\d+)$)[a-zA-Z\d]{8,20}$/;
+        var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
         return regex.test(password)
     }
 
@@ -160,7 +160,7 @@
         } else {
             $("#id_password").removeClass('is-valid');
             $("#id_password").addClass('is-invalid');
-            $("#id_password_label").html('<span class="text-danger">Wrong password format. The password length is 8-20, you need to include both numbers and letters.</span>');
+            $("#id_password_label").html('<span class="text-danger">Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character</span>');
         }
     });
     $("#id_signup_form").change(function () {
