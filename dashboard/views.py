@@ -38,3 +38,11 @@ def logout_receiver(request):
 
 def signup_page(request):
     return render(request, 'index/signup.html')
+
+
+def terms_page(request):
+    return render(request, 'index/terms.html')
+
+
+def privacy_page(request):
+    return render(request, 'index/privacy.html')

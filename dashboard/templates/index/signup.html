@@ -34,33 +34,144 @@
 {% include "index/header.html" %}
 {% include "index/messager.html" %}
 <main role="main" class="container mb-5">
-    <h1 class="mt-lg-5 mt-md-3">uicCourse</h1>
-    <p class="lead">For a more transparent future.</p>
-    <p>All information are collected from the Internet (AR's Website), for reference only.</p>
-    <div class="card-deck mt-md-5">
-        <div class="card">
-            <img class="card-img-top" src="https://source.unsplash.com/random/601x450" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Course Information</h5>
-                <p class="card-text">Well-organized data and beautiful display</p>
-            </div>
+    <h1 class="mt-lg-5 mt-md-3">Sign up uicCourse</h1>
+    <form action="#" method="post" id="id_signup_form">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="email" class="form-control" placeholder="Email" name="email" id="id_email">
+            <label id="id_email_label"></label>
         </div>
-        <div class="card">
-            <img class="card-img-top" src="https://source.unsplash.com/random/602x450" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Rate Course</h5>
-                <p class="card-text">If you have taken this course, you can rate this course and provide references for other students.</p>
-            </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Username" name="username"
+                   id="id_username">
+            <label id="id_username_label"></label>
         </div>
-        <div class="card">
-            <img class="card-img-top" src="https://source.unsplash.com/random/603x450" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">View Report</h5>
-                <p class="card-text">We will analyze and provide reports based on the data we have obtained.</p>
-            </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Password" name="password"
+                   id="id_password">
+            <label id="id_password_label"></label>
         </div>
-    </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Invitation code" name="invitationcode"
+                   id="id_invitationcode">
+            <label id="id_invitationcode_label"></label>
+        </div>
+        <button type="submit" class="btn btn-success" id="submit_btn" disabled="disabled">Sign up
+        </button>
+    </form>
 </main>
 {% include "index/footer.html" %}
+<script>
+    function isEmail(email) {
+        var regex = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        return regex.test(email);
+    }
+
+    function isPasswordValid(password) {
+        var regex = /^(?!([a-zA-Z]+|\d+)$)[a-zA-Z\d]{8,20}$/;
+        return regex.test(password)
+    }
+
+    $("#id_email").change(function () {
+        var email = $(this).val();
+
+        $.ajax({
+            url: '',
+            data: {
+                'email': email
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.is_taken) {
+                    $("#id_email").removeClass('is-valid');
+                    $("#id_email").addClass('is-invalid');
+                    $("#id_email_label").html('<span class="text-danger">A user with this email already exists.</span>');
+                } else {
+                    if (isEmail($("#id_email").val())) {
+                        $("#id_email").removeClass('is-invalid');
+                        $("#id_email").addClass('is-valid');
+                        $("#id_email_label").html('<span class="text-success">This email is ready to go.</span>');
+                    } else {
+                        $("#id_email").removeClass('is-valid');
+                        $("#id_email").addClass('is-invalid');
+                        $("#id_email_label").html('<span class="text-danger">Wrong email format.</span>');
+                    }
+                }
+            }
+        });
+    });
+
+    $("#id_username").change(function () {
+        var username = $(this).val();
+
+        $.ajax({
+            url: '',
+            data: {
+                'username': username
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.is_taken) {
+                    $("#id_username").removeClass('is-valid');
+                    $("#id_username").addClass('is-invalid');
+                    $("#id_username_label").html('<span class="text-danger">This username already exists.</span>');
+                } else {
+                    if ($("#id_username").val() != '') {
+                        $("#id_username").removeClass('is-invalid');
+                        $("#id_username").addClass('is-valid');
+                        $("#id_username_label").html('<span class="text-success">This username is ready to go.</span>');
+                    } else {
+                        $("#id_username").removeClass('is-valid');
+                        $("#id_username").addClass('is-invalid');
+                        $("#id_username_label").html('<span class="text-danger">Username cannot be empty.</span>');
+                    }
+                }
+            }
+        });
+    });
+
+    $("#id_invitationcode").change(function () {
+        var invitationcode = $(this).val();
+
+        $.ajax({
+            url: '',
+            data: {
+                'invitationcode': invitationcode
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.is_valid) {
+                    $("#id_invitationcode").removeClass('is-invalid');
+                    $("#id_invitationcode").addClass('is-valid');
+                    $("#id_invitationcode_label").html('<span class="text-success">This Invitation Code is valid.</span>');
+                } else {
+                    $("#id_invitationcode").removeClass('is-valid');
+                    $("#id_invitationcode").addClass('is-invalid');
+                    $("#id_invitationcode_label").html('<span class="text-danger">This Invitation Code is invalid.</span>');
+                }
+            }
+        });
+    });
+    $("#id_password").change(function () {
+        if (isPasswordValid($("#id_password").val())) {
+            $("#id_password").removeClass('is-invalid');
+            $("#id_password").addClass('is-valid');
+            $("#id_password_label").html('<span class="text-success">The password is in the correct format.</span>');
+        } else {
+            $("#id_password").removeClass('is-valid');
+            $("#id_password").addClass('is-invalid');
+            $("#id_password_label").html('<span class="text-danger">Wrong password format. The password length is 8-20, you need to include both numbers and letters.</span>');
+        }
+    });
+    $("#id_signup_form").change(function () {
+        setTimeout(function () {
+            if ($("#id_signup_form").html().indexOf("is-invalid") > 0) {
+                $("#submit_btn").attr("disabled", "disabled")
+            } else {
+                $("#submit_btn").removeAttr("disabled")
+            }
+        }, 100);
+    })
+</script>
 </body>
 </html>
