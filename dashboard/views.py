@@ -31,6 +31,7 @@ def login_page(request):
             return redirect('/login/')
     else:
         if not request.user.is_authenticated:
+            messages.add_message(request, messages.INFO, 'Login is require to continue.')
             return render(request, 'index/login.html')
         else:
             messages.add_message(request, messages.ERROR, 'No Double Login Is Allowed.')
