@@ -32,7 +32,7 @@ def login_page(request):
     else:
         if not request.user.is_authenticated:
             messages.add_message(request, messages.INFO, 'Login is require to continue.')
-            return render(request, 'index/login.html')
+            return render(request, 'auth/login.html')
         else:
             messages.add_message(request, messages.ERROR, 'No Double Login Is Allowed.')
             return redirect('/')
@@ -58,7 +58,7 @@ def signup_page(request):
                 return redirect('/course/')
         else:
             form = SignUpForm()
-        return render(request, 'index/signup.html', {'form': form})
+        return render(request, 'auth/signup.html', {'form': form})
     else:
         messages.add_message(request, messages.ERROR, 'Not Allow.')
         return redirect('/')
@@ -76,7 +76,7 @@ def change_password_page(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'index/change_password.html', {'form': form})
+    return render(request, 'auth/change_password.html', {'form': form})
 
 
 def terms_page(request):
