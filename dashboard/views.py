@@ -6,6 +6,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 # from django.contrib.messages import get_messages
 from django.http import JsonResponse
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from .forms import SignUpForm
 
 # Create your views here.
 
@@ -42,10 +45,37 @@ def logout_receiver(request):
 
 def signup_page(request):
     if not request.user.is_authenticated:
-        return render(request, 'index/signup.html')
+        if request.method == 'POST':
+            form = SignUpForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get('username')
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=raw_password)
+                login(request, user)
+                messages.add_message(request, messages.SUCCESS, 'Sign up successfully.')
+                return redirect('/course/')
+        else:
+            form = SignUpForm()
+        return render(request, 'index/signup.html', {'form': form})
     else:
         messages.add_message(request, messages.ERROR, 'Not Allow.')
         return redirect('/')
+
+
+def change_password_page(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('/course/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'index/change_password.html', {'form': form})
 
 
 def terms_page(request):

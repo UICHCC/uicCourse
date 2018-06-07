@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'course',
     'dashboard',
     'report',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
