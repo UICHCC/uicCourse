@@ -12,7 +12,7 @@ class Division(models.Model):
         verbose_name_plural = _('divisions')
 
     def __str__(self):
-        return self.division_en_abbr
+        return "%s (%s)" % (self.division_en, self.division_en_abbr)
 
 
 class Major(models.Model):
@@ -25,12 +25,12 @@ class Major(models.Model):
         verbose_name_plural = _('majors')
 
     def __str__(self):
-        return self.major_en_abbr
+        return "%s (%s)" % (self.major_en, self.major_en_abbr)
 
 
 class ValidDivisionMajorPair(models.Model):
-    major = models.ForeignKey(Major, on_delete=models.CASCADE)
+    major = models.ForeignKey(Major, unique=True, on_delete=models.CASCADE)
     division = models.ForeignKey(Division, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "%s %s" % (self.major.major_en, self.division.division_en)
+        return "%s @ %s" % (self.major.major_en, self.division.division_en)
