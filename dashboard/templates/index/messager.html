@@ -1,5 +1,4 @@
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="d-flex p-2">
+<div class="container p-2">
     {% if messages %}
         {% for message in messages %}
             {% if message.tags == 'success' %}
@@ -16,11 +15,7 @@
                 {% endif %}
             {% endif %}
         {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
         </div>
         {% endfor %}
     {% endif %}
-    </div>
 </div>
