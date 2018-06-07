@@ -22,12 +22,16 @@ def login_page(request):
         if user is not None:
             login(request, user)
             messages.add_message(request, messages.SUCCESS, 'Login successfully.')
-            return redirect('/')
+            return redirect('/course/')
         else:
             messages.add_message(request, messages.ERROR, 'Wrong username or password.')
-            return redirect('/')
+            return redirect('/login/')
     else:
-        return render(request, 'index/login.html')
+        if not request.user.is_authenticated:
+            return render(request, 'index/login.html')
+        else:
+            messages.add_message(request, messages.ERROR, 'No Double Login Is Allowed.')
+            return redirect('/')
 
 
 def logout_receiver(request):
@@ -37,7 +41,11 @@ def logout_receiver(request):
 
 
 def signup_page(request):
-    return render(request, 'index/signup.html')
+    if not request.user.is_authenticated:
+        return render(request, 'index/signup.html')
+    else:
+        messages.add_message(request, messages.ERROR, 'Not Allow.')
+        return redirect('/')
 
 
 def terms_page(request):
