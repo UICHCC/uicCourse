@@ -9,3 +9,5 @@ admin.site.register(models.Major)
 admin.site.register(models.ValidDivisionMajorPair)
 
 admin.site.register(models.CourseType)
+
+admin.site.register(models.Course)

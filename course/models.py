@@ -42,3 +42,20 @@ class CourseType(models.Model):
 
     def __str__(self):
         return self.name_abbr
+
+
+class Course(models.Model):
+    course_id = models.CharField(max_length=32, default='NULL0000')
+    course_name_en = models.CharField(max_length=128, null=True)
+    course_name_cn = models.CharField(max_length=128, null=True)
+    course_units = models.IntegerField(default=3)
+    course_description = models.TextField(null=True)
+    course_pre_request = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
+    course_type = models.ForeignKey(CourseType, default=0, on_delete=models.CASCADE)
+    course_major_take = models.ManyToManyField(ValidDivisionMajorPair)
+    is_visible = models.BooleanField(default=True)
+    is_rateable = models.BooleanField(default=True)
+    update_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "%s (%s)" % (self.course_name_en, self.course_id)
