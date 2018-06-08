@@ -29,8 +29,16 @@ class Major(models.Model):
 
 
 class ValidDivisionMajorPair(models.Model):
-    major = models.ForeignKey(Major, unique=True, on_delete=models.CASCADE)
+    major = models.OneToOneField(Major, on_delete=models.CASCADE)
     division = models.ForeignKey(Division, on_delete=models.CASCADE)
 
     def __str__(self):
         return "%s @ %s" % (self.major.major_en, self.division.division_en)
+
+
+class CourseType(models.Model):
+    name = models.CharField(max_length=128, null=True)
+    name_abbr = models.CharField(max_length=128, null=True)
+
+    def __str__(self):
+        return self.name_abbr
