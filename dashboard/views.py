@@ -3,9 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm
 
-# Create your views here.
+from course.models import ValidDivisionMajorPair, CourseType
 
 
 def welcome_page(request):
@@ -80,3 +81,20 @@ def terms_page(request):
 
 def privacy_page(request):
     return render(request, 'index/privacy.html')
+
+
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard/index.html')
+
+
+@login_required
+def major_division(request):
+    pairs = ValidDivisionMajorPair.objects.all()
+    return render(request, 'dashboard/major_division.html', {'pairs': pairs})
+
+
+@login_required
+def course_type(request):
+    pairs = CourseType.objects.all()
+    return render(request, 'dashboard/course_type.html', {'pairs': pairs})
