@@ -33,7 +33,7 @@
 {% include "course/header.html" %}
 {% include "course/messager.html" %}
 <main role="main" class="container mb-5">
-    <h1 class="mt-md-3">Create Course</h1>
+    <h1 class="mt-md-3">Create/Modify Course</h1>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}
@@ -50,7 +50,7 @@
             {% endfor %}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary mb-5">Create Course</button>
+        <button type="submit" class="btn btn-primary mb-5">Submit</button>
     </form>
 </main>
 {% include "course/footer.html" %}
