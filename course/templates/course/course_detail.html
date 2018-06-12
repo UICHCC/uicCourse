@@ -1,0 +1,115 @@
+{% load widget_tweaks %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>uicCourse | {{course_data.course_name_en}}</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <style type="text/css">
+        /* Sticky footer styles
+        -------------------------------------------------- */
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+
+        .list-group{
+            width: 100%;
+        }
+
+
+    </style>
+    {% load static %}
+</head>
+
+<body>
+{% include "course/header.html" %}
+{% include "course/messager.html" %}
+<main role="main" class="container mb-5">
+<div class="row">
+    <div class="col-md-8 border-right">
+        <h1>{{course_data.course_id | upper}}: {{ course_data.course_name_en }}</h1>
+        <p class="lead">{{ course_data.course_name_cn }}</p>
+        <p class="text-muted">Updated {{course_data.update_time}}</p>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Course Code:
+                        <label class="badge badge-primary">{{course_data.course_id | upper}}</label>
+                    </li>
+                    <li class="list-group-item">Course Category:
+                        <label class="badge badge-info">
+                            {% if course_data.course_type.name|length > 30 %}
+                                {{course_data.course_type.name_abbr}}
+                            {% else %}
+                                {{course_data.course_type.name}}
+                            {% endif %}
+                        </label>
+                    </li>
+                    <li class="list-group-item">Course Units:
+                        <label class="badge badge-warning">{{course_data.course_units}}</label>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Division:
+                    {% for division in division_involve %}
+                        <label class="badge badge-success">{{ division }}</label>
+                    {% endfor %}
+                    </li>
+                    <li class="list-group-item">Major:
+                        {% if majors %}
+                            {% for major in majors %}
+                            <label class="badge badge-danger">{{ major.major.major_en_abbr }}</label>
+                            {% endfor %}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">Pre-Request:
+
+                        {% if course_data.course_pre_request %}
+                        <a href="{% url 'course_detail' course_data.course_pre_request.id %}">
+                            <label class="badge badge-dark">{{course_data.course_pre_request}}</label>
+                        </a>
+                        {% else %}
+                            <label class="badge badge-dark">None</label>
+                        {% endif %}
+
+                    </li>
+                </ul>
+            </div>
+            <ul class="list-group list-group-flush">
+                <h5 class="px-3">Course Descriptions: </h5>
+                <li class="list-group-item">{{course_data.course_description}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-4">
+    Rating Part, Will add later
+    </div>
+</div>
+<div>
+{% if user.is_staff or user.is_superuser %}
+<nav class="py-2 border-top border-bottom">
+    <a href="{% url 'course_modify' course_data.id %}" class="btn btn-primary btn-sm my-1">Modify</a>
+    <a href="#" class="btn btn-danger btn-sm my-1 disabled">Delete(Unavailable)</a>
+</nav>
+{% endif %}
+</div>
+</main>
+{% include "course/footer.html" %}
+</body>
+</html>
