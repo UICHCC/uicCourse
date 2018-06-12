@@ -43,3 +43,16 @@ def course_modify(request, course_id):
         course = Course.objects.get(pk=course_id)
         form = CourseForm(instance=course)
     return render(request, 'course/course_create.html', {'form': form})
+
+
+@login_required
+def course_detail(request, course_id):
+    query_course = Course.objects.get(pk=course_id)
+    majors_take = query_course.course_major_take.all()
+    division_involve = []
+    for item in majors_take:
+        if item.division.division_en_abbr not in division_involve:
+            division_involve.append(item.division.division_en_abbr)
+    return render(request, 'course/course_detail.html', {'course_data': query_course,
+                                                         'majors': majors_take,
+                                                         'division_involve': division_involve})
