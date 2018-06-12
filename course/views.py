@@ -32,9 +32,9 @@ def course_create(request):
 def course_modify(request, course_id):
     if request.method == 'POST':
         changing_course = Course.objects.get(pk=course_id)
-        form = CourseForm(changing_course, request.POST)
+        form = CourseForm(data=request.POST, instance=changing_course)
         if form.is_valid():
-            form.save(commit=False)
+            form.save()
             messages.success(request, 'The Course was been successfully modified!')
             return redirect('/course/')
         else:
