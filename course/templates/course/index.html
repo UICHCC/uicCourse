@@ -32,18 +32,25 @@
 {% include "course/header.html" %}
 {% include "course/messager.html" %}
 <main role="main" class="container mb-5">
+<div class="d-flex justify-content-between align-items-center">
     <h1 class="mt-md-3">Course List</h1>
+    {% if user.is_superuser or user.is_staff %}
+    <a href="{% url 'course_create' %}" class="btn btn-primary">Create Course</a>
+    {% endif %}
+</div>
     {% if courses %}
+    <div class="card-columns">
     {% for course in courses %}
-        <div class="card-columns">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><span class="badge badge-secondary">{{course.course_id}}</span> {{course.course_name_en}}</h5>
-                    <p class="card-text">{{course.course_name_cn}}</p>
-                </div>
+    <a href="{% url 'course_detail' course.id %}">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><span class="badge badge-secondary">{{course.course_id}}</span> {{course.course_name_en}}</h5>
+                <p class="card-text">{{course.course_name_cn}}</p>
             </div>
         </div>
+    </a>
     {% endfor %}
+    </div>
     {% else %}
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
