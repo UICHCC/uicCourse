@@ -15,3 +15,13 @@ class QuickVotes(models.Model):
 
     def __str__(self):
         return "%s vote course: %s" % (self.voter.username, self.course.course_name_en)
+
+
+class Tags(models.Model):
+    tag_title = models.CharField(max_length=128, unique=True)
+    tag_description = models.TextField(null=True)
+    tag_opposite = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
+    tag_sentiment_index = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.tag_title
