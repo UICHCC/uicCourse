@@ -1,6 +1,7 @@
 from django.db import models
 from course.models import Course
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
@@ -15,6 +16,10 @@ class QuickVotes(models.Model):
 
     def __str__(self):
         return "%s vote course: %s" % (self.voter.username, self.course.course_name_en)
+
+    class Meta:
+        verbose_name = _('Quick Vote')
+        verbose_name_plural = _('Quick Votes')
 
 
 class Tags(models.Model):
