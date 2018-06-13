@@ -163,7 +163,7 @@
     $("#upvote_btn").click(function () {
         if (!voted) {
             $.ajax({
-                url: '{% url 'vote_course' course_data.id %}',
+                url: '{% url "vote_course" course_data.id %}',
                 data: {
                     'vote_action': 'upvote'
                 },
@@ -191,7 +191,7 @@
     $("#downvote_btn").click(function () {
         if (!voted) {
             $.ajax({
-                url: '{% url 'vote_course' course_data.id %}',
+                url: '{% url "vote_course" course_data.id %}',
                 data: {
                     'vote_action': 'downvote'
                 },
