@@ -48,7 +48,7 @@
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
                     <th scope="col">Opposite</th>
-                    <th scope="col">Sentiment Index</th>
+                    <th scope="col">Index</th>
                     <th scope="col">Edit</th>
                 </tr>
             </thead>
@@ -75,7 +75,7 @@
                                 {% endif %}
                             {% endif %}
                         </td>
-                        <td><a href="{% url 'tags_modify' tag.id %}" class="btn btn-primary">Edit</a></td>
+                        <td><a href="{% url 'tags_modify' tag.id %}" class="btn btn-sm btn-primary">Edit</a></td>
                     </tr>
                     {% endfor %}
                 {% else %}
