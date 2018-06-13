@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Course
 from .forms import CourseForm
+from voting.models import QuickVotes
 # Create your views here.
 
 
@@ -53,6 +55,30 @@ def course_detail(request, course_id):
     for item in majors_take:
         if item.division.division_en_abbr not in division_involve:
             division_involve.append(item.division.division_en_abbr)
+    is_voted = True
+    try:
+        user_vote = QuickVotes.objects.get(course=query_course, voter=request.user)
+    except ObjectDoesNotExist:
+        user_vote = QuickVotes.objects.filter(course=query_course, voter=request.user)
+        is_voted = False
+    valid_upvote = QuickVotes.objects.filter(course=query_course, vote_status=True, is_invalid_vote=0).count()
+    valid_downvote = QuickVotes.objects.filter(course=query_course, vote_status=False, is_invalid_vote=0).count()
+    if valid_upvote + valid_downvote == 0:
+        course_score = 5
+    elif valid_downvote == 0:
+        course_score = 10
+    elif valid_upvote == 0:
+        course_score = 2
+    else:
+        course_score = 2 + 8 * (valid_upvote / (valid_upvote + valid_downvote))
+    vote_status = {
+        'upvote': valid_upvote,  # True = up vote, False = down vote
+        'downvote': valid_downvote,
+        'score': course_score,
+    }
     return render(request, 'course/course_detail.html', {'course_data': query_course,
                                                          'majors': majors_take,
-                                                         'division_involve': division_involve})
+                                                         'division_involve': division_involve,
+                                                         'is_voted': is_voted,
+                                                         'user_vote': user_vote,
+                                                         'course_vote_status': vote_status})
