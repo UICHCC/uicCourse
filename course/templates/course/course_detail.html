@@ -184,6 +184,9 @@
                 }
             });
         }
+        else {
+            voted_alert();
+        }
     });
     $("#downvote_btn").click(function () {
         if (!voted) {
@@ -209,7 +212,18 @@
                 }
             });
         }
+        else {
+            voted_alert();
+        }
     });
+
+    function voted_alert() {
+        swal(
+            'Voted!',
+            'You have been already voted.',
+            'warning'
+        )
+    }
 </script>
 </body>
 </html>
