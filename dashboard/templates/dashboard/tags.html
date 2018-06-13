@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>uicCourse | Dashboard</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <style type="text/css">
+        /* Sticky footer styles
+        -------------------------------------------------- */
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+
+        /* Custom page CSS
+        -------------------------------------------------- */
+
+    </style>
+    {% load static %}
+</head>
+
+<body>
+{% include "index/header.html" %}
+{% include "index/messager.html" %}
+<main role="main" class="container mb-5">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="mt-md-3">Tags</h1>
+        {% if user.is_superuser or user.is_staff %}
+        <a href="{% url 'tags_create' %}" class="btn btn-primary">Create New Tags</a>
+        {% endif %}
+    </div>
+    {% include "dashboard/functions.html" %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Opposite</th>
+                    <th scope="col">Sentiment Index</th>
+                    <th scope="col">Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if tags %}
+                    {% for tag in tags %}
+                    <tr>
+                        <td>{{ tag.tag_title }}</td>
+                        <td>{{ tag.tag_description }}</td>
+                        <td>
+                        {% if tag.tag_opposite %}}
+                        <span class="badge badge-dark">{{ tag.tag_opposite }}</span>
+                        {% else %}
+                        <span class="badge badge-dark">None</span>
+                        {% endif %}</td>
+                        <td>
+                            {% if tag.tag_sentiment_index > 0 %}
+                            <span class="badge badge-success">{{ tag.tag_sentiment_index }}</span>
+                            {% else %}
+                                {% if tag.tag_sentiment_index < 0 %}
+                                <span class="badge badge-danger">{{ tag.tag_sentiment_index }}</span>
+                                {% else %}
+                                <span class="badge badge-secondary">{{ tag.tag_sentiment_index }}</span>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td><a href="{% url 'tags_modify' tag.id %}" class="btn btn-primary">Edit</a></td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">No Record</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% include "index/footer.html" %}
+</body>
+</html>

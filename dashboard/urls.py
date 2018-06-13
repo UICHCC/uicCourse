@@ -13,4 +13,8 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/course/major_division', views.major_division, name='major_division'),
     path('dashboard/course/course_type', views.course_type, name='course_type'),
+    path('dashboard/tags/', views.tags_page, name='tags_page'),
+    path('dashboard/tags/create', views.tags_create, name='tags_create'),
+    path('dashboard/tags/modify/<int:tag_id>', views.tags_modify, name='tags_modify'),
+    path('dashboard/tags/delete/<int:tag_id>', views.tags_delete, name='tags_delete'),
 ]

@@ -4,9 +4,10 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from .forms import SignUpForm
+from .forms import SignUpForm, CreateTagForm
 
 from course.models import ValidDivisionMajorPair, CourseType
+from voting.models import Tags
 
 
 def welcome_page(request):
@@ -98,3 +99,49 @@ def major_division(request):
 def course_type(request):
     pairs = CourseType.objects.all()
     return render(request, 'dashboard/course_type.html', {'pairs': pairs})
+
+
+@login_required
+def tags_page(request):
+    tags = Tags.objects.all()
+    return render(request, 'dashboard/tags.html', {'tags': tags})
+
+
+@login_required
+def tags_create(request):
+    if request.method == 'POST':
+        form = CreateTagForm(request.POST)
+        if form.is_valid():
+            tag = form.save()
+            messages.success(request, 'The Tag: ' + tag.tag_title + ' was successfully created!')
+            return redirect('/dashboard/tags/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = CreateTagForm()
+    return render(request, 'dashboard/tag_create.html', {'form': form})
+
+
+@login_required
+def tags_modify(request, tag_id):
+    if request.method == 'POST':
+        changing_tag = Tags.objects.get(pk=tag_id)
+        form = CreateTagForm(data=request.POST, instance=changing_tag)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'The tag has been successfully modified!')
+            return redirect('/dashboard/tags/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        tag = Tags.objects.get(pk=tag_id)
+        form = CreateTagForm(instance=tag)
+        return render(request, 'dashboard/tag_create.html', {'form': form, 'is_modify': True, 'tag_id': tag.id})
+
+
+@login_required
+def tags_delete(request, tag_id):
+    delete_tag = Tags.objects.get(pk=tag_id)
+    delete_tag.delete()
+    messages.success(request, 'The tag has been successfully deleted!')
+    return redirect('/dashboard/tags/')
