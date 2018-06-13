@@ -48,6 +48,14 @@ def course_modify(request, course_id):
 
 
 @login_required
+def course_delete(request, course_id):
+    course = Course.objects.get(pk=course_id)
+    course.delete()
+    messages.success(request, 'The Course was been successfully deleted!')
+    return redirect('/course/')
+
+
+@login_required
 def course_detail(request, course_id):
     query_course = Course.objects.get(pk=course_id)
     majors_take = query_course.course_major_take.all()
