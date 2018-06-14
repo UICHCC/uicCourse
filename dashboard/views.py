@@ -5,7 +5,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from .forms import SignUpForm, CreateTagForm
+from .forms import SignUpForm, CreateTagForm, ProfileModifyForm
 
 from course.models import ValidDivisionMajorPair, CourseType
 from voting.models import Tags
@@ -62,6 +62,27 @@ def signup_page(request):
         return redirect('/')
 
 
+@login_required
+def profile_page(request):
+    return render(request, 'auth/profile.html')
+
+
+@login_required
+def profile_change(request):
+    if request.method == 'POST':
+        form = ProfileModifyForm(data=request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile successfully updated!')
+            return redirect('/dashboard/profile/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = ProfileModifyForm(instance=request.user)
+    return render(request, 'auth/change_profile.html', {'form': form})
+
+
+@login_required
 def change_password_page(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
