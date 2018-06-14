@@ -1,0 +1,66 @@
+{% load widget_tweaks %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>uicCourse | Change Profile</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <style type="text/css">
+        /* Sticky footer styles
+        -------------------------------------------------- */
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+
+        /* Custom page CSS
+        -------------------------------------------------- */
+        .invalid-message{
+            width: 100%;
+            margin-top: .25rem;
+            font-size: 80%;
+            color: #dc3545;
+        }
+    </style>
+    {% load static %}
+</head>
+
+<body>
+{% include "index/header.html" %}
+{% include "index/messager.html" %}
+<main role="main" class="container mb-5">
+    <h1 class="mt-md-3">Change Profile</h1>
+    {% include "dashboard/functions.html" %}
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+            {{ field.label_tag }}
+            {% render_field field class+="form-control" %}
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+                <div class="invalid-message">
+                    {{ error }}
+                </div>
+            {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary mb-5">Sign up</button>
+    </form>
+</main>
+{% include "index/footer.html" %}
+</body>
+</html>
