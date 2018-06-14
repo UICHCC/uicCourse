@@ -52,7 +52,7 @@ class Course(models.Model):
     course_description = models.TextField(default='', verbose_name='Course Description')
     course_pre_request = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL,
                                            verbose_name='Course Pre-Request')
-    course_type = models.ForeignKey(CourseType, default=0, on_delete=models.CASCADE, verbose_name='Course Type')
+    course_type = models.ForeignKey(CourseType, null=True, on_delete=models.CASCADE, verbose_name='Course Type')
     course_major_take = models.ManyToManyField(ValidDivisionMajorPair, verbose_name='Major(s) that take this course')
     is_visible = models.BooleanField(default=True, verbose_name='Visibility of the course')
     is_rateable = models.BooleanField(default=True, verbose_name='Rate-ability of the course')
