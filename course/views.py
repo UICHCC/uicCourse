@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -15,7 +16,7 @@ def course_list_page(request):
     return render(request, 'course/index.html', {'courses': courses})
 
 
-@login_required
+@staff_member_required
 def course_create(request):
     if request.method == 'POST':
         form = CourseForm(request.POST)
@@ -30,7 +31,7 @@ def course_create(request):
     return render(request, 'course/course_create.html', {'form': form})
 
 
-@login_required
+@staff_member_required
 def course_modify(request, course_id):
     if request.method == 'POST':
         changing_course = Course.objects.get(pk=course_id)
@@ -47,7 +48,7 @@ def course_modify(request, course_id):
     return render(request, 'course/course_create.html', {'form': form})
 
 
-@login_required
+@staff_member_required
 def course_delete(request, course_id):
     course = Course.objects.get(pk=course_id)
     course.delete()

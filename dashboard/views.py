@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from .forms import SignUpForm, CreateTagForm
 
 from course.models import ValidDivisionMajorPair, CourseType
@@ -89,25 +90,25 @@ def dashboard(request):
     return render(request, 'dashboard/index.html')
 
 
-@login_required
+@staff_member_required
 def major_division(request):
     pairs = ValidDivisionMajorPair.objects.all()
     return render(request, 'dashboard/major_division.html', {'pairs': pairs})
 
 
-@login_required
+@staff_member_required
 def course_type(request):
     pairs = CourseType.objects.all()
     return render(request, 'dashboard/course_type.html', {'pairs': pairs})
 
 
-@login_required
+@staff_member_required
 def tags_page(request):
     tags = Tags.objects.all()
     return render(request, 'dashboard/tags.html', {'tags': tags})
 
 
-@login_required
+@staff_member_required
 def tags_create(request):
     if request.method == 'POST':
         form = CreateTagForm(request.POST)
@@ -122,7 +123,7 @@ def tags_create(request):
     return render(request, 'dashboard/tag_create.html', {'form': form})
 
 
-@login_required
+@staff_member_required
 def tags_modify(request, tag_id):
     if request.method == 'POST':
         changing_tag = Tags.objects.get(pk=tag_id)
@@ -139,7 +140,7 @@ def tags_modify(request, tag_id):
         return render(request, 'dashboard/tag_create.html', {'form': form, 'is_modify': True, 'tag_id': tag.id})
 
 
-@login_required
+@staff_member_required
 def tags_delete(request, tag_id):
     delete_tag = Tags.objects.get(pk=tag_id)
     delete_tag.delete()
