@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Course
 from .forms import CourseForm
-from voting.models import QuickVotes
+from voting.models import QuickVotes, Tags
 # Create your views here.
 
 
@@ -85,9 +85,11 @@ def course_detail(request, course_id):
         'downvote': valid_downvote,
         'score': course_score,
     }
+    available_tags = Tags.objects.all()
     return render(request, 'course/course_detail.html', {'course_data': query_course,
                                                          'majors': majors_take,
                                                          'division_involve': division_involve,
                                                          'is_voted': is_voted,
                                                          'user_vote': user_vote,
-                                                         'course_vote_status': vote_status})
+                                                         'course_vote_status': vote_status,
+                                                         'available_tags': available_tags})

@@ -1,9 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 
+
 from course.models import Course
-from .models import QuickVotes
+from .models import QuickVotes, Tags, UserTaggingCourse
 
 
 @login_required
@@ -51,3 +52,16 @@ def vote_course(request, course_id):
         'current_score': course_score,
     }
     return JsonResponse(data)
+
+
+@login_required
+def tag_course(request):
+    tag_data = []
+    tag_data.append(Course.objects.get(pk=request.POST.get('course_id')).course_name_en)
+    if request.POST.get('tag1') != '':
+        tag_data.append(Tags.objects.get(pk=request.POST.get('tag1')).tag_title)
+    if request.POST.get('tag2') != '':
+        tag_data.append(Tags.objects.get(pk=request.POST.get('tag2')).tag_title)
+    if request.POST.get('tag3') != '':
+        tag_data.append(Tags.objects.get(pk=request.POST.get('tag3')).tag_title)
+    return HttpResponse(tag_data)
