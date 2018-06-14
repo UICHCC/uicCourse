@@ -5,3 +5,5 @@ from . import models
 admin.site.register(models.QuickVotes)
 
 admin.site.register(models.Tags)
+
+admin.site.register(models.UserTaggingCourse)

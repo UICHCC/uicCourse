@@ -35,3 +35,19 @@ class Tags(models.Model):
     class Meta:
         verbose_name = _('Tag')
         verbose_name_plural = _('Tags')
+
+
+class UserTaggingCourse(models.Model):
+    tag_course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Tagging course',
+                                   related_name='course_tags')
+    tagger = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Course Tagger')
+    tags = models.ManyToManyField(Tags, verbose_name='User\'s tag(s) for this course')
+    tag_date = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return '%s tag course: %s' % (self.tagger.username, self.tag_course.course_name_en)
+
+    class Meta:
+        verbose_name = _('User Review')
+        verbose_name_plural = _('User Reviews')
