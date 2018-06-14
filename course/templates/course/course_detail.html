@@ -155,7 +155,49 @@
 </nav>
 {% endif %}
 </div>
+<div>
+    <div class="card my-2">
+        <div class="card-header">
+            Tags
+        </div>
+        <div class="card-body">
+        <p class="card-text">No record</p>
+        <a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Add your review</a>
+        </div>
+    </div>
+</div>
 </main>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="tags" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="tagBoxTitle">Review Course: {{ course_data.course_name_en }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+        <p class="text-muted">You can choose no more than 3 tags, you already select <span id="select_tag_amount">0 tag</span></p>
+        {% if available_tags %}
+            {% for tag in available_tags %}
+            <button type="button" class="btn btn-outline-info btn_review_tag my-2" id="{{ tag.id }}" title="{{ tag.tag_description }}">{{ tag.tag_title }}</button>
+            {% endfor %}
+        {% endif %}
+        <form id="tag_submit_form" method="POST" action="{% url 'tag_course' %}">
+            {% csrf_token %}
+            <input type="hidden" name="course_id" value="{{ course_data.id }}">
+            <input type="hidden" name="tag1" id="user_tag1" value="">
+            <input type="hidden" name="tag2" id="user_tag2" value="">
+            <input type="hidden" name="tag3" id="user_tag3" value="">
+        </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="prepareTagSubmitForm()">Submit your review</button>
+        </div>
+    </div>
+</div>
+</div>
 {% include "course/footer.html" %}
 <script src="https://cdn.bootcss.com/limonte-sweetalert2/7.11.0/sweetalert2.all.min.js"></script>
 <script>
@@ -238,6 +280,43 @@
             'You have been already voted.',
             'warning'
         )
+    }
+    selectedTags = [];
+    $(".btn_review_tag").click(function(e){
+        if (selectedTags.indexOf(e.target.id) !== -1){
+            selectedTags.splice(selectedTags.indexOf(e.target.id),1);
+            $(this).removeClass('btn-info');
+            $(this).addClass('btn-outline-info');
+            update_tag_amount();
+            return;
+        }
+        if (selectedTags.length < 3){
+            selectedTags.push(e.target.id);
+            $(this).removeClass('btn-outline-info');
+            $(this).addClass('btn-info');
+            update_tag_amount()
+        }else{
+            swal(
+                'Reach maximum amount!',
+                'You can choose no more than 3 tags.',
+                'warning'
+            )
+        }
+    });
+    function update_tag_amount(){
+        fillintext = '';
+        if (selectedTags.length <= 1){
+            fillintext = selectedTags.length + ' tag';
+        }else{
+            fillintext = selectedTags.length + ' tags';
+        }
+        $("#select_tag_amount").text(fillintext)
+    }
+    function prepareTagSubmitForm(){
+        $("#user_tag1").val(selectedTags[0]);
+        $("#user_tag2").val(selectedTags[1]);
+        $("#user_tag3").val(selectedTags[2]);
+        $("#tag_submit_form").submit();
     }
 </script>
 </body>
