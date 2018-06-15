@@ -23,4 +23,6 @@ urlpatterns = [
     path('dashboard/notices/create', views.notice_create, name='notice_create'),
     path('dashboard/notices/modify/<int:notice_id>', views.notice_modify, name='notice_modify'),
     path('dashboard/notices/delete/<int:notice_id>', views.notice_delete, name='notice_delete'),
+    path('dashboard/quick_vote_record/', views.quick_vote_record, name='quick_vote_record'),
+    path('dashboard/review_record/', views.review_record, name='review_record'),
 ]

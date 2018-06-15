@@ -8,7 +8,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .forms import SignUpForm, CreateTagForm, ProfileModifyForm, CreateNoticeForm
 
 from course.models import ValidDivisionMajorPair, CourseType
-from voting.models import Tags
+from voting.models import Tags, QuickVotes, UserTaggingCourse
 from .models import Notice
 
 
@@ -215,3 +215,15 @@ def notice_delete(request, notice_id):
     delete_notice.delete()
     messages.success(request, 'The notice has been successfully deleted!')
     return redirect('/dashboard/notices/')
+
+
+@login_required
+def quick_vote_record(request):
+    votes = QuickVotes.objects.filter(voter=request.user)
+    return render(request, 'dashboard/quickvote.html', {'votes': votes})
+
+
+@login_required
+def review_record(request):
+    reviews = UserTaggingCourse.objects.filter(tagger=request.user)
+    return render(request, 'dashboard/review.html', {'reviews': reviews})
