@@ -1,1 +1,7 @@
+#Folders
 .idea/
+__pycache__/
+static/
+
+#Files
+*.sqlite3
