@@ -163,12 +163,20 @@
         <div class="card-body">
         {% if course_tag_data %}
             {% for item, value in course_tag_data.items %}
-            <p class="card-text">{{ item }} {{ value }}</p>
+            {% if value != 0 %}
+            <button type="button" class="btn btn-primary">
+                {{ item }} <span class="badge badge-light">{{ value }}</span>
+            </button>
+            {% endif %}
             {% endfor %}
         {% else %}
         <p class="card-text">No record</p>
         {% endif %}
-        <a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Add your review</a>
+        {% if user_review %}
+        <p class="card-text mt-2"><a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Modify your review</a></p>
+        {% else %}
+        <p class="card-text mt-2"><a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Add your review</a></p>
+        {% endif %}
         </div>
     </div>
 </div>
