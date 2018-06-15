@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Course
 from .forms import CourseForm
@@ -12,7 +13,10 @@ from voting.models import QuickVotes, Tags, UserTaggingCourse
 
 @login_required
 def course_list_page(request):
-    courses = Course.objects.all()
+    courses_list = Course.objects.all().order_by('id')
+    paginator = Paginator(courses_list, 10)
+    page = request.GET.get('page')
+    courses = paginator.get_page(page)
     return render(request, 'course/index.html', {'courses': courses})
 
 
