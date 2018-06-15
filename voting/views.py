@@ -60,8 +60,16 @@ def vote_course(request, course_id):
 def tag_course(request):
     tagging_course = Course.objects.get(pk=request.POST.get('course_id'))
     try:
-        UserTaggingCourse.objects.get(tag_course=tagging_course, tagger=request.user)
-        messages.warning(request, 'You have already submit your review to this course!')
+        exist_review = UserTaggingCourse.objects.get(tag_course=tagging_course, tagger=request.user)
+        exist_review.tags.clear()
+        exist_review.save()
+        if request.POST.get('tag1') != '':
+            exist_review.tags.add(Tags.objects.get(pk=request.POST.get('tag1')))
+        if request.POST.get('tag2') != '':
+            exist_review.tags.add(Tags.objects.get(pk=request.POST.get('tag2')))
+        if request.POST.get('tag3') != '':
+            exist_review.tags.add(Tags.objects.get(pk=request.POST.get('tag3')))
+        messages.info(request, 'Updated your review!')
         return redirect('/course/detail/' + request.POST.get('course_id'))
     except ObjectDoesNotExist:
         new_review = UserTaggingCourse.objects.create(tag_course=tagging_course, tagger=request.user)

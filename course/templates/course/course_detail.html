@@ -34,7 +34,7 @@
     {% load static %}
 </head>
 
-<body>
+<body onload="highlightSelectedTag()">
 {% include "course/header.html" %}
 {% include "course/messager.html" %}
 <main role="main" class="container mb-5">
@@ -297,24 +297,32 @@
     }
     selectedTags = [];
     $(".btn_review_tag").click(function(e){
-        if (selectedTags.indexOf(e.target.id) !== -1){
-            selectedTags.splice(selectedTags.indexOf(e.target.id),1);
+        if (selectedTags.indexOf(parseInt(e.target.id)) !== -1){
+            selectedTags.splice(selectedTags.indexOf(parseInt(e.target.id)),1);
             $(this).removeClass('btn-info');
             $(this).addClass('btn-outline-info');
             update_tag_amount();
             return;
         }
         if (selectedTags.length < 3){
-            selectedTags.push(e.target.id);
+            selectedTags.push(parseInt(e.target.id));
             $(this).removeClass('btn-outline-info');
             $(this).addClass('btn-info');
             update_tag_amount()
         }else{
-            swal(
-                'Reach maximum amount!',
-                'You can choose no more than 3 tags.',
-                'warning'
-            )
+            if (selectedTags.indexOf(parseInt(e.target.id)) !== -1){
+                selectedTags.splice(selectedTags.indexOf(parseInt(e.target.id)),1);
+                $(this).removeClass('btn-info');
+                $(this).addClass('btn-outline-info');
+                update_tag_amount();
+            }else{
+                update_tag_amount();
+                swal(
+                    'Reach maximum amount!',
+                    'You can choose no more than 3 tags.',
+                    'warning'
+                )
+            }
         }
     });
     function update_tag_amount(){
@@ -327,10 +335,29 @@
         $("#select_tag_amount").text(fillintext)
     }
     function prepareTagSubmitForm(){
+        if (selectedTags.length === 0){
+            swal(
+                    'You didn\'t select any tag!',
+                    'Please don\'t submit an empty review.',
+                    'warning'
+            )
+            return;
+        }
         $("#user_tag1").val(selectedTags[0]);
         $("#user_tag2").val(selectedTags[1]);
         $("#user_tag3").val(selectedTags[2]);
         $("#tag_submit_form").submit();
+    }
+    function highlightSelectedTag(){
+        {% for tagid in user_review.tags.all %}
+        selectedTags.push(parseInt({{tagid.id}}));
+        {% endfor %}
+        for (var i = 0; i < selectedTags.length; i++){
+            var tagName = "#" + selectedTags[i];
+            $(tagName).removeClass('btn-outline-info');
+            $(tagName).addClass('btn-info');
+        }
+        update_tag_amount();
     }
 </script>
 </body>

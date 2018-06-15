@@ -89,7 +89,6 @@ def course_detail(request, course_id):
     course_tag_data = {}
     for tag in Tags.objects.all():
         course_tag_data[tag.tag_title] = tag.usertaggingcourse_set.count()
-    print(course_tag_data)
     try:
         user_review = UserTaggingCourse.objects.get(tag_course=query_course, tagger=request.user)
     except ObjectDoesNotExist:
