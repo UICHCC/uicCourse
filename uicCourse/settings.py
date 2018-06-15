@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'dashboard',
     'report',
     'voting',
+    'search',
     'widget_tweaks',
 ]
 
