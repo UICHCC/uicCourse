@@ -87,8 +87,13 @@ def course_detail(request, course_id):
     }
     available_tags = Tags.objects.all()
     course_tag_data = {}
-    for tag in Tags.objects.all():
-        course_tag_data[tag.tag_title] = tag.usertaggingcourse_set.count()
+    for item in query_course.course_tags.all():
+        for tag in item.tags.all():
+            if tag.tag_title in course_tag_data:
+                course_tag_data[tag.tag_title] += 1
+            else:
+                course_tag_data[tag.tag_title] = 1
+    print(course_tag_data)
     try:
         user_review = UserTaggingCourse.objects.get(tag_course=query_course, tagger=request.user)
     except ObjectDoesNotExist:
