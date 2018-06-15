@@ -34,6 +34,9 @@
 <main role="main" class="container mb-5">
 <div class="d-flex justify-content-between align-items-center">
     <h1 class="mt-md-3">Course List</h1>
+    <form class="my-2" action="{% url 'search_course' %}">
+          <input class="form-control" type="text" placeholder="Search course" autocomplete="off" name="search" value="{% if search_result %}{{ raw_input }}{% endif %}">
+    </form>
     {% if user.is_superuser or user.is_staff %}
     <a href="{% url 'course_create' %}" class="btn btn-primary">Create Course</a>
     {% endif %}
