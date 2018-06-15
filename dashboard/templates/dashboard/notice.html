@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>uicCourse | Notice</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <style type="text/css">
+        /* Sticky footer styles
+        -------------------------------------------------- */
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+
+        /* Custom page CSS
+        -------------------------------------------------- */
+
+    </style>
+    {% load static %}
+</head>
+
+<body>
+{% include "index/header.html" %}
+{% include "index/messager.html" %}
+<main role="main" class="container mb-5">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="mt-md-3">Notice</h1>
+        {% if user.is_superuser or user.is_staff %}
+        <a href="{% url 'notice_create' %}" class="btn btn-primary">Create New Notice</a>
+        {% endif %}
+    </div>
+    {% include "dashboard/functions.html" %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Content</th>
+                    <th scope="col">Publish Time</th>
+                    <th scope="col">Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if notices %}
+                    {% for notice in notices %}
+                    <tr>
+                        <td>{{ notice.title }}</td>
+                        <td>{{ notice.content }}</td>
+                        <td>{{ notice.publish_date }}</td>
+                        <td><a href="{% url 'notice_modify' notice.id %}" class="btn btn-sm btn-warning">Edit</a></td>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">No Record</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% include "index/footer.html" %}
+</body>
+</html>

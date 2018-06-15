@@ -5,14 +5,16 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from .forms import SignUpForm, CreateTagForm, ProfileModifyForm
+from .forms import SignUpForm, CreateTagForm, ProfileModifyForm, CreateNoticeForm
 
 from course.models import ValidDivisionMajorPair, CourseType
 from voting.models import Tags
+from .models import Notice
 
 
 def welcome_page(request):
-    return render(request, 'index/index.html')
+    latest_notice = Notice.objects.filter(is_visible=True)[:3]  # only take latest notice
+    return render(request, 'index/index.html', {'latest_notice': latest_notice})
 
 
 def login_page(request):
@@ -167,3 +169,49 @@ def tags_delete(request, tag_id):
     delete_tag.delete()
     messages.success(request, 'The tag has been successfully deleted!')
     return redirect('/dashboard/tags/')
+
+
+@staff_member_required
+def notice_page(request):
+    notices = Notice.objects.all()
+    return render(request, 'dashboard/notice.html', {'notices': notices})
+
+
+@staff_member_required
+def notice_create(request):
+    if request.method == 'POST':
+        form = CreateNoticeForm(request.POST)
+        if form.is_valid():
+            notice = form.save()
+            messages.success(request, 'The Notice: ' + notice.title + ' was successfully created!')
+            return redirect('/dashboard/notices/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = CreateNoticeForm()
+    return render(request, 'dashboard/notice_create.html', {'form': form})
+
+
+@staff_member_required
+def notice_modify(request, notice_id):
+    if request.method == 'POST':
+        changing_notice = Notice.objects.get(pk=notice_id)
+        form = CreateNoticeForm(data=request.POST, instance=changing_notice)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'The notice has been successfully modified!')
+            return redirect('/dashboard/notices/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        notice = Notice.objects.get(pk=notice_id)
+        form = CreateNoticeForm(instance=notice)
+        return render(request, 'dashboard/notice_create.html', {'form': form, 'is_modify': True, 'notice_id': notice.id})
+
+
+@staff_member_required
+def notice_delete(request, notice_id):
+    delete_notice = Notice.objects.get(pk=notice_id)
+    delete_notice.delete()
+    messages.success(request, 'The notice has been successfully deleted!')
+    return redirect('/dashboard/notices/')

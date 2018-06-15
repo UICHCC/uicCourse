@@ -19,4 +19,8 @@ urlpatterns = [
     path('dashboard/tags/create', views.tags_create, name='tags_create'),
     path('dashboard/tags/modify/<int:tag_id>', views.tags_modify, name='tags_modify'),
     path('dashboard/tags/delete/<int:tag_id>', views.tags_delete, name='tags_delete'),
+    path('dashboard/notices/', views.notice_page, name='notice_page'),
+    path('dashboard/notices/create', views.notice_create, name='notice_create'),
+    path('dashboard/notices/modify/<int:notice_id>', views.notice_modify, name='notice_modify'),
+    path('dashboard/notices/delete/<int:notice_id>', views.notice_delete, name='notice_delete'),
 ]

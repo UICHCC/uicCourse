@@ -38,27 +38,22 @@
     <p class="lead">For a more transparent future.</p>
     <p>All information is collected from the Internet (AR's Website), for reference only.</p>
     <div class="card-deck mt-md-5">
+    {% if latest_notice %}
+    {% for notice in latest_notice %}
         <div class="card">
-            <img class="card-img-top" src="https://source.unsplash.com/random/601x450" alt="Course Information">
+            <div class="card-header">Notice</div>
             <div class="card-body">
-                <h5 class="card-title">Course Information</h5>
-                <p class="card-text">Well-organized data and beautiful display</p>
+                <h5 class="card-title">{{notice.title}}</h5>
+                <p class="card-text">{{notice.content}}</p>
+                <p class="card-text"><small class="text-muted">Last updated: {{notice.update_time}}</small></p>
             </div>
         </div>
+    {% endfor %}
+    {% else %}
         <div class="card">
-            <img class="card-img-top" src="https://source.unsplash.com/random/602x450" alt="Rate Course">
-            <div class="card-body">
-                <h5 class="card-title">Rate Course</h5>
-                <p class="card-text">If you have taken this course, you can rate this course and provide references for other students.</p>
-            </div>
+            <div class="card-header">No Notice yet</div>
         </div>
-        <div class="card">
-            <img class="card-img-top" src="https://source.unsplash.com/random/603x450" alt="View Report">
-            <div class="card-body">
-                <h5 class="card-title">View Report</h5>
-                <p class="card-text">We will analyze and provide reports based on the data we have obtained.</p>
-            </div>
-        </div>
+    {% endif %}
     </div>
 </main>
 {% include "index/footer.html" %}
