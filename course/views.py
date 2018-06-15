@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Course
 from .forms import CourseForm
-from voting.models import QuickVotes, Tags
+from voting.models import QuickVotes, Tags, UserTaggingCourse
 # Create your views here.
 
 
@@ -86,10 +86,20 @@ def course_detail(request, course_id):
         'score': course_score,
     }
     available_tags = Tags.objects.all()
+    course_tag_data = {}
+    for tag in Tags.objects.all():
+        course_tag_data[tag.tag_title] = tag.usertaggingcourse_set.count()
+    print(course_tag_data)
+    try:
+        user_review = UserTaggingCourse.objects.get(tag_course=query_course, tagger=request.user)
+    except ObjectDoesNotExist:
+        user_review = UserTaggingCourse.objects.filter(tag_course=query_course, tagger=request.user)
     return render(request, 'course/course_detail.html', {'course_data': query_course,
                                                          'majors': majors_take,
                                                          'division_involve': division_involve,
                                                          'is_voted': is_voted,
                                                          'user_vote': user_vote,
                                                          'course_vote_status': vote_status,
-                                                         'available_tags': available_tags})
+                                                         'available_tags': available_tags,
+                                                         'course_tag_data': course_tag_data,
+                                                         'user_review': user_review})

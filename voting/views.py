@@ -1,6 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import redirect
 
 
 from course.models import Course
@@ -56,12 +58,19 @@ def vote_course(request, course_id):
 
 @login_required
 def tag_course(request):
-    tag_data = []
-    tag_data.append(Course.objects.get(pk=request.POST.get('course_id')).course_name_en)
-    if request.POST.get('tag1') != '':
-        tag_data.append(Tags.objects.get(pk=request.POST.get('tag1')).tag_title)
-    if request.POST.get('tag2') != '':
-        tag_data.append(Tags.objects.get(pk=request.POST.get('tag2')).tag_title)
-    if request.POST.get('tag3') != '':
-        tag_data.append(Tags.objects.get(pk=request.POST.get('tag3')).tag_title)
-    return HttpResponse(tag_data)
+    tagging_course = Course.objects.get(pk=request.POST.get('course_id'))
+    try:
+        UserTaggingCourse.objects.get(tag_course=tagging_course, tagger=request.user)
+        messages.warning(request, 'You have already submit your review to this course!')
+        return redirect('/course/detail/' + request.POST.get('course_id'))
+    except ObjectDoesNotExist:
+        new_review = UserTaggingCourse.objects.create(tag_course=tagging_course, tagger=request.user)
+        new_review.save()
+        if request.POST.get('tag1') != '':
+            new_review.tags.add(Tags.objects.get(pk=request.POST.get('tag1')))
+        if request.POST.get('tag2') != '':
+            new_review.tags.add(Tags.objects.get(pk=request.POST.get('tag2')))
+        if request.POST.get('tag3') != '':
+            new_review.tags.add(Tags.objects.get(pk=request.POST.get('tag3')))
+        messages.success(request, 'Your review have been successfully create!')
+        return redirect('/course/detail/' + request.POST.get('course_id'))

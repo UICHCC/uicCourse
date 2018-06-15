@@ -156,12 +156,18 @@
 {% endif %}
 </div>
 <div>
-    <div class="card my-2">
+    <div class="card mt-2" style="margin-bottom: 5rem">
         <div class="card-header">
             Tags
         </div>
         <div class="card-body">
+        {% if course_tag_data %}
+            {% for item, value in course_tag_data.items %}
+            <p class="card-text">{{ item }} {{ value }}</p>
+            {% endfor %}
+        {% else %}
         <p class="card-text">No record</p>
+        {% endif %}
         <a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Add your review</a>
         </div>
     </div>
