@@ -14,7 +14,7 @@ from voting.models import QuickVotes, Tags, UserTaggingCourse
 @login_required
 def course_list_page(request):
     courses_list = Course.objects.all().order_by('id')
-    paginator = Paginator(courses_list, 10)
+    paginator = Paginator(courses_list, 15)
     page = request.GET.get('page')
     courses = paginator.get_page(page)
     return render(request, 'course/index.html', {'courses': courses})
@@ -27,7 +27,7 @@ def course_create(request):
         if form.is_valid():
             course = form.save()
             messages.success(request, 'The Course: ' + course.course_name_en + ' was successfully created!')
-            return redirect('/course/')
+            return redirect('/course/?page=9999')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
@@ -43,7 +43,7 @@ def course_modify(request, course_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'The Course was been successfully modified!')
-            return redirect('/course/')
+            return redirect('/course/' + str(course_id))
         else:
             messages.error(request, 'Please correct the error below.')
     else:
