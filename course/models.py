@@ -60,3 +60,6 @@ class Course(models.Model):
 
     def __str__(self):
         return "%s (%s)" % (self.course_name_en, self.course_id)
+
+    class Meta:
+        ordering = ['course_name_en', 'course_id']
