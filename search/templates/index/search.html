@@ -36,7 +36,7 @@
 <main role="main" class="container mb-5">
     <h1 class="mt-md-3">Search</h1>
     <form class="my-2">
-          <input class="form-control" type="text" placeholder="Search course" autocomplete="off" name="search" value="{% if search_result %}{{ raw_input }}{% endif %}">
+          <input class="form-control" type="text" placeholder="Search course" autocomplete="off" name="search" value="{{ raw_input }}">
     </form>
     {% if search_result %}
     <p class="my-2">find {{search_result|length}} matched result(s)</p>
