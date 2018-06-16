@@ -43,7 +43,7 @@ def course_modify(request, course_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'The Course was been successfully modified!')
-            return redirect('/course/' + str(course_id))
+            return redirect('/course/detail/' + str(course_id))
         else:
             messages.error(request, 'Please correct the error below.')
     else:
