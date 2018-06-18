@@ -114,6 +114,7 @@
                 <h4 class="card-text text-center">Quick Vote</h4>
             </div>
             <div class="card-body mx-auto">
+            {% if user.is_authenticated %}
                 <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
                     {% if user_vote.vote_status == 0 %}
                         <button class="btn btn-outline-success" id="upvote_btn">
@@ -143,6 +144,9 @@
                         {% endif %}
                     {% endif %}
                 </div>
+            {% else %}
+            <p class="card-text"><a href="{% url 'login_page' %}">Please login to submit your review</a></p>
+            {% endif %}
             </div>
         </div>
     </div>
@@ -172,15 +176,20 @@
         {% else %}
         <p class="card-text">No record</p>
         {% endif %}
+        {% if user.is_authenticated %}
         {% if user_review %}
         <p class="card-text mt-2"><a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Modify your review</a></p>
         {% else %}
         <p class="card-text mt-2"><a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Add your review</a></p>
         {% endif %}
+        {% else %}
+        <p class="card-text mt-2"><a href="{% url 'login_page' %}">Please login to submit your review</a></p>
+        {% endif %}
         </div>
     </div>
 </div>
 </main>
+{% if user.is_authenticated %}
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="tags" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -212,8 +221,10 @@
     </div>
 </div>
 </div>
+{% endif %}
 {% include "course/footer.html" %}
 <script src="https://cdn.bootcss.com/limonte-sweetalert2/7.11.0/sweetalert2.all.min.js"></script>
+{% if user.is_authenticated %}
 <script>
     function AlertIt() {
         swal({
@@ -360,5 +371,6 @@
         update_tag_amount();
     }
 </script>
+{% endif %}
 </body>
 </html>

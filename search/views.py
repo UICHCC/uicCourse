@@ -1,12 +1,10 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
 from course.models import Course
 # Create your views here.
 
 
-@login_required
 def search_course(request):
     raw_input = request.GET.get('search')
     search_result = ''

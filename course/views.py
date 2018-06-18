@@ -11,7 +11,6 @@ from voting.models import QuickVotes, Tags, UserTaggingCourse
 # Create your views here.
 
 
-@login_required
 def course_list_page(request):
     courses_list = Course.objects.all().order_by('id')
     paginator = Paginator(courses_list, 15)
@@ -60,7 +59,6 @@ def course_delete(request, course_id):
     return redirect('/course/')
 
 
-@login_required
 def course_detail(request, course_id):
     query_course = Course.objects.get(pk=course_id)
     majors_take = query_course.course_major_take.all()
@@ -69,11 +67,20 @@ def course_detail(request, course_id):
         if item.division.division_en_abbr not in division_involve:
             division_involve.append(item.division.division_en_abbr)
     is_voted = True
-    try:
-        user_vote = QuickVotes.objects.get(course=query_course, voter=request.user)
-    except ObjectDoesNotExist:
-        user_vote = QuickVotes.objects.filter(course=query_course, voter=request.user)
-        is_voted = False
+    user_vote = None
+    user_review = None
+    if request.user.is_authenticated:
+        is_voted = True
+        try:
+            user_vote = QuickVotes.objects.get(course=query_course, voter=request.user)
+        except ObjectDoesNotExist:
+            user_vote = QuickVotes.objects.filter(course=query_course, voter=request.user)
+            is_voted = False
+
+        try:
+            user_review = UserTaggingCourse.objects.get(tag_course=query_course, tagger=request.user)
+        except ObjectDoesNotExist:
+            user_review = UserTaggingCourse.objects.filter(tag_course=query_course, tagger=request.user)
     valid_upvote = QuickVotes.objects.filter(course=query_course, vote_status=True, is_invalid_vote=0).count()
     valid_downvote = QuickVotes.objects.filter(course=query_course, vote_status=False, is_invalid_vote=0).count()
     if valid_upvote + valid_downvote == 0:
@@ -97,11 +104,6 @@ def course_detail(request, course_id):
                 course_tag_data[tag.tag_title] += 1
             else:
                 course_tag_data[tag.tag_title] = 1
-    print(course_tag_data)
-    try:
-        user_review = UserTaggingCourse.objects.get(tag_course=query_course, tagger=request.user)
-    except ObjectDoesNotExist:
-        user_review = UserTaggingCourse.objects.filter(tag_course=query_course, tagger=request.user)
     return render(request, 'course/course_detail.html', {'course_data': query_course,
                                                          'majors': majors_take,
                                                          'division_involve': division_involve,
