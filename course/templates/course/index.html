@@ -32,54 +32,70 @@
 {% include "course/header.html" %}
 {% include "course/messager.html" %}
 <main role="main" class="container mb-5">
-<div class="d-flex justify-content-between align-items-center">
-    <h1 class="mt-md-3">Course List</h1>
-    <form class="my-2" action="{% url 'search_course' %}">
-          <input class="form-control" type="text" placeholder="Search course" autocomplete="off" name="search" value="{% if search_result %}{{ raw_input }}{% endif %}">
-    </form>
-    {% if user.is_superuser or user.is_staff %}
-    <a href="{% url 'course_create' %}" class="btn btn-primary">Create Course</a>
-    {% endif %}
-</div>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="mt-md-3">Course List</h1>
+        <form class="my-2" action="{% url 'search_course' %}">
+            <input class="form-control" type="text" placeholder="Search course" autocomplete="off" name="search"
+                   value="{% if search_result %}{{ raw_input }}{% endif %}">
+        </form>
+        {% if user.is_superuser or user.is_staff %}
+            <a href="{% url 'course_create' %}" class="btn btn-primary">Create Course</a>
+        {% endif %}
+    </div>
     {% if courses %}
-    <div class="card-columns">
-    {% for course in courses %}
-    <a href="{% url 'course_detail' course.id %}">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title"><span class="badge badge-secondary">{{course.course_id}}</span> {{course.course_name_en}}</h5>
-                <p class="card-text">{{course.course_name_cn}}</p>
+        <div class="card-columns">
+            {% for course in courses %}
+                <a href="{% url 'course_detail' course.id %}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><span
+                                    class="badge badge-secondary">{{ course.course_id }}</span> {{ course.course_name_en }}
+                            </h5>
+                            <p class="card-text">{{ course.course_name_cn }}</p>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">No course data</h1>
+                <p class="lead">Please check it out later.</p>
             </div>
         </div>
-    </a>
-    {% endfor %}
-    </div>
-    {% else %}
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">No course data</h1>
-            <p class="lead">Please check it out later.</p>
-        </div>
-    </div>
     {% endif %}
     <div style="margin-bottom: 5rem;">
         <nav>
             <ul class="pagination justify-content-center">
                 {% if courses.has_previous %}
-                <li class="page-item">
-                <a class="page-link" href="?page={{ courses.previous_page_number }}" aria-label="Previous">
-                <span aria_hidden="true">&laquo;</span></a>
-                </li>
+                    <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Previous">
+                            <span aria_hidden="true">&laquo;</span></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ courses.previous_page_number }}" aria-label="Previous">
+                            <span aria_hidden="true">&lsaquo;</span></a>
+                    </li>
                 {% endif %}
 
-                 <li class="page-item active"><a class="page-link" href="?page={{ page_num }}">Page {{ courses.number }} of {{ courses.paginator.num_pages }}</a> </li>
+                <li class="page-item active"><a class="page-link"
+                                                href="?page={{ courses.number }}">Page {{ courses.number }}
+                    of {{ courses.paginator.num_pages }}</a></li>
 
                 {% if courses.has_next %}
-                 <li class="page-item">
-                      <a class="page-link" href="?page={{ courses.next_page_number }}" aria-label="Next">
-                          <span aria_hidden="true">&raquo;</span></a>
-                </li>
-              {% endif %}
+                    <li class="page-item">
+                    <a class="page-link" href="?page={{ courses.next_page_number }}" aria-label="Next">
+                            <span aria_hidden="true">&rsaquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+
+                        <a class="page-link" href="?page={{ courses.paginator.num_pages }}" aria-label="Next">
+                            <span aria_hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
     </div>
