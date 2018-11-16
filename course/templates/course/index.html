@@ -49,35 +49,51 @@
         {% endif %}
     </div>
     <div class="collapse pt-3 pb-3" id="collapseSelectControl">
+    {% if coursetypes %}
         <div class="btn-group">
-            <button type="button" class="btn btn-success">Category</button>
-            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+            <button type="button" class="btn btn-info">Category</button>
+            <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                 <span class="sr-only">Toggle Category Dropdown</span>
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
+                {% for ct in coursetypes %}
+                <a class="dropdown-item" href="#">{{ ct.name }}</a>
+                {% endfor %}
             </div>
         </div>
+    {% endif %}
+    {% if majors %}
         <div class="btn-group">
-            <button type="button" class="btn btn-warning">Major</button>
-            <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+            <button type="button" class="btn btn-success">Major</button>
+            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                 <span class="sr-only">Toggle Major Dropdown</span>
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
+                {% for major in majors %}
+                <a class="dropdown-item" href="#">{{ major.major_en_abbr }}({{ major.major_cn }})</a>
+                {% endfor %}
             </div>
         </div>
+    {% endif %}
+    {% if divisions %}
+        <div class="btn-group">
+            <button type="button" class="btn btn-warning">Division</button>
+            <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Division Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                {% for division in divisions %}
+                <a class="dropdown-item" href="#">{{ division.division_en_abbr }}({{ division.division_cn }})</a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
     </div>
+
     {% if courses %}
         <div class="card-columns">
             {% for course in courses %}

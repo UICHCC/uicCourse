@@ -34,12 +34,12 @@
 {% include "index/header.html" %}
 {% include "index/messager.html" %}
 <main role="main" class="container mb-5">
-    <form class="my-4" action="{% url 'search_course' %}">
-            <input class="form-control" type="text" placeholder="Search course to start..." autocomplete="off" name="search"
-                   value="{% if search_result %}{{ raw_input }}{% endif %}">
-    </form>
     <h1 class="mt-md-3">uicCourse</h1>
     <p class="lead">For a more transparent future.</p>
+    <form class="my-4" action="{% url 'search_course' %}">
+            <input class="form-control" type="text" placeholder="Search a course to start..." autocomplete="off" name="search"
+                   value="{% if search_result %}{{ raw_input }}{% endif %}">
+    </form>
     <p>All information is collected from the Internet (AR's Website), for reference only.</p>
     <div class="card-deck mt-md-5">
     {% if latest_notice %}

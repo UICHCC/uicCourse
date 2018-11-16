@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Course
+from .models import Course, Major, Division, CourseType
 from .forms import CourseForm
 from voting.models import QuickVotes, Tags, UserTaggingCourse
 # Create your views here.
@@ -16,7 +16,13 @@ def course_list_page(request):
     paginator = Paginator(courses_list, 15)
     page = request.GET.get('page')
     courses = paginator.get_page(page)
-    return render(request, 'course/index.html', {'courses': courses})
+    majors = Major.objects.all().order_by('major_en_abbr')
+    divisions = Division.objects.all().order_by('division_en_abbr')
+    coursetypes = CourseType.objects.all()
+    return render(request, 'course/index.html', {'courses': courses,
+                                                 'majors': majors,
+                                                 'divisions': divisions,
+                                                 'coursetypes': coursetypes})
 
 
 @staff_member_required
