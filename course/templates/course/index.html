@@ -8,7 +8,8 @@
     <link rel="icon" href="favicon.ico">
     <title>uicCourse</title>
     <!-- Bootstrap core CSS -->
-    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <!-- Custom styles for this template -->
     <style type="text/css">
         /* Sticky footer styles
@@ -33,7 +34,12 @@
 {% include "course/messager.html" %}
 <main role="main" class="container mb-5">
     <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mt-md-3">Course List</h1>
+        <h1 class="mt-md-3">Course List
+            <button class="btn btn-outline-dark btn-sm" type="button" data-toggle="collapse" data-target="#collapseSelectControl"
+                    aria-expanded="false" aria-controls="collapseSelectControl">
+                <i class="fa fa-filter" aria-hidden="true"></i>
+            </button>
+        </h1>
         <form class="my-2" action="{% url 'search_course' %}">
             <input class="form-control" type="text" placeholder="Search course" autocomplete="off" name="search"
                    value="{% if search_result %}{{ raw_input }}{% endif %}">
@@ -41,6 +47,36 @@
         {% if user.is_superuser or user.is_staff %}
             <a href="{% url 'course_create' %}" class="btn btn-primary">Create Course</a>
         {% endif %}
+    </div>
+    <div class="collapse pt-3 pb-3" id="collapseSelectControl">
+        <div class="btn-group">
+            <button type="button" class="btn btn-success">Category</button>
+            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Category Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-warning">Major</button>
+            <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Major Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </div>
     </div>
     {% if courses %}
         <div class="card-columns">
@@ -70,7 +106,7 @@
             <ul class="pagination justify-content-center">
                 {% if courses.has_previous %}
                     <li class="page-item">
-                    <a class="page-link" href="?page=1" aria-label="Previous">
+                        <a class="page-link" href="?page=1" aria-label="Previous">
                             <span aria_hidden="true">&laquo;</span></a>
                     </li>
                     <li class="page-item">
@@ -85,7 +121,7 @@
 
                 {% if courses.has_next %}
                     <li class="page-item">
-                    <a class="page-link" href="?page={{ courses.next_page_number }}" aria-label="Next">
+                        <a class="page-link" href="?page={{ courses.next_page_number }}" aria-label="Next">
                             <span aria_hidden="true">&rsaquo;</span>
                         </a>
                     </li>
