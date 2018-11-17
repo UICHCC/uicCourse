@@ -8,7 +8,8 @@
     <link rel="icon" href="favicon.ico">
     <title>uicCourse</title>
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous"/>
     <!-- Custom styles for this template -->
     <style type="text/css">
         /* Sticky footer styles
@@ -26,10 +27,11 @@
         /* Custom page CSS
         -------------------------------------------------- */
 
-        .transp_input{
-            background: rgba(0,0,0,0);
+        .transp_input {
+            background: rgba(0, 0, 0, 0);
         }
-        .transp_input:focus{
+
+        .transp_input:focus {
             background: rgb(255, 255, 255);
         }
     </style>
@@ -41,7 +43,8 @@
 {% include "index/messager.html" %}
 <main role="main" class="container mb-5">
     <div style="position: absolute;left: 50%;width: 1373px;height: 708px;margin-left: -686.5px; z-index: -1">
-        <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="363 45.8 1338 702.2" id="appreciated_beam" width="100%" height="100%">
+        <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="363 45.8 1338 702.2" id="appreciated_beam" width="100%"
+             height="100%">
             <defs>
                 <linearGradient id="appreciated_beam_SVGID_1_" gradientUnits="userSpaceOnUse" x1="1659.562"
                                 y1="691.6986" x2="1328.407" y2="953.1368"
@@ -83,27 +86,30 @@
     <h1 class="mt-md-3">uicCourse</h1>
     <p class="lead">For a more transparent future.</p>
     <form class="my-4" action="{% url 'search_course' %}">
-            <input class="form-control transp_input" type="text" placeholder="Search a course to start..." autocomplete="off" name="search"
-                   value="{% if search_result %}{{ raw_input }}{% endif %}">
+        <input class="form-control transp_input" type="text" placeholder="Search a course to start..."
+               autocomplete="off" name="search"
+               value="{% if search_result %}{{ raw_input }}{% endif %}">
     </form>
     <p>All information is collected from the Internet (AR's Website), for reference only.</p>
     <div class="card-deck mt-md-5">
-    {% if latest_notice %}
-    {% for notice in latest_notice %}
-        <div class="card">
-            <div class="card-header">Notice</div>
-            <div class="card-body">
-                <h5 class="card-title">{{notice.title}}</h5>
-                <p class="card-text">{{notice.content}}</p>
-                <p class="card-text"><small class="text-muted">Last updated: {{notice.update_time}}</small></p>
+        {% if latest_notice %}
+            {% for notice in latest_notice %}
+                <div class="card">
+                    <div class="card-header">Notice</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ notice.title }}</h5>
+                        <p class="card-text">{{ notice.content }}</p>
+                        <p class="card-text">
+                            <small class="text-muted">Last updated: {{ notice.update_time }}</small>
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="card">
+                <div class="card-header">No Notice yet</div>
             </div>
-        </div>
-    {% endfor %}
-    {% else %}
-        <div class="card">
-            <div class="card-header">No Notice yet</div>
-        </div>
-    {% endif %}
+        {% endif %}
     </div>
 </main>
 {% include "index/footer.html" %}

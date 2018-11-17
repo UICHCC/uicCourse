@@ -5,24 +5,45 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Course, Major, Division, CourseType
+from .models import Course, ValidDivisionMajorPair, CourseType
 from .forms import CourseForm
 from voting.models import QuickVotes, Tags, UserTaggingCourse
 # Create your views here.
 
 
 def course_list_page(request):
-    courses_list = Course.objects.all().order_by('id')
+    filter_1 = request.GET.get('category')
+    filter_2 = request.GET.get('major')
+    if filter_1 is not None or filter_2 is not None:
+        filter_statue = {'is_filtered': True,
+                         'type': None,
+                         'category': None,
+                         'major': None}
+        if filter_1 is not None:
+            filter_statue['type'] = 'category'
+            filter_statue['category'] = CourseType.objects.get(pk=filter_1).name_abbr
+            courses_list = Course.objects.filter(course_type=filter_1).order_by('course_name_en')
+        elif filter_2 is not None:
+            filter_statue['type'] = 'major'
+            filter_statue['major'] = ValidDivisionMajorPair.objects.get(pk=filter_2).major.major_en_abbr
+            courses_list = Course.objects.filter(course_major_take=filter_2).order_by('course_name_en')
+    else:
+        filter_statue = {
+            'is_filtered': False,
+             'type': None,
+             'category': None,
+             'major': None
+        }
+        courses_list = Course.objects.all().order_by('id')
     paginator = Paginator(courses_list, 15)
     page = request.GET.get('page')
     courses = paginator.get_page(page)
-    majors = Major.objects.all().order_by('major_en_abbr')
-    divisions = Division.objects.all().order_by('division_en_abbr')
+    majors = ValidDivisionMajorPair.objects.all().order_by('major__major_en_abbr')
     coursetypes = CourseType.objects.all()
     return render(request, 'course/index.html', {'courses': courses,
                                                  'majors': majors,
-                                                 'divisions': divisions,
-                                                 'coursetypes': coursetypes})
+                                                 'coursetypes': coursetypes,
+                                                 'filter_status': filter_statue})
 
 
 @staff_member_required

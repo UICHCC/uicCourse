@@ -1,3 +1,4 @@
+{% load url_replace %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -34,7 +35,14 @@
 {% include "course/messager.html" %}
 <main role="main" class="container mb-5">
     <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mt-md-3">Course List
+        <h1 class="mt-md-3">{% if filter_status.is_filtered %}
+            {% if filter_status.major is not None %}
+            {{ filter_status.major }}
+            {% endif %}
+            {% if filter_status.category is not None %}
+            {{ filter_status.category }}
+            {% endif %}
+        {% endif %} Course List
             <button class="btn btn-outline-dark btn-sm" type="button" data-toggle="collapse" data-target="#collapseSelectControl"
                     aria-expanded="false" aria-controls="collapseSelectControl">
                 <i class="fa fa-filter" aria-hidden="true"></i>
@@ -58,7 +66,7 @@
             </button>
             <div class="dropdown-menu">
                 {% for ct in coursetypes %}
-                <a class="dropdown-item" href="#">{{ ct.name }}</a>
+                <a class="dropdown-item" href="{{ request.path }}?category={{ ct.id }}">{{ ct.name }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -72,21 +80,7 @@
             </button>
             <div class="dropdown-menu">
                 {% for major in majors %}
-                <a class="dropdown-item" href="#">{{ major.major_en_abbr }}({{ major.major_cn }})</a>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-    {% if divisions %}
-        <div class="btn-group">
-            <button type="button" class="btn btn-warning">Division</button>
-            <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                <span class="sr-only">Toggle Division Dropdown</span>
-            </button>
-            <div class="dropdown-menu">
-                {% for division in divisions %}
-                <a class="dropdown-item" href="#">{{ division.division_en_abbr }}({{ division.division_cn }})</a>
+                <a class="dropdown-item" href="{{ request.path }}?major={{ major.id }}">{{ major.major }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -126,24 +120,24 @@
                             <span aria_hidden="true">&laquo;</span></a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ courses.previous_page_number }}" aria-label="Previous">
+                        <a class="page-link" href="?{% url_replace page=courses.previous_page_number %}" aria-label="Previous">
                             <span aria_hidden="true">&lsaquo;</span></a>
                     </li>
                 {% endif %}
 
                 <li class="page-item active"><a class="page-link"
-                                                href="?page={{ courses.number }}">Page {{ courses.number }}
+                                                href="?{% url_replace page=courses.number %}">Page {{ courses.number }}
                     of {{ courses.paginator.num_pages }}</a></li>
 
                 {% if courses.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ courses.next_page_number }}" aria-label="Next">
+                        <a class="page-link" href="?{% url_replace page=courses.next_page_number %}" aria-label="Next">
                             <span aria_hidden="true">&rsaquo;</span>
                         </a>
                     </li>
                     <li class="page-item">
 
-                        <a class="page-link" href="?page={{ courses.paginator.num_pages }}" aria-label="Next">
+                        <a class="page-link" href="?{% url_replace page=courses.paginator.number_pages %}" aria-label="Next">
                             <span aria_hidden="true">&raquo;</span>
                         </a>
                     </li>
