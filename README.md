@@ -8,8 +8,8 @@ For a more transparent future - A multi-functional course inquiry platform.
 
 
 ```
-support: Django 2.0.1+
-(tested on 2.0.1-2.0.6)
+support: Django 2.1.0+
+(tested on 2.0.1-2.1.3)
 
 Require Third-part application: 
 django-widget-tweaks
