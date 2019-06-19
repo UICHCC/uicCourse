@@ -125,6 +125,8 @@ def course_detail(request, course_id):
     }
     available_tags = Tags.objects.all()
     course_tag_data = {}
+    pre_request_by = Course.objects.filter(course_pre_request=query_course.id)
+    print(pre_request_by)
     for item in query_course.course_tags.all():
         for tag in item.tags.all():
             if tag.tag_title in course_tag_data:
@@ -139,4 +141,5 @@ def course_detail(request, course_id):
                                                          'course_vote_status': vote_status,
                                                          'available_tags': available_tags,
                                                          'course_tag_data': course_tag_data,
-                                                         'user_review': user_review})
+                                                         'user_review': user_review,
+                                                         'pre_requested_by': pre_request_by})

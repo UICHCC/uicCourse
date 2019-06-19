@@ -80,7 +80,14 @@
                         {% endif %}
                     </li>
                     <li class="list-group-item">Pre-Request:
-
+                        {% if pre_requested_by %}
+                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" data-placement="bottom" title="This course is pre-requested by:" data-html="true" data-content="
+                        {% for rc in pre_requested_by %}
+                        {{ rc.course_id }} {{ rc.course_name_cn }}
+                        <br>
+                        {% endfor %}
+                        "></i>
+                        {% endif %}
                         {% if course_data.course_pre_request %}
                         <a href="{% url 'course_detail' course_data.course_pre_request.id %}">
                             <label class="badge badge-dark">{{course_data.course_pre_request}}</label>
@@ -370,7 +377,13 @@
         }
         update_tag_amount();
     }
-</script>
+
 {% endif %}
+</script>
+    <script>
+    $(function () {
+      $('[data-toggle="popover"]').popover()
+    })
+    </script>
 </body>
 </html>
