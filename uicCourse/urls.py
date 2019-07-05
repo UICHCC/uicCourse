@@ -22,5 +22,6 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     path('', include('report.urls')),
     path('', include('voting.urls')),
-    path('', include('search.urls'))
+    path('', include('search.urls')),
+    path('', include('handbook.urls'))
 ]
