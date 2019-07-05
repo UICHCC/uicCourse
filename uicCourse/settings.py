@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'report',
     'voting',
     'search',
-    'widget_tweaks'
+    'widget_tweaks',
+    'handbook'
 ]
 
 MIDDLEWARE = [
