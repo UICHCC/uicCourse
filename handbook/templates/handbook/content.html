@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>uicCourse</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous"/>
+    <!-- Custom styles for this template -->
+    <style type="text/css">
+        /* Sticky footer styles
+        -------------------------------------------------- */
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+
+        /* Custom page CSS
+        -------------------------------------------------- */
+
+        .transp_input {
+            background: rgba(0, 0, 0, 0);
+        }
+
+        .transp_input:focus {
+            background: rgb(255, 255, 255);
+        }
+    </style>
+    {% load static %}
+</head>
+
+<body>
+{% include "handbook/header.html" %}
+{% include "handbook/messager.html" %}
+<main role="main" class="container mb-5" style="position: relative; overflow: hidden">
+    {% if is_valid %}
+    <h1 class="mt-md-3">{{ major.major.major_en_abbr }} - {{ admission_year }} Admission Handbook</h1>
+    <p class="lead">Public Beta</p>
+    <p>All information is collected from the Internet (AR's Website), for reference only.</p>
+    {% for key, value in handbook_info.items %}
+    <div>
+        <h4>Semester {{ key }}</h4>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Unit(s)</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in value %}
+            <tr>
+                <th>{{ i.title_en }}{% if i.is_course_category %}*{% endif %}
+{#                {% if material.title_cn %}#}
+                    <div class="small text-muted">{{ i.title_cn }}</div>
+{#                {% endif %}#}
+                </th>
+                <td>3</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+    {% else %}
+    <h1 class="mt-md-3">Not a valid major or admission year</h1>
+    <a href="{% url "handbook_home" %}" class="lead">Back home ></a>
+    {% endif %}
+</main>
+{% include "index/footer.html" %}
+</body>
+</html>
