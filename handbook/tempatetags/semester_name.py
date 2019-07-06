@@ -11,6 +11,8 @@ semester_name = {1: 'Year 1 Semester 1',
                  8: 'Year 4 Semester 2'}
 
 
-@register.simple_tag
-def semester_name(semester):
-    return semester_name[semester]
+@register.filter(name='semesterize')
+def semesterize(value, arg):
+    return semester_name[value]
+
+# semesterize.isSafe = True
