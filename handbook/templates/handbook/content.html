@@ -10,6 +10,8 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
     <!-- Custom styles for this template -->
     <style type="text/css">
         /* Sticky footer styles
@@ -48,25 +50,32 @@
     <p>All information is collected from the Internet (AR's Website), for reference only.</p>
     {% for key, value in handbook_info.items %}
     <div>
-        <h4>Semester {{ key }}</h4>
+        <h4>{{ key }}</h4>
         <table class="table table-hover">
             <thead>
-            <tr>
+            <tr class="table-primary">
                 <th scope="col">Item</th>
-                <th scope="col">Unit(s)</th>
+                <th scope="col" class="text-center align-middle" style="width: 16.66%">Unit(s)</th>
             </tr>
             </thead>
             <tbody>
             {% for i in value %}
             <tr>
-                <th>{{ i.title_en }}{% if i.is_course_category %}*{% endif %}
+                <th>{{ i.title_en }}{% if i.is_course_category %} <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" data-html="true" title="This denotes a course category in which a list of courses may be developed for students’ selection. Students are expected to refer to the Online Course Selection System for courses available under each category."></i>{% endif %}
+                {% if i.comment != '' %}
+                     <i class="fa fa-commenting" data-toggle="tooltip" data-placement="right" data-html="true" title="{{ i.comment }}"></i>
+                {% endif %}
 {#                {% if material.title_cn %}#}
                     <div class="small text-muted">{{ i.title_cn }}</div>
 {#                {% endif %}#}
                 </th>
-                <td>3</td>
+                <td class="text-center align-middle">{{ i.unit }}</td>
             </tr>
             {% endfor %}
+            <tr class="table-secondary">
+                <th>Total:</th>
+                <th class="text-center align-middle">{% for k, v in unit.items %}{% if k == key %}{{ v }}{% endif %}{% endfor %}</th>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -77,5 +86,10 @@
     {% endif %}
 </main>
 {% include "index/footer.html" %}
+<script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
 </body>
 </html>
