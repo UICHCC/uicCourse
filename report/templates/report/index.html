@@ -94,7 +94,7 @@
     </div>
     <div>
         <hr>
-        <div id="dependency-g" class="img-fluid" style="height: 600px; max-width: 100%;"></div>
+        <div id="dependency-g" class="img-fluid" style="height: 800px; max-width: 100%;"></div>
     </div>
 </main>
 {% include "index/footer.html" %}
@@ -102,44 +102,64 @@
     $.get('{% url "graph-api" %}').done(function (data) {
 
         console.dir(data);
-        // 填入数据
-        {#chartData.setOption({#}
-        {#    xAxis: {#}
-        {#        data: data.categories#}
-        {#    },#}
-        {#    series: [{#}
-        {#        name: '销量',#}
-        {#        data: data.data#}
-        {#    }]#}
-        {#});#}
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('dependency-g'));
+        var categories = ['division', 'major', 'course'];
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'Course Dependency Graph',
+                subtext: 'uicCourse - {% now "jS F Y H:i" %}'
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            tooltip: {},
+            series: [{
+                name: 'Course Dependency Graph',
+                type: 'graph',
+                layout: 'force',
+                {#layout: 'circular',#}
+                draggable: true,
+                roam: true,
+                label: {
+                    position: 'right'
+                },
+                data: data.graph.nodes,
+                links: data.graph.links,
+                categories: categories,
+                force: {
+                    repulsion: 100,
+                    edgeLength: [30, 60]
+                },
+                lineStyle: {
+                    color: 'source',
+                    {#curveness: 0.3#}
+                },
+                itemStyle: {
+                    normal: {
+                        borderColor: '#fff',
+                        borderWidth: 1,
+                    }
+                },
+                focusNodeAdjacency: true,
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
 
     });
-
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('dependency-g'));
-
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: 'Course Dependency Graph'
-        },
-        tooltip: {},
-        series: [{
-            name: 'Test',
-            type: 'graph',
-            layout: 'circular',
-            data: [{
-                name: 'DST',
-                value: 10
-            }, {
-                name: 'DBM',
-                value: 20
-            }]
-        }]
-    };
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
 </script>
 </body>
 </html>

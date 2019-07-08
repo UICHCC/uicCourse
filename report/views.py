@@ -21,28 +21,57 @@ def dependency_graph_api(request):
     # data = serializers.serialize("xml", Course.objects.all())
     node_id = 0
     edge_id = 0
-    graph = {'graph': {'nodes': [], 'edges': []}}
-    course_node = Course.objects.all()
+    graph = {'graph': {'nodes': [], 'links': []}}
+    all_course = Course.objects.all()
     all_major = ValidDivisionMajorPair.objects.all()
     all_division = Division.objects.all()
     for division in all_division:
-        if division.division_en_abbr == "MISC":
-            pass
-        graph['graph']['nodes'].append({'id': node_id, 'type': 'division', 'label': division.division_en})
+        graph['graph']['nodes'].append({'id': node_id,
+                                        'category': 'division',
+                                        'name': division.division_en,
+                                        'value': 100,
+                                        'symbolSize': 100,
+                                        'label': {'normal': {'show': True, 'fontSize': 20}},
+                                        'itemStyle': {'color': '#c23531'}})
         node_id += 1
     for major in all_major:
-        if major.division.division_en_abbr == "MISC":
-            pass
-        graph['graph']['nodes'].append({'id': node_id, 'type': 'major', 'label': major.major.major_en})
+        graph['graph']['nodes'].append({'id': node_id,
+                                        'category': 'major',
+                                        'name': major.major.major_en_abbr,
+                                        'value': 50,
+                                        'symbolSize': 50,
+                                        'label': {'normal': {'show': True, 'fontSize': 16}},
+                                        'itemStyle': {'color': '#2f4554'}})
         node_id += 1
-        graph['graph']['edges'].append({'id': edge_id, 'source': get_id_by_name(graph, major.division.division_en), 'target': get_id_by_name(graph, major.major.major_en)})
+        graph['graph']['links'].append({'id': edge_id,
+                                        'source': get_id_by_name(graph, major.division.division_en),
+                                        'target': get_id_by_name(graph, major.major.major_en_abbr)})
         edge_id += 1
+    for course in all_course:
+        graph['graph']['nodes'].append({'id': node_id,
+                                        'category': 'course',
+                                        'name': course.course_id+' '+course.course_name_en,
+                                        'value': 10,
+                                        'symbolSize': 10,
+                                        'itemStyle': {'color': '#61a0a8'}})
+        node_id += 1
+        for required_major in course.course_major_take.all():
+            graph['graph']['links'].append({'id': edge_id,
+                                            'source': get_id_by_name(graph, required_major.major.major_en_abbr),
+                                            'target': get_id_by_name(graph, course.course_id+' '+course.course_name_en)})
+            edge_id += 1
+        dependency = Course.objects.filter(course_pre_request=course)
+        for requested_course in dependency:
+            graph['graph']['links'].append({'id': edge_id,
+                                            'source': get_id_by_name(graph, course.course_id+' '+course.course_name_en),
+                                            'target': get_id_by_name(graph, requested_course.course_id)})
+            edge_id += 1
     # return HttpResponse("Unavailable")
     return JsonResponse(graph)
 
 
 def get_id_by_name(dictionary, name):
     for node_item in dictionary['graph']['nodes']:
-        if node_item['label'] == name:
+        if node_item['name'] == name:
             return node_item['id']
     return False
