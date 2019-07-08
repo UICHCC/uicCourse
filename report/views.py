@@ -29,7 +29,7 @@ def dependency_graph_api(request):
         graph['graph']['nodes'].append({'id': node_id,
                                         'category': 'division',
                                         'name': division.division_en,
-                                        'value': 100,
+                                        # 'value': 100,
                                         'symbolSize': 100,
                                         'label': {'normal': {'show': True, 'fontSize': 20}},
                                         'itemStyle': {'color': '#c23531'}})
@@ -38,7 +38,7 @@ def dependency_graph_api(request):
         graph['graph']['nodes'].append({'id': node_id,
                                         'category': 'major',
                                         'name': major.major.major_en_abbr,
-                                        'value': 50,
+                                        # 'value': 50,
                                         'symbolSize': 50,
                                         'label': {'normal': {'show': True, 'fontSize': 16}},
                                         'itemStyle': {'color': '#2f4554'}})
@@ -51,7 +51,8 @@ def dependency_graph_api(request):
         graph['graph']['nodes'].append({'id': node_id,
                                         'category': 'course',
                                         'name': course.course_id+' '+course.course_name_en,
-                                        'value': 10,
+                                        # 'value': 10,
+                                        'label': {'normal': {'show': True, 'fontSize': 12}},
                                         'symbolSize': 10,
                                         'itemStyle': {'color': '#61a0a8'}})
         node_id += 1
@@ -60,11 +61,11 @@ def dependency_graph_api(request):
                                             'source': get_id_by_name(graph, required_major.major.major_en_abbr),
                                             'target': get_id_by_name(graph, course.course_id+' '+course.course_name_en)})
             edge_id += 1
-        dependency = Course.objects.filter(course_pre_request=course)
-        for requested_course in dependency:
+    for course in all_course:
+        for requested_course in Course.objects.filter(course_pre_request=course):
             graph['graph']['links'].append({'id': edge_id,
                                             'source': get_id_by_name(graph, course.course_id+' '+course.course_name_en),
-                                            'target': get_id_by_name(graph, requested_course.course_id)})
+                                            'target': get_id_by_name(graph, requested_course.course_id+ ' '+requested_course.course_name_en)})
             edge_id += 1
     # return HttpResponse("Unavailable")
     return JsonResponse(graph)

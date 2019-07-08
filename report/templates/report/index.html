@@ -120,7 +120,7 @@
                     },
                     dataView: {readOnly: false},
                     restore: {},
-                    saveAsImage: {}
+                    saveAsImage: {},
                 }
             },
             tooltip: {},
@@ -128,6 +128,7 @@
                 name: 'Course Dependency Graph',
                 type: 'graph',
                 layout: 'force',
+                edgeSymbol: ['arrow', 'none'],
                 {#layout: 'circular',#}
                 draggable: true,
                 roam: true,
@@ -144,6 +145,13 @@
                 lineStyle: {
                     color: 'source',
                     {#curveness: 0.3#}
+                },
+                emphasis: {
+                    show: true,
+                    label: {
+                        color: 'auto',
+                        backgroundColor: "#000"
+                    }
                 },
                 itemStyle: {
                     normal: {
