@@ -1,389 +1,398 @@
+{% extends 'content-ui-base.html' %}
+{% load static %}
+{% load url_replace %}
 {% load widget_tweaks %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-    <title>uicCourse | {{course_data.course_name_en}}</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
-    <!-- Custom styles for this template -->
-    <style type="text/css">
-        /* Sticky footer styles
-        -------------------------------------------------- */
-        html {
-            position: relative;
-            min-height: 100%;
-        }
+{% load humanize %}
 
-        body {
-            /* Margin bottom by footer height */
-            margin-bottom: 60px;
-        }
+{% block title %}{{ course_data.course_name_en }} - Details{% endblock %}
 
-        .list-group{
+{% block head_extends %}
+    <style>
+        .list-group {
             width: 100%;
         }
-
-
     </style>
-    {% load static %}
-</head>
+{% endblock %}
 
-<body onload="highlightSelectedTag()">
-{% include "course/header.html" %}
-{% include "course/messager.html" %}
-<main role="main" class="container mb-5">
-<div class="row">
-    <div class="col-md-8 border-right">
-        <h1>{{course_data.course_id | upper}}: {{ course_data.course_name_en }}</h1>
-        <p class="lead">{{ course_data.course_name_cn }}</p>
-        <p class="text-muted">Updated {{course_data.update_time}}</p>
+{% block body %}
+    <main role="main" class="container mb-5">
         <div class="row">
-            <div class="col-md-6">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Course Code:
-                        <label class="badge badge-primary">{{course_data.course_id | upper}}</label>
-                    </li>
-                    <li class="list-group-item">Course Category:
-                        <label class="badge badge-info">
-                            {% if course_data.course_type.name|length > 30 %}
-                                {{course_data.course_type.name_abbr}}
-                            {% else %}
-                                {{course_data.course_type.name}}
-                            {% endif %}
-                        </label>
-                    </li>
-                    <li class="list-group-item">Course Units:
-                        <label class="badge badge-warning">{{course_data.course_units}}</label>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Division:
-                    {% for division in division_involve %}
-                        <label class="badge badge-success">{{ division }}</label>
-                    {% endfor %}
-                    </li>
-                    <li class="list-group-item">Major:
-                        {% if majors %}
-                            {% for major in majors %}
-                            <label class="badge badge-danger">{{ major.major.major_en_abbr }}</label>
-                            {% endfor %}
-                        {% else %}
-                            None
-                        {% endif %}
-                    </li>
-                    <li class="list-group-item">Pre-Request:
-                        {% if pre_requested_by %}
-                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" data-placement="bottom" title="This course is pre-requested by:" data-html="true" data-content="
-                        {% for rc in pre_requested_by %}
-                        {{ rc.course_id }} {{ rc.course_name_cn }}
-                        <br>
-                        {% endfor %}
-                        "></i>
-                        {% endif %}
-                        {% if course_data.course_pre_request %}
-                        <a href="{% url 'course_detail' course_data.course_pre_request.id %}">
-                            <label class="badge badge-dark">{{course_data.course_pre_request}}</label>
-                        </a>
-                        {% else %}
-                            <label class="badge badge-dark">None</label>
-                        {% endif %}
+            <div class="col-md-8 border-right">
+                <h1>{{ course_data.course_id | upper }}: {{ course_data.course_name_en }}</h1>
+                <p class="lead">{{ course_data.course_name_cn }}</p>
+                <p class="text-muted">Updated {{ course_data.update_time }}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Course Code:
+                                <label class="badge bg-primary">{{ course_data.course_id | upper }}</label>
+                            </li>
+                            <li class="list-group-item">Course Category:
+                                <label class="badge bg-info">
+                                    {% if course_data.course_type.name|length > 30 %}
+                                        {{ course_data.course_type.name_abbr }}
+                                    {% else %}
+                                        {{ course_data.course_type.name }}
+                                    {% endif %}
+                                </label>
+                            </li>
+                            <li class="list-group-item">Course Units:
+                                <label class="badge bg-warning">{{ course_data.course_units }}</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Division:
+                                {% for division in division_involve %}
+                                    <label class="badge bg-success">{{ division }}</label>
+                                {% endfor %}
+                            </li>
+                            <li class="list-group-item">Major:
+                                {% if majors %}
+                                    {% for major in majors %}
+                                        <label class="badge bg-danger">{{ major.major.major_en_abbr }}</label>
+                                    {% endfor %}
+                                {% else %}
+                                    None
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item">Prerequisite:
+                                {% if pre_requested_by %}
+                                    <i type="button" class="fas fa-info-circle" id="requested_by"></i>
+                                {% endif %}
+                                {% if course_data.course_pre_request %}
+                                    <a href="{% url 'course_detail' course_data.course_pre_request.id %}">
+                                        <label class="badge bg-dark">{{ course_data.course_pre_request }}</label>
+                                    </a>
+                                {% else %}
+                                    <label class="badge bg-dark">None</label>
+                                {% endif %}
 
-                    </li>
-                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <h5 class="px-3">Course Descriptions: </h5>
+                        <li class="list-group-item">{{ course_data.course_description }}</li>
+                    </ul>
+                </div>
             </div>
-            <ul class="list-group list-group-flush">
-                <h5 class="px-3">Course Descriptions: </h5>
-                <li class="list-group-item">{{course_data.course_description}}</li>
-            </ul>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card" style="margin-bottom: 1rem!important;">
-            <div class="card-header">
-                <h4 class="card-text text-center">Overall Score</h4>
-            </div>
-            <div class="card-body">
-                <p class="card-text text-center text-dark" style="font-size: 5rem"><span
-                        id="current_score">{{course_vote_status.score|floatformat:1}}</span>/<span
-                        class="h2 text-secondary">10</span></p>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-text text-center">Quick Vote</h4>
-            </div>
-            <div class="card-body mx-auto">
-            {% if user.is_authenticated %}
-                <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
-                    {% if user_vote.vote_status == 0 %}
-                        <button class="btn btn-outline-success" id="upvote_btn">
-                            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                            {{course_vote_status.upvote}}
-                        </button>
-                        <button class="btn btn-outline-danger" id="downvote_btn">
-                            <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                        </button>
-                    {% else %}
-                        {% if user_vote.vote_status == 1 %}
-                            <button class="btn btn-outline-success" id="upvote_btn">
-                                <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                                {{course_vote_status.upvote}}
-                            </button>
-                            <button class="btn btn-outline-danger" id="downvote_btn">
-                                <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-                            </button>
+            <div class="col-md-4">
+                <div class="card" style="margin-bottom: 1rem!important;">
+                    <div class="card-header">
+                        <h4 class="card-text text-center">Overall Score</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text text-center text-dark" style="font-size: 5rem"><span
+                                id="current_score">{{ course_vote_status.score|floatformat:1 }}</span>/<span
+                                class="h2 text-secondary">10</span></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-text text-center">Quick Vote</h4>
+                    </div>
+                    <div class="card-body mx-auto">
+                        {% if user.is_authenticated %}
+                            <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
+                                {% if user_vote.vote_status == 0 %}
+                                    <button class="btn btn-outline-success" id="upvote_btn">
+                                        <i class="far fa-thumbs-up" aria-hidden="true"></i>
+                                        {{ course_vote_status.upvote }}
+                                    </button>
+                                    <button class="btn btn-outline-danger" id="downvote_btn">
+                                        <i class="fas fa-thumbs-down" aria-hidden="true"></i>
+                                    </button>
+                                {% else %}
+                                    {% if user_vote.vote_status == 1 %}
+                                        <button class="btn btn-outline-success" id="upvote_btn">
+                                            <i class="fas fa-thumbs-up" aria-hidden="true"></i>
+                                            {{ course_vote_status.upvote }}
+                                        </button>
+                                        <button class="btn btn-outline-danger" id="downvote_btn">
+                                            <i class="far fa-thumbs-down" aria-hidden="true"></i>
+                                        </button>
+                                    {% else %}
+                                        <button class="btn btn-outline-success" id="upvote_btn">
+                                            <i class="far fa-thumbs-up" aria-hidden="true"></i>
+                                            {{ course_vote_status.upvote }}
+                                        </button>
+                                        <button class="btn btn-outline-danger" id="downvote_btn">
+                                            <i class="far fa-thumbs-down" aria-hidden="true"></i>
+                                        </button>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
                         {% else %}
-                            <button class="btn btn-outline-success" id="upvote_btn">
-                                <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                                {{course_vote_status.upvote}}
-                            </button>
-                            <button class="btn btn-outline-danger" id="downvote_btn">
-                                <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-                            </button>
+                            <p class="card-text"><a href="{% url 'login_page' %}">Please login to submit your review</a>
+                            </p>
                         {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            {% if user.is_staff or user.is_superuser %}
+                <nav class="py-2 border-top border-bottom">
+                    <a href="{% url 'course_modify' course_data.id %}" class="btn btn-primary btn-sm my-1">Modify</a>
+                    <button onclick="AlertIt()" class="btn btn-danger btn-sm my-1">Delete</button>
+                </nav>
+            {% endif %}
+        </div>
+        <div>
+            <div class="card mt-2" style="margin-bottom: 5rem">
+                <div class="card-header">
+                    Tags
+                </div>
+                <div class="card-body">
+                    {% if course_tag_data %}
+                        {% for item, value in course_tag_data.items %}
+                            {% if value != 0 %}
+                                <button type="button" class="btn btn-primary">
+                                    {{ item }} <span class="badge bg-light text-primary">{{ value }}</span>
+                                </button>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <p class="card-text">No record</p>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        {% if user_review %}
+                            <p class="card-text mt-2"><a href="#" data-bs-toggle="modal"
+                                                         data-bs-target="#staticBackdrop"
+                                                         onclick="highlightSelectedTag()">Modify
+                                your review</a></p>
+                            {#                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">#}
+                            {#                                Launch static backdrop modal#}
+                            {#                            </button>#}
+                        {% else %}
+                            <p class="card-text mt-2"><a href="#" data-bs-toggle="modal"
+                                                         data-bs-target="#staticBackdrop">Add
+                                your review</a></p>
+                            {#                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">#}
+                            {#                                Launch static backdrop modal#}
+                            {#                            </button>#}
+                        {% endif %}
+                    {% else %}
+                        <p class="card-text mt-2"><a href="{% url 'login_page' %}">Please login to submit your
+                            review</a>
+                        </p>
                     {% endif %}
                 </div>
-            {% else %}
-            <p class="card-text"><a href="{% url 'login_page' %}">Please login to submit your review</a></p>
-            {% endif %}
             </div>
         </div>
-    </div>
-</div>
-<div>
-{% if user.is_staff or user.is_superuser %}
-<nav class="py-2 border-top border-bottom">
-    <a href="{% url 'course_modify' course_data.id %}" class="btn btn-primary btn-sm my-1">Modify</a>
-    <button onclick="AlertIt()" class="btn btn-danger btn-sm my-1">Delete</button>
-</nav>
-{% endif %}
-</div>
-<div>
-    <div class="card mt-2" style="margin-bottom: 5rem">
-        <div class="card-header">
-            Tags
+    </main>
+    {% if user.is_authenticated %}
+        <!-- Modal -->
+        <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tagBoxTitle">Review Course: {{ course_data.course_name_en }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-muted">You can choose no more than 3 tags, you already select <span
+                                id="select_tag_amount">0 tag</span></p>
+                        {% if available_tags %}
+                            {% for tag in available_tags %}
+                                <button type="button" class="btn btn-outline-success btn_review_tag my-2"
+                                        id="{{ tag.id }}"
+                                        title="{{ tag.tag_description }}">{{ tag.tag_title }}</button>
+                            {% endfor %}
+                        {% endif %}
+                        <form id="tag_submit_form" method="POST" action="{% url 'tag_course' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="course_id" value="{{ course_data.id }}">
+                            <input type="hidden" name="tag1" id="user_tag1" value="">
+                            <input type="hidden" name="tag2" id="user_tag2" value="">
+                            <input type="hidden" name="tag3" id="user_tag3" value="">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="prepareTagSubmitForm()">Submit your
+                            review
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-        {% if course_tag_data %}
-            {% for item, value in course_tag_data.items %}
-            {% if value != 0 %}
-            <button type="button" class="btn btn-primary">
-                {{ item }} <span class="badge badge-light">{{ value }}</span>
-            </button>
-            {% endif %}
-            {% endfor %}
-        {% else %}
-        <p class="card-text">No record</p>
-        {% endif %}
-        {% if user.is_authenticated %}
-        {% if user_review %}
-        <p class="card-text mt-2"><a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Modify your review</a></p>
-        {% else %}
-        <p class="card-text mt-2"><a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Add your review</a></p>
-        {% endif %}
-        {% else %}
-        <p class="card-text mt-2"><a href="{% url 'login_page' %}">Please login to submit your review</a></p>
-        {% endif %}
-        </div>
-    </div>
-</div>
-</main>
-{% if user.is_authenticated %}
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="tags" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="tagBoxTitle">Review Course: {{ course_data.course_name_en }}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-        <p class="text-muted">You can choose no more than 3 tags, you already select <span id="select_tag_amount">0 tag</span></p>
-        {% if available_tags %}
-            {% for tag in available_tags %}
-            <button type="button" class="btn btn-outline-info btn_review_tag my-2" id="{{ tag.id }}" title="{{ tag.tag_description }}">{{ tag.tag_title }}</button>
-            {% endfor %}
-        {% endif %}
-        <form id="tag_submit_form" method="POST" action="{% url 'tag_course' %}">
-            {% csrf_token %}
-            <input type="hidden" name="course_id" value="{{ course_data.id }}">
-            <input type="hidden" name="tag1" id="user_tag1" value="">
-            <input type="hidden" name="tag2" id="user_tag2" value="">
-            <input type="hidden" name="tag3" id="user_tag3" value="">
-        </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="prepareTagSubmitForm()">Submit your review</button>
-        </div>
-    </div>
-</div>
-</div>
-{% endif %}
-{% include "course/footer.html" %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.0/sweetalert2.all.min.js" integrity="sha256-FABHlNZdWEEvD1Ge8L18a01NTTLNiZ4uD8hdl5QG5BI=" crossorigin="anonymous"></script>
-{% if user.is_authenticated %}
-<script>
-    function AlertIt() {
-        swal({
-        title: 'Are you sure you want to delete this course record?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.value) {
-                window.location = "{% url 'course_delete' course_data.id %}"
-            }
-        })
-    }
-    var voted = 0;
-    $("#upvote_btn").click(function () {
-        if (!voted) {
-            $.ajax({
-                url: '{% url "vote_course" course_data.id %}',
-                data: {
-                    'vote_action': 'upvote'
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data.is_success) {
-                        console.log(data.new_upvote)
-                        $("#upvote_btn").html("<i class=\"fa fa-thumbs-up\" aria-hidden=\"true\"></i>\n" + (parseInt(data.new_upvote)));
-                        $("#downvote_btn").html("<i class=\"fa fa-thumbs-o-down\" aria-hidden=\"true\"></i>\n");
-                        voted = 1;
-                        $("#current_score").html(data.current_score.toFixed(1));
-                        swal(
-                            'Voted!',
-                            'You have successfully given this class an up vote.',
-                            'success'
-                        )
-                    }
-                }
-            });
-        }
-        else {
-            voted_alert();
-        }
-    });
-    $("#downvote_btn").click(function () {
-        if (!voted) {
-            $.ajax({
-                url: '{% url "vote_course" course_data.id %}',
-                data: {
-                    'vote_action': 'downvote'
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data.is_success) {
-                        console.log(data.new_upvote)
-                        $("#upvote_btn").html("<i class=\"fa fa-thumbs-o-up\" aria-hidden=\"true\"></i>\n" + (parseInt(data.new_upvote)));
-                        $("#downvote_btn").html("<i class=\"fa fa-thumbs-down\" aria-hidden=\"true\"></i>\n");
-                        voted = 1;
-                        $("#current_score").html(data.current_score.toFixed(1));
-                        swal(
-                            'Voted!',
-                            'You have successfully given this class a down vote.',
-                            'success'
-                        )
-                    }
-                }
-            });
-        }
-        else {
-            voted_alert();
-        }
-    });
+    {% endif %}
+{% endblock %}
 
-    function voted_alert() {
-        swal(
-            'Voted!',
-            'You have been already voted.',
-            'warning'
-        )
-    }
-    selectedTags = [];
-    $(".btn_review_tag").click(function(e){
-        if (selectedTags.indexOf(parseInt(e.target.id)) !== -1){
-            selectedTags.splice(selectedTags.indexOf(parseInt(e.target.id)),1);
-            $(this).removeClass('btn-info');
-            $(this).addClass('btn-outline-info');
-            update_tag_amount();
-            return;
+{% block footer_extends %}{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.0/sweetalert2.all.min.js"
+            integrity="sha256-FABHlNZdWEEvD1Ge8L18a01NTTLNiZ4uD8hdl5QG5BI=" crossorigin="anonymous"></script>
+    {% if user.is_authenticated %}
+        <script>
+        function AlertIt() {
+            swal({
+                title: 'Are you sure you want to delete this course record?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    window.location = "{% url 'course_delete' course_data.id %}"
+                }
+            })
         }
-        if (selectedTags.length < 3){
-            selectedTags.push(parseInt(e.target.id));
-            $(this).removeClass('btn-outline-info');
-            $(this).addClass('btn-info');
-            update_tag_amount()
-        }else{
-            if (selectedTags.indexOf(parseInt(e.target.id)) !== -1){
-                selectedTags.splice(selectedTags.indexOf(parseInt(e.target.id)),1);
-                $(this).removeClass('btn-info');
-                $(this).addClass('btn-outline-info');
-                update_tag_amount();
-            }else{
-                update_tag_amount();
-                swal(
-                    'Reach maximum amount!',
-                    'You can choose no more than 3 tags.',
-                    'warning'
-                )
+        var voted = 0;
+        $("#upvote_btn").click(function () {
+            if (!voted) {
+                $.ajax({
+                    url: '{% url "vote_course" course_data.id %}',
+                    data: {
+                        'vote_action': 'upvote'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.is_success) {
+                            console.log(data.new_upvote)
+                            $("#upvote_btn").html("<i class=\"fas fa-thumbs-up\" aria-hidden=\"true\"></i>\n" + (parseInt(data.new_upvote)));
+                            $("#downvote_btn").html("<i class=\"far fa-thumbs-down\" aria-hidden=\"true\"></i>\n");
+                            voted = 1;
+                            $("#current_score").html(data.current_score.toFixed(1));
+                            swal(
+                                'Voted!',
+                                'You have successfully given this class an up vote.',
+                                'success'
+                            )
+                        }
+                    }
+                });
+            } else {
+                voted_alert();
             }
-        }
-    });
-    function update_tag_amount(){
-        fillintext = '';
-        if (selectedTags.length <= 1){
-            fillintext = selectedTags.length + ' tag';
-        }else{
-            fillintext = selectedTags.length + ' tags';
-        }
-        $("#select_tag_amount").text(fillintext)
-    }
-    function prepareTagSubmitForm(){
-        if (selectedTags.length === 0){
+        });
+        $("#downvote_btn").click(function () {
+            if (!voted) {
+                $.ajax({
+                    url: '{% url "vote_course" course_data.id %}',
+                    data: {
+                        'vote_action': 'downvote'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.is_success) {
+                            console.log(data.new_upvote)
+                            $("#upvote_btn").html("<i class=\"far fa-thumbs-up\" aria-hidden=\"true\"></i>\n" + (parseInt(data.new_upvote)));
+                            $("#downvote_btn").html("<i class=\"fas fa-thumbs-down\" aria-hidden=\"true\"></i>\n");
+                            voted = 1;
+                            $("#current_score").html(data.current_score.toFixed(1));
+                            swal(
+                                'Voted!',
+                                'You have successfully given this class a down vote.',
+                                'success'
+                            )
+                        }
+                    }
+                });
+            } else {
+                voted_alert();
+            }
+        });
+
+        function voted_alert() {
             swal(
+                'Voted!',
+                'You have been already voted.',
+                'warning'
+            )
+        }
+        selectedTags = [];
+        $(".btn_review_tag").click(function (e) {
+            if (selectedTags.indexOf(parseInt(e.target.id)) !== -1) {
+                selectedTags.splice(selectedTags.indexOf(parseInt(e.target.id)), 1);
+                $(this).removeClass('btn-success');
+                $(this).addClass('btn-outline-success');
+                update_tag_amount();
+                return;
+            }
+            if (selectedTags.length < 3) {
+                selectedTags.push(parseInt(e.target.id));
+                $(this).removeClass('btn-outline-success');
+                $(this).addClass('btn-success');
+                update_tag_amount()
+            } else {
+                if (selectedTags.indexOf(parseInt(e.target.id)) !== -1) {
+                    selectedTags.splice(selectedTags.indexOf(parseInt(e.target.id)), 1);
+                    $(this).removeClass('btn-success');
+                    $(this).addClass('btn-outline-success');
+                    update_tag_amount();
+                } else {
+                    update_tag_amount();
+                    swal(
+                        'Reach maximum amount!',
+                        'You can choose no more than 3 tags.',
+                        'warning'
+                    )
+                }
+            }
+        });
+        function update_tag_amount() {
+            fillintext = '';
+            if (selectedTags.length <= 1) {
+                fillintext = selectedTags.length + ' tag';
+            } else {
+                fillintext = selectedTags.length + ' tags';
+            }
+            $("#select_tag_amount").text(fillintext)
+        }
+        function prepareTagSubmitForm() {
+            if (selectedTags.length === 0) {
+                swal(
                     'You didn\'t select any tag!',
                     'Please don\'t submit an empty review.',
                     'warning'
-            )
-            return;
+                )
+                return;
+            }
+            $("#user_tag1").val(selectedTags[0]);
+            $("#user_tag2").val(selectedTags[1]);
+            $("#user_tag3").val(selectedTags[2]);
+            $("#tag_submit_form").submit();
         }
-        $("#user_tag1").val(selectedTags[0]);
-        $("#user_tag2").val(selectedTags[1]);
-        $("#user_tag3").val(selectedTags[2]);
-        $("#tag_submit_form").submit();
-    }
-    function highlightSelectedTag(){
-        {% for tagid in user_review.tags.all %}
-        selectedTags.push(parseInt({{tagid.id}}));
-        {% endfor %}
-        for (var i = 0; i < selectedTags.length; i++){
-            var tagName = "#" + selectedTags[i];
-            $(tagName).removeClass('btn-outline-info');
-            $(tagName).addClass('btn-info');
+        function highlightSelectedTag() {
+            {% for tagid in user_review.tags.all %}
+                selectedTags.push(parseInt({{tagid.id}}));
+            {% endfor %}
+            for (var i = 0; i < selectedTags.length; i++) {
+                var tagName = "#" + selectedTags[i];
+                $(tagName).removeClass('btn-outline-success');
+                $(tagName).addClass('btn-success');
+            }
+            update_tag_amount();
         }
-        update_tag_amount();
-    }
 
-{% endif %}
+    {% endif %}
 </script>
     <script>
-    $(function () {
-      $('[data-toggle="popover"]').popover()
-    })
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+        {% if pre_requested_by %}
+            var request_popover = document.getElementById('requested_by')
+            var popover = new bootstrap.Popover(request_popover, {
+                    container: 'body',
+                    html: true,
+                    title: 'This course is pre-requested by',
+                    content: '{% for rc in pre_requested_by %}<a href="{% url 'course_detail' rc.id %}">{{ rc.course_id }}</a> {{ rc.course_name_cn }}<br>{% endfor %}'
+                }
+            )
+        {% endif %}
     </script>
-</body>
-</html>
+{% endblock %}
+
+{% block out_of_body %}{% endblock %}
+

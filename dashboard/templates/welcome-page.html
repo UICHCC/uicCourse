@@ -1,0 +1,50 @@
+{% extends 'content-ui-base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+
+{% block title %}Home{% endblock %}
+
+{% block head_extends %}{% endblock %}
+
+{% block body %}
+    <main id="main">
+        {% include 'svg-pattern.html' %}
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="mt-md-3">uicCourse</h1>
+                <p class="lead">A course information query system for you.</p>
+                <form class="my-4" action="{% url 'search_course' %}">
+                    <input class="form-control transp_input" type="text" placeholder="Search a course to start..."
+                           autocomplete="off" name="search"
+                           value="{% if search_result %}{{ raw_input }}{% endif %}">
+                </form>
+                <p>All information is collected from the Internet (AR's Website), for reference only.</p>
+            </div>
+            <div class="col-md-4">
+                <hr class="d-block d-md-none">
+                <h1 class="mt-md-3">Latest Notice</h1>
+                <div class="list-group">
+                    {% if latest_notice %}
+                    {% for notice in latest_notice %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mt-1 mb-lg-3">{{ notice.title }}</h5>
+                        </div>
+                        <p class="mb-lg-3">{{ notice.content }}</p>
+                        <small class="text-secondary">{{ notice.update_time | naturaltime }}</small>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block footer_extends %}{% endblock %}
+
+{% block extra_js %}{% endblock %}
+
+{% block out_of_body %}{% endblock %}

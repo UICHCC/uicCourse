@@ -58,7 +58,7 @@ def course_create(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = CourseForm()
-    return render(request, 'course/course_create.html', {'form': form})
+    return render(request, 'course/course_form.html', {'form': form})
 
 
 @staff_member_required
@@ -75,7 +75,7 @@ def course_modify(request, course_id):
     else:
         course = Course.objects.get(pk=course_id)
         form = CourseForm(instance=course)
-    return render(request, 'course/course_create.html', {'form': form})
+    return render(request, 'course/course_form.html', {'form': form})
 
 
 @staff_member_required

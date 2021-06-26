@@ -3,37 +3,39 @@
 {% load widget_tweaks %}
 {% load humanize %}
 
-{% block title %}Review Records{% endblock %}
+{% block title %}Quick Vote Records{% endblock %}
 
 {% block head_extends %}
 {% endblock %}
 
 {% block body %}
 <main role="main" class="container mb-5">
-    <h1 class="mt-md-3">Review Records by {{ user.username }}</h1>
+    <h1 class="mt-md-3">Quick Vote Records by {{ user.username }}</h1>
     {% include "dashboard-functions.html" %}
     <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Course</th>
-                    <th scope="col">Tags</th>
-                    <th scope="col">Review time</th>
+                    <th scope="col">Vote as</th>
+                    <th scope="col">Vote time</th>
                     <th scope="col">Detail</th>
                 </tr>
             </thead>
             <tbody>
-                {% if reviews %}
-                    {% for review in reviews %}
+                {% if votes %}
+                    {% for vote in votes %}
                     <tr>
-                        <td>{{ review.tag_course.course_name_en }}</td>
+                        <td>{{ vote.course.course_name_en }}</td>
                         <td>
-                        {% for tag in review.tags.all %}
-                            <span class="badge bg-secondary">{{ tag }}</span>
-                        {% endfor %}
+                        {% if vote.vote_status == True %}
+                            <span class="badge bg-success">Up Vote</span>
+                        {% else %}
+                            <span class="badge bg-danger">Down Vote</span>
+                        {% endif %}
                         </td>
-                        <td>{{ review.update_time }}</td>
-                        <td><a href="{% url 'course_detail' review.tag_course.id %}">Detail</a></td>
+                        <td>{{ vote.vote_date }}</td>
+                        <td><a href="{% url 'course_detail' vote.course.id %}">Detail</a></td>
                     </tr>
                     {% endfor %}
                 {% else %}

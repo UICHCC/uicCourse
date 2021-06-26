@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 {% load humanize %}
 
-{% block title %}Change Profile{% endblock %}
+{% block title %}Course Form{% endblock %}
 
 {% block head_extends %}
     <style>
@@ -18,8 +18,7 @@
 
 {% block body %}
     <main role="main" class="container mb-5">
-    <h1 class="mt-md-3">Change Profile</h1>
-    {% include "dashboard-functions.html" %}
+    <h1 class="mt-md-3">Create/Modify Course</h1>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}
@@ -36,13 +35,14 @@
             {% endfor %}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary mb-5">Sign up</button>
+        <button type="submit" class="btn btn-primary mb-5">Submit</button>
     </form>
 </main>
 {% endblock %}
 
 {% block footer_extends %}{% endblock %}
 
-{% block extra_js %}{% endblock %}
+{% block extra_js %}
+{% endblock %}
 
 {% block out_of_body %}{% endblock %}

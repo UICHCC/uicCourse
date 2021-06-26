@@ -1,173 +1,152 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-    <title>uicCourse</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous"/>
-    <!-- Custom styles for this template -->
-    <style type="text/css">
-        /* Sticky footer styles
-        -------------------------------------------------- */
-        html {
-            position: relative;
-            min-height: 100%;
-        }
+{% extends 'content-ui-base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
 
-        body {
-            /* Margin bottom by footer height */
-            margin-bottom: 60px;
-        }
+{% block title %}Report{% endblock %}
 
-        /* Custom page CSS
-        -------------------------------------------------- */
-
-        .transp_input {
-            background: rgba(0, 0, 0, 0);
-        }
-
-        .transp_input:focus {
-            background: rgb(255, 255, 255);
-        }
-    </style>
-    <!-- Load Echarts -->
+{% block head_extends %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"
             integrity="sha256-XNiBJGZuErA+MsbKwxuTqNMimobZMsVS79SkTUroRz4=" crossorigin="anonymous"></script>
-    {% load static %}
-</head>
+{% endblock %}
 
-<body>
-{% include "report/header.html" %}
-{% include "report/messager.html" %}
-<main role="main" class="container mb-5" style="position: relative; overflow: hidden">
-    <h1 class="mt-md-3">uicCourse Report</h1>
-    <p class="lead">Currently on this site.</p>
-    <div class="card-deck mb-3 text-center">
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Number of Course</h4>
+{% block body %}
+    <main role="main" class="container mb-5" style="position: relative; overflow: hidden">
+        <h1 class="mt-md-3">uicCourse Report</h1>
+        <p class="lead">Currently on this site.</p>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Number of Course</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ content.course_amount }}</h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>in {{ content.course_type }} different types</li>
+                        </ul>
+                        <a href="{% url 'course_list_page' %}" class="btn btn-lg btn-block btn-outline-primary">Check
+                            all
+                            courses</a>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">{{ content.course_amount }}</h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li>in {{ content.course_type }} different types</li>
-                </ul>
-                <a href="{% url 'course_list_page' %}" class="btn btn-lg btn-block btn-outline-primary">Check all
-                    courses</a>
+            <div class="col">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Number of Review</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ content.review_q }}+{{ content.review_t }}</h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Sign up and submit your review</li>
+                        </ul>
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'search_course' %}" class="btn btn-lg btn-block btn-primary">Search and
+                                submit your
+                                review</a>
+                        {% else %}
+                            <a href="{% url 'signup_page' %}" class="btn btn-lg btn-block btn-primary">Sign up</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Number of Major</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ content.major_amount }}</h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Cover {{ content.division_amount }} divisions</li>
+                        </ul>
+                        <a href="{% url 'handbook_home' %}" class="btn btn-lg btn-block btn-primary">Check Handbook for
+                            major</a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Number of Review</h4>
-            </div>
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">{{ content.review_q }}+{{ content.review_t }}</h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li>Sign up and submit your review</li>
-                </ul>
-                {% if request.user.is_authenticated %}
-                    <a href="{% url 'search_course' %}" class="btn btn-lg btn-block btn-primary">Search and submit your
-                        review</a>
-                {% else %}
-                    <a href="{% url 'signup_page' %}" class="btn btn-lg btn-block btn-primary">Sign up</a>
-                {% endif %}
-            </div>
+        <div>
+            <hr>
+            <div id="dependency-g" class="img-fluid" style="height: 800px; max-width: 100%;"></div>
         </div>
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Number of Major</h4>
-            </div>
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">{{ content.major_amount }}</h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li>Cover {{ content.division_amount }} divisions</li>
-                </ul>
-                <a href="{% url 'handbook_home' %}" class="btn btn-lg btn-block btn-primary">Check Handbook for
-                    major</a>
-            </div>
-        </div>
-    </div>
-    <div>
-        <hr>
-        <div id="dependency-g" class="img-fluid" style="height: 800px; max-width: 100%;"></div>
-    </div>
-</main>
-{% include "index/footer.html" %}
-<script type="text/javascript">
-    $.get('{% url "graph-api" %}').done(function (data) {
+    </main>
+{% endblock %}
 
-        console.dir(data);
+{% block footer_extends %}{% endblock %}
 
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('dependency-g'));
-        var categories = ['division', 'major', 'course'];
-        // 指定图表的配置项和数据
-        var option = {
-            title: {
-                text: 'Course Dependency Graph',
-                subtext: 'uicCourse - {% now "jS F Y H:i" %}'
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    dataZoom: {
-                        yAxisIndex: 'none'
-                    },
-                    dataView: {readOnly: false},
-                    restore: {},
-                    saveAsImage: {},
-                }
-            },
-            tooltip: {},
-            series: [{
-                name: 'Course Dependency Graph',
-                type: 'graph',
-                layout: 'force',
-                edgeSymbol: ['arrow', 'none'],
-                {#layout: 'circular',#}
-                draggable: true,
-                roam: true,
-                label: {
-                    position: 'right'
+{% block extra_js %}
+    <script type="text/javascript">
+        $.get('{% url "graph-api" %}').done(function (data) {
+
+            console.dir(data);
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('dependency-g'));
+            var categories = ['division', 'major', 'course'];
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: 'Course Dependency Graph',
+                    subtext: 'uicCourse - {% now "jS F Y H:i" %}'
                 },
-                data: data.graph.nodes,
-                links: data.graph.links,
-                categories: categories,
-                force: {
-                    repulsion: 100,
-                    edgeLength: [30, 60]
-                },
-                lineStyle: {
-                    color: 'source',
-                    {#curveness: 0.3#}
-                },
-                emphasis: {
+                toolbox: {
                     show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        dataView: {readOnly: false},
+                        restore: {},
+                        saveAsImage: {},
+                    }
+                },
+                tooltip: {},
+                series: [{
+                    name: 'Course Dependency Graph',
+                    type: 'graph',
+                    layout: 'force',
+                    edgeSymbol: ['arrow', 'none'],
+                    {#layout: 'circular',#}
+                    draggable: true,
+                    roam: true,
                     label: {
-                        color: 'auto',
-                        backgroundColor: "#000"
-                    }
-                },
-                itemStyle: {
-                    normal: {
-                        borderColor: '#fff',
-                        borderWidth: 1,
-                    }
-                },
-                focusNodeAdjacency: true,
-            }]
-        };
+                        position: 'right'
+                    },
+                    data: data.graph.nodes,
+                    links: data.graph.links,
+                    categories: categories,
+                    force: {
+                        repulsion: 100,
+                        edgeLength: [30, 60]
+                    },
+                    lineStyle: {
+                        color: 'source',
+                        {#curveness: 0.3#}
+                    },
+                    emphasis: {
+                        show: true,
+                        label: {
+                            color: 'auto',
+                            backgroundColor: "#000"
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            borderColor: '#fff',
+                            borderWidth: 1,
+                        }
+                    },
+                    focusNodeAdjacency: true,
+                }]
+            };
 
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+    </script>
+{% endblock %}
 
-
-    });
-</script>
-</body>
-</html>
+{% block out_of_body %}{% endblock %}

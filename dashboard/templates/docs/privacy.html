@@ -1,39 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-    <title>uicCourse | Privacy Statement</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
-    <!-- Custom styles for this template -->
-    <style type="text/css">
-        /* Sticky footer styles
-        -------------------------------------------------- */
-        html {
-            position: relative;
-            min-height: 100%;
-        }
+{% extends 'content-ui-base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
 
-        body {
-            /* Margin bottom by footer height */
-            margin-bottom: 60px;
-        }
+{% block title %}Privacy Statement{% endblock %}
 
-        /* Custom page CSS
-        -------------------------------------------------- */
+{% block head_extends %}
+{% endblock %}
 
-    </style>
-    {% load static %}
-</head>
-
-<body>
-{% include "index/header.html" %}
-{% include "index/messager.html" %}
-<main role="main" class="container mb-5">
+{% block body %}
+    <main role="main" class="container mb-5">
     <h1 class="mt-md-3">uicCourse | 隐私</h1>
     <p>uicCourse 网站 (后简称为 “网站”) 托管于云服务器中，由 UIC-HCC 计算机俱乐部 (后简称为 “我们”) 维护。使用和 / 或访问本网站，说明您已经同意遵守我们有关隐私和使用条款的规定。请仔细阅读。</p>
     <h4>信息收集</h4>
@@ -49,6 +25,11 @@
     <h4>删除账户</h4>
     <p>如果你想要将你在本网站的账户删除，请联系网站管理员：uic-course@uichcc.com</p>
 </main>
-{% include "index/footer.html" %}
-</body>
-</html>
+{% endblock %}
+
+{% block footer_extends %}{% endblock %}
+
+{% block extra_js %}{% endblock %}
+
+{% block out_of_body %}{% endblock %}
+
