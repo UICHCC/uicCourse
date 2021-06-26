@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'voting',
     'search',
     'widget_tweaks',
-    'handbook'
+    'handbook',
+    'protocourse'
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 LOGIN_URL = '/login/'
 # If the user isn't logged in but try to access login request area
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

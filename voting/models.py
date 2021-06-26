@@ -11,7 +11,7 @@ class QuickVotes(models.Model):
     voter = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Voter')
     vote_date = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
-    vote_status = models.NullBooleanField(blank=True, null=True)  # null = not vote, True = up vote, False = down vote
+    vote_status = models.BooleanField(blank=True, null=True)  # null = not vote, True = up vote, False = down vote
     is_invalid_vote = models.BooleanField(default=False)
 
     def __str__(self):
