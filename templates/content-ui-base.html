@@ -27,7 +27,7 @@
     <div class="container">
         <hr>
         <span class="text-muted d-flex flex-column flex-md-row justify-content-md-between">
-            <p>Server Time: {% now "Y-m-d H:i e" %} · <span class="font-monospace">Version: dev</span></p>
+            <p>Server Time: {% now "Y-m-d H:i e" %} · <a href="https://github.com/UICHCC/uicCourse" class="font-monospace">Version: dev</a></p>
             <p>A <a href="https://uichcc.com">UICHCC Computer Club</a> Project {% block footer_extends %}{% endblock %} · <a href="{% url 'terms_page' %}">Terms</a> · <a href="{% url 'privacy_page' %}">Privacy</a></p>
         </span>
     </div>
