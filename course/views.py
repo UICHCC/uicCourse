@@ -111,7 +111,7 @@ def course_detail(request, course_id):
     valid_upvote = QuickVotes.objects.filter(course=query_course, vote_status=True, is_invalid_vote=0).count()
     valid_downvote = QuickVotes.objects.filter(course=query_course, vote_status=False, is_invalid_vote=0).count()
     if valid_upvote + valid_downvote == 0:
-        course_score = 5
+        course_score = "-"
     elif valid_downvote == 0:
         course_score = 10
     elif valid_upvote == 0:

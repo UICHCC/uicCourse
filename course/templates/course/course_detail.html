@@ -84,9 +84,15 @@
                         <h4 class="card-text text-center">Overall Score</h4>
                     </div>
                     <div class="card-body">
-                        <p class="card-text text-center text-dark" style="font-size: 5rem"><span
-                                id="current_score">{{ course_vote_status.score|floatformat:1 }}</span>/<span
+                        {% if course_vote_status.score != "-" %}
+                            <p class="card-text text-center text-dark" style="font-size: 5rem"><span
+                                    id="current_score">{{ course_vote_status.score|floatformat:1 }}</span>/<span
+                                    class="h2 text-secondary">10</span></p>
+                        {% else %}
+                            <p class="card-text text-center text-dark" style="font-size: 5rem"><span
+                                id="current_score">?</span>/<span
                                 class="h2 text-secondary">10</span></p>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="card">
