@@ -16,66 +16,128 @@
 
 {% block body %}
     <main role="main" class="container mb-5">
-        <div class="row">
+        <div class="row mb-2">
             <div class="col-md-8 border-right">
-                <h1>{{ course_data.course_id | upper }}: {{ course_data.course_name_en }}</h1>
-                <p class="lead">{{ course_data.course_name_cn }}</p>
-                <p class="text-muted">Updated {{ course_data.update_time }}</p>
-                <div class="row">
-                    <div class="col-md-6">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Course Code:
-                                <label class="badge bg-primary">{{ course_data.course_id | upper }}</label>
-                            </li>
-                            <li class="list-group-item">Course Category:
-                                <label class="badge bg-info">
-                                    {% if course_data.course_type.name|length > 30 %}
-                                        {{ course_data.course_type.name_abbr }}
-                                    {% else %}
-                                        {{ course_data.course_type.name }}
-                                    {% endif %}
-                                </label>
-                            </li>
-                            <li class="list-group-item">Course Units:
-                                <label class="badge bg-warning">{{ course_data.course_units }}</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Division:
-                                {% for division in division_involve %}
-                                    <label class="badge bg-success">{{ division }}</label>
-                                {% endfor %}
-                            </li>
-                            <li class="list-group-item">Major:
-                                {% if majors %}
-                                    {% for major in majors %}
-                                        <label class="badge bg-danger">{{ major.major.major_en_abbr }}</label>
-                                    {% endfor %}
-                                {% else %}
-                                    None
-                                {% endif %}
-                            </li>
-                            <li class="list-group-item">Prerequisite:
-                                {% if pre_requested_by %}
-                                    <i type="button" class="fas fa-info-circle" id="requested_by"></i>
-                                {% endif %}
-                                {% if course_data.course_pre_request %}
-                                    <a href="{% url 'course_detail' course_data.course_pre_request.id %}">
-                                        <label class="badge bg-dark">{{ course_data.course_pre_request }}</label>
-                                    </a>
-                                {% else %}
-                                    <label class="badge bg-dark">None</label>
-                                {% endif %}
+                <h1 class="text-primary fw-bold">{{ course_data.course_id | upper }}</h1>
+                <h2>{{ course_data.course_name_en }} <span class="text-muted">{{ course_data.course_name_cn }}</span>
+                </h2>
+                <p class="text-muted">
+                    {% if majors|length <= 2 %}
+                        {% for major in majors %}
+                            {% if forloop.last %}
+                                {{ major.major.major_en }}
+                            {% else %}
+                                {{ major.major.major_en }},
+                            {% endif %}
+                        {% endfor %}
+                        ·
+                    {% endif %}
+                    {% if division_involve|length == 1 %}
+                        {% for div in division_involve %}
+                            {{ div }} ·
+                        {% endfor %}
+                    {% endif %}
+                    {% if course_data.course_type.name|length > 25 %}
+                        {{ course_data.course_type.name_abbr }} Course
+                    {% else %}
+                        {{ course_data.course_type.name }}
+                    {% endif %}
+                    ·
+                    {{ course_data.course_units }} {% if course_data.course_units == 1 %}Unit{% else %}Units{% endif %}
 
-                            </li>
-                        </ul>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <h5 class="px-3">Course Descriptions: </h5>
-                        <li class="list-group-item">{{ course_data.course_description }}</li>
-                    </ul>
+                </p>
+                <div class="row">
+                    {#                    <div class="col-md-6">#}
+                    {#                        <ul class="list-group list-group-flush">#}
+                    {#                            <li class="list-group-item">Division:#}
+                    {#                                {% for division in division_involve %}#}
+                    {#                                    <label class="badge bg-success">{{ division }}</label>#}
+                    {#                                {% endfor %}#}
+                    {#                            </li>#}
+                    {#                            <li class="list-group-item">Major:#}
+                    {#                                {% if majors %}#}
+                    {#                                    {% for major in majors %}#}
+                    {#                                        <label class="badge bg-danger">{{ major.major.major_en_abbr }}</label>#}
+                    {#                                    {% endfor %}#}
+                    {#                                {% else %}#}
+                    {#                                    None#}
+                    {#                                {% endif %}#}
+                    {#                            </li>#}
+                    {#                            <li class="list-group-item">Prerequisite:#}
+                    {#                                {% if pre_requested_by %}#}
+                    {#                                    <i type="button" class="fas fa-info-circle" id="requested_by"></i>#}
+                    {#                                {% endif %}#}
+                    {#                                {% if course_data.course_pre_request %}#}
+                    {#                                    <a href="{% url 'course_detail' course_data.course_pre_request.id %}">#}
+                    {#                                        <label class="badge bg-dark">{{ course_data.course_pre_request }}</label>#}
+                    {#                                    </a>#}
+                    {#                                {% else %}#}
+                    {#                                    <label class="badge bg-dark">None</label>#}
+                    {#                                {% endif %}#}
+                    {##}
+                    {#                            </li>#}
+                    {#                        </ul>#}
+                    {#                    </div>#}
+                    <h5>Course Descriptions</h5>
+                    <p>{{ course_data.course_description }}</p>
+                    {% if course_data.course_pre_request %}
+                        <h5>Prerequisite</h5>
+                        <p>
+                            <a href="{% url 'course_detail' course_data.course_pre_request.id %}">{{ course_data.course_pre_request.course_id }}</a> {{ course_data.course_pre_request.course_name_en }}
+                        </p>
+                    {% endif %}
+                    <h5>Workload</h5>
+{#                    <div class="workload-section"><h5>Estimate workload per week: 20 hrs</h5>#}
+{#                        <div class="workload-row">#}
+{#                            <div class="workload-box" style="width: 30%;"><h5 class="workload-lecture-text">Lecture</h5>#}
+{#                                <div class="workload-block">#}
+{#                                    <div class="workload-lecture-bg"></div>#}
+{#                                    <div class="workload-lecture-bg"></div>#}
+{#                                    <div class="workload-lecture-bg"></div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="workload-box" style="width: 10%;"><h5 class="workload-tutorial-text"><abbr#}
+{#                                    title="Tutorial">Tut</abbr></h5>#}
+{#                                <div class="workload-block">#}
+{#                                    <div class="workload-tutorial-bg"></div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="workload-box" style="width: 10%;"><h5 class="workload-laboratory-text"><abbr#}
+{#                                    title="Laboratory">Lab</abbr></h5>#}
+{#                                <div class="workload-block">#}
+{#                                    <div class="workload-laboratory-bg"></div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="workload-box" style="width: 50%;"><h5 class="workload-preparation-text"><span>Preparation</span>#}
+{#                                <span>5 hrs</span></h5>#}
+{#                                <div class="workload-block">#}
+{#                                    <div class="workload-preparation-bg"></div>#}
+{#                                    <div class="workload-preparation-bg"></div>#}
+{#                                    <div class="workload-preparation-bg"></div>#}
+{#                                    <div class="workload-preparation-bg"></div>#}
+{#                                    <div class="workload-preparation-bg"></div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="workload-box" style="width: 100%;"><h5 class="workload-project-text">#}
+{#                                <span>Project</span> <span>10 hrs</span></h5>#}
+{#                                <div class="workload-block">#}
+{#                                    <div class="workload-project-bg"></div>#}
+{#                                    <div class="workload-project-bg"></div>#}
+{#                                    <div class="workload-project-bg"></div>#}
+{#                                    <div class="workload-project-bg"></div>#}
+{#                                    <div class="workload-project-bg"></div>#}
+{#                                    <div class="workload-project-bg"></div>#}
+{#                                    <div class="workload-project-bg"></div>#}
+{#                                    <div class="workload-project-bg"></div>#}
+{#                                    <div class="workload-project-bg"></div>#}
+{#                                    <div class="workload-project-bg"></div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+                    <p class="text-muted">Workload not available</p>
+                    <h5>Modules</h5>
+                    <p class="text-muted">Modules not available</p>
                 </div>
             </div>
             <div class="col-md-4">
@@ -90,8 +152,8 @@
                                     class="h2 text-secondary">10</span></p>
                         {% else %}
                             <p class="card-text text-center text-dark" style="font-size: 5rem"><span
-                                id="current_score">?</span>/<span
-                                class="h2 text-secondary">10</span></p>
+                                    id="current_score">?</span>/<span
+                                    class="h2 text-secondary">10</span></p>
                         {% endif %}
                     </div>
                 </div>
@@ -136,15 +198,8 @@
                         {% endif %}
                     </div>
                 </div>
+                <p class="text-muted">Last updated: <abbr title="{{ course_data.update_time }}">{{ course_data.update_time|naturaltime }}</abbr></p>
             </div>
-        </div>
-        <div>
-            {% if user.is_staff or user.is_superuser %}
-                <nav class="py-2 border-top border-bottom">
-                    <a href="{% url 'course_modify' course_data.id %}" class="btn btn-primary btn-sm my-1">Modify</a>
-                    <button onclick="AlertIt()" class="btn btn-danger btn-sm my-1">Delete</button>
-                </nav>
-            {% endif %}
         </div>
         <div>
             <div class="card mt-2" style="margin-bottom: 5rem">
@@ -228,6 +283,15 @@
             </div>
         </div>
     {% endif %}
+
+    <div>
+        {% if user.is_staff or user.is_superuser %}
+            <nav class="py-2">
+                <a href="{% url 'course_modify' course_data.id %}" class="btn btn-primary btn-sm my-1">Modify</a>
+                <button onclick="AlertIt()" class="btn btn-danger btn-sm my-1">Delete</button>
+            </nav>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block footer_extends %}{% endblock %}
@@ -393,7 +457,8 @@
                     container: 'body',
                     html: true,
                     title: 'This course is pre-requested by',
-                    content: '{% for rc in pre_requested_by %}<a href="{% url 'course_detail' rc.id %}">{{ rc.course_id }}</a> {{ rc.course_name_cn }}<br>{% endfor %}'
+                    content: '{% for rc in pre_requested_by %}<a href="{% url 'course_detail' rc.id %}">{{ rc.course_id }}
+                        </a> {{ rc.course_name_cn }}<br>{% endfor %}'
                 }
             )
         {% endif %}
