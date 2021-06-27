@@ -1,41 +1,17 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-    <title>uicCourse | Course Type</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
-    <!-- Custom styles for this template -->
-    <style type="text/css">
-        /* Sticky footer styles
-        -------------------------------------------------- */
-        html {
-            position: relative;
-            min-height: 100%;
-        }
+{% extends 'content-ui-base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
 
-        body {
-            /* Margin bottom by footer height */
-            margin-bottom: 60px;
-        }
+{% block title %}Course Type{% endblock %}
 
-        /* Custom page CSS
-        -------------------------------------------------- */
+{% block head_extends %}
+{% endblock %}
 
-    </style>
-    {% load static %}
-</head>
-
-<body>
-{% include "index/header.html" %}
-{% include "index/messager.html" %}
-<main role="main" class="container mb-5">
+{% block body %}
+    <main role="main" class="container mb-5">
     <h1 class="mt-md-3">Course Type</h1>
-    {% include "dashboard/functions.html" %}
+    {% include "dashboard-functions.html" %}
     <div class="table-responsive">
         <table class="table">
             <caption class="m-2"><a href="/admin/course/coursetype/">Modify Course Type Information</a></caption>
@@ -56,6 +32,10 @@
         </table>
     </div>
 </main>
-{% include "index/footer.html" %}
-</body>
-</html>
+{% endblock %}
+
+{% block footer_extends %}{% endblock %}
+
+{% block extra_js %}{% endblock %}
+
+{% block out_of_body %}{% endblock %}

@@ -14,7 +14,7 @@ from .models import Notice
 
 def welcome_page(request):
     latest_notice = Notice.objects.filter(is_visible=True)[:3]  # only take latest notice
-    return render(request, 'index/index.html', {'latest_notice': latest_notice})
+    return render(request, 'welcome-page.html', {'latest_notice': latest_notice})
 
 
 def login_page(request):
@@ -101,11 +101,11 @@ def change_password_page(request):
 
 
 def terms_page(request):
-    return render(request, 'index/terms.html')
+    return render(request, 'docs/terms.html')
 
 
 def privacy_page(request):
-    return render(request, 'index/privacy.html')
+    return render(request, 'docs/privacy.html')
 
 
 @login_required
@@ -143,7 +143,7 @@ def tags_create(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = CreateTagForm()
-    return render(request, 'dashboard/tag_create.html', {'form': form})
+    return render(request, 'dashboard/tag_form.html', {'form': form})
 
 
 @staff_member_required
@@ -160,7 +160,7 @@ def tags_modify(request, tag_id):
     else:
         tag = Tags.objects.get(pk=tag_id)
         form = CreateTagForm(instance=tag)
-        return render(request, 'dashboard/tag_create.html', {'form': form, 'is_modify': True, 'tag_id': tag.id})
+        return render(request, 'dashboard/tag_form.html', {'form': form, 'is_modify': True, 'tag_id': tag.id})
 
 
 @staff_member_required
@@ -189,7 +189,7 @@ def notice_create(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = CreateNoticeForm()
-    return render(request, 'dashboard/notice_create.html', {'form': form})
+    return render(request, 'dashboard/notice_form.html', {'form': form})
 
 
 @staff_member_required
@@ -206,7 +206,7 @@ def notice_modify(request, notice_id):
     else:
         notice = Notice.objects.get(pk=notice_id)
         form = CreateNoticeForm(instance=notice)
-        return render(request, 'dashboard/notice_create.html', {'form': form, 'is_modify': True, 'notice_id': notice.id})
+        return render(request, 'dashboard/notice_form.html', {'form': form, 'is_modify': True, 'notice_id': notice.id})
 
 
 @staff_member_required
@@ -220,7 +220,7 @@ def notice_delete(request, notice_id):
 @login_required
 def quick_vote_record(request):
     votes = QuickVotes.objects.filter(voter=request.user)
-    return render(request, 'dashboard/quickvote.html', {'votes': votes})
+    return render(request, 'dashboard/quick_vote.html', {'votes': votes})
 
 
 @login_required

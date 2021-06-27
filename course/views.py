@@ -58,7 +58,7 @@ def course_create(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = CourseForm()
-    return render(request, 'course/course_create.html', {'form': form})
+    return render(request, 'course/course_form.html', {'form': form})
 
 
 @staff_member_required
@@ -75,7 +75,7 @@ def course_modify(request, course_id):
     else:
         course = Course.objects.get(pk=course_id)
         form = CourseForm(instance=course)
-    return render(request, 'course/course_create.html', {'form': form})
+    return render(request, 'course/course_form.html', {'form': form})
 
 
 @staff_member_required
@@ -111,7 +111,7 @@ def course_detail(request, course_id):
     valid_upvote = QuickVotes.objects.filter(course=query_course, vote_status=True, is_invalid_vote=0).count()
     valid_downvote = QuickVotes.objects.filter(course=query_course, vote_status=False, is_invalid_vote=0).count()
     if valid_upvote + valid_downvote == 0:
-        course_score = 5
+        course_score = "-"
     elif valid_downvote == 0:
         course_score = 10
     elif valid_upvote == 0:
@@ -142,3 +142,38 @@ def course_detail(request, course_id):
                                                          'course_tag_data': course_tag_data,
                                                          'user_review': user_review,
                                                          'pre_requested_by': pre_request_by})
+
+
+def course_list_neo(request):
+    filter_1 = request.GET.get('category')
+    filter_2 = request.GET.get('major')
+    if filter_1 is not None or filter_2 is not None:
+        filter_statue = {'is_filtered': True,
+                         'type': None,
+                         'category': None,
+                         'major': None}
+        if filter_1 is not None:
+            filter_statue['type'] = 'category'
+            filter_statue['category'] = CourseType.objects.get(pk=filter_1).name_abbr
+            courses_list = Course.objects.filter(course_type=filter_1).order_by('course_name_en')
+        elif filter_2 is not None:
+            filter_statue['type'] = 'major'
+            filter_statue['major'] = ValidDivisionMajorPair.objects.get(pk=filter_2).major.major_en_abbr
+            courses_list = Course.objects.filter(course_major_take=filter_2).order_by('course_name_en')
+    else:
+        filter_statue = {
+            'is_filtered': False,
+             'type': None,
+             'category': None,
+             'major': None
+        }
+        courses_list = Course.objects.all().order_by('id')
+    paginator = Paginator(courses_list, 15)
+    page = request.GET.get('page')
+    courses = paginator.get_page(page)
+    majors = ValidDivisionMajorPair.objects.all().order_by('major__major_en_abbr')
+    coursetypes = CourseType.objects.all()
+    return render(request, 'course/neo.html', {'courses': courses,
+                                               'majors': majors,
+                                               'coursetypes': coursetypes,
+                                               'filter_status': filter_statue})

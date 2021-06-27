@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include('report.urls')),
     path('', include('voting.urls')),
     path('', include('search.urls')),
-    path('', include('handbook.urls'))
+    path('', include('handbook.urls')),
+    path('', include('protocourse.urls'))
 ]

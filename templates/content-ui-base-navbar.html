@@ -1,0 +1,55 @@
+<header class="p-3 mb-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="{% url 'welcome_page' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-white navbar-brand text-decoration-none">
+                uicCourse
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{% url 'welcome_page' %}" class="nav-link px-2 text-white">Home</a></li>
+                <li><a href="{% url 'course_list_page' %}" class="nav-link px-2 text-white">Course</a></li>
+                <li><a href="{% url 'report' %}" class="nav-link px-2 text-white">Report</a></li>
+                <li><a href="{% url 'handbook_home' %}" class="nav-link px-2 text-white">Handbook</a></li>
+            </ul>
+
+            <div class="text-end">
+                {% if user.is_anonymous %}
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="{% url 'login_page' %}" class="nav-link px-2 text-white">Login</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkSignUpDropdownMenuLink"
+                               role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Sign up
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark"
+                                aria-labelledby="navbarDarkSignUpDropdownMenuLink">
+                                <li><a class="dropdown-item" href="{% url 'terms_page' %}">Terms of Service</a></li>
+                                <li><a class="dropdown-item" href="{% url 'privacy_page' %}">Privacy Statement</a></li>
+                                <li><a class="dropdown-item" href="{% url 'signup_page' %}">Sign Up</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                {% else %}
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                               role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark"
+                                aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{% url 'logout_receiver' %}">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                {% endif %}
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    </div>
+</header>

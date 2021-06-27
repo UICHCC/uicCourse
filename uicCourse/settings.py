@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'voting',
     'search',
     'widget_tweaks',
-    'handbook'
+    'handbook',
+    'protocourse',
+    'django.contrib.humanize'
 ]
 
 MIDDLEWARE = [
@@ -61,7 +63,7 @@ ROOT_URLCONF = 'uicCourse.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,9 +135,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, '/static')
+
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, '/static')
+STATICFILES_DIRS = ( os.path.join('static'), )
 
 # Session Setting
 
@@ -144,3 +148,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 LOGIN_URL = '/login/'
 # If the user isn't logged in but try to access login request area
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

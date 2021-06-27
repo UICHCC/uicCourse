@@ -1,44 +1,27 @@
+{% extends 'content-ui-base.html' %}
+{% load static %}
 {% load widget_tweaks %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-    <title>uicCourse | Create/Modify Tag</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
-    <!-- Custom styles for this template -->
-    <style type="text/css">
-        /* Sticky footer styles
-        -------------------------------------------------- */
-        html {
-            position: relative;
-            min-height: 100%;
+{% load humanize %}
+
+{% block title %}Create/Modify Tag{% endblock %}
+
+{% block head_extends %}
+    <style>
+    .invalid-message{
+            width: 100%;
+            margin-top: .25rem;
+            font-size: 80%;
+            color: #dc3545;
         }
-
-        body {
-            /* Margin bottom by footer height */
-            margin-bottom: 60px;
-        }
-
-        /* Custom page CSS
-        -------------------------------------------------- */
-
     </style>
-    {% load static %}
-</head>
+{% endblock %}
 
-<body>
-{% include "index/header.html" %}
-{% include "index/messager.html" %}
-<main role="main" class="container mb-5">
+{% block body %}
+    <main role="main" class="container mb-5">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mt-md-3">Create/Modify Tag</h1>
     </div>
-    {% include "dashboard/functions.html" %}
+    {% include "dashboard-functions.html" %}
     <form method="post">
         {% csrf_token %}
         {% for field in form %}
@@ -61,7 +44,11 @@
         <button onclick="AlertIt()" class="btn btn-danger mb-5">Delete the tag</button>
     {% endif %}
 </main>
-{% include "index/footer.html" %}
+{% endblock %}
+
+{% block footer_extends %}{% endblock %}
+
+{% block extra_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.0/sweetalert2.all.min.js" integrity="sha256-FABHlNZdWEEvD1Ge8L18a01NTTLNiZ4uD8hdl5QG5BI=" crossorigin="anonymous"></script>
 {% if tag_id %}
 <script>
@@ -82,5 +69,6 @@
     }
 </script>
 {% endif %}
-</body>
-</html>
+{% endblock %}
+
+{% block out_of_body %}{% endblock %}

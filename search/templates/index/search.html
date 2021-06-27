@@ -1,38 +1,14 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-    <title>uicCourse</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
-    <!-- Custom styles for this template -->
-    <style type="text/css">
-        /* Sticky footer styles
-        -------------------------------------------------- */
-        html {
-            position: relative;
-            min-height: 100%;
-        }
+{% extends 'content-ui-base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
 
-        body {
-            /* Margin bottom by footer height */
-            margin-bottom: 60px;
-        }
+{% block title %}Search{% endblock %}
 
-        /* Custom page CSS
-        -------------------------------------------------- */
+{% block head_extends %}
+{% endblock %}
 
-    </style>
-    {% load static %}
-</head>
-
-<body>
-{% include "index/header.html" %}
-{% include "index/messager.html" %}
+{% block body %}
 <main role="main" class="container mb-5">
     <h1 class="mt-md-3">Search</h1>
     <form class="my-2">
@@ -40,26 +16,32 @@
     </form>
     {% if search_result %}
     <p class="my-2">find {{search_result|length}} matched result(s)</p>
-    <div class="card-columns">
-    {% for course in search_result %}
-    <a href="{% url 'course_detail' course.id %}">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title"><span class="badge badge-secondary">{{course.course_id}}</span> {{course.course_name_en}}</h5>
-                <p class="card-text">{{course.course_name_cn}}</p>
-            </div>
+            <div class="row" data-masonry='{"percentPosition": true }'>
+            {% for course in search_result %}
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><span
+                                    class="badge bg-secondary">{{ course.course_id }}</span> {{ course.course_name_en }}
+                            </h5>
+                            <p class="card-text">{{ course.course_name_cn }}</p>
+                            <p class="card-text"><small class="text-muted">{{ course.course_description }}</small></p>
+                            <a href="{% url 'course_detail' course.id %}" class="stretched-link">Check Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    </a>
-    {% endfor %}
-    </div>
     {% else %}
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">No result</h1>
-        </div>
-    </div>
+    <p class="my-2">No result, try another query.</p>
     {% endif %}
 </main>
-{% include "index/footer.html" %}
-</body>
-</html>
+{% endblock %}
+
+{% block footer_extends %}{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript" src="https://unpkg.com/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script>
+{% endblock %}
+
+{% block out_of_body %}{% endblock %}
