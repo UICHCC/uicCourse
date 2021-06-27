@@ -11,3 +11,7 @@ def search_course(request):
     if raw_input is not None:
         search_result = Course.objects.filter(Q(course_id__icontains=raw_input) | Q(course_name_en__icontains=raw_input) | Q(course_name_cn__icontains=raw_input))
     return render(request, 'index/search.html', {'search_result': search_result, 'raw_input': raw_input})
+
+
+# def search_matching(request):
+#     if request.method == 'POST':
