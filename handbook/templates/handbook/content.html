@@ -27,9 +27,11 @@
             <tbody>
             {% for i in value %}
             <tr>
-                <th>{{ i.title_en }}{% if i.is_course_category %} <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" data-html="true" title="This denotes a course category in which a list of courses may be developed for students’ selection. Students are expected to refer to the Online Course Selection System for courses available under each category."></i>{% endif %}
+                <th>{{ i.title_en }}{% if i.is_course_category %}
+                    <i class="fa fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="This denotes a course category in which a list of courses may be developed for students’ selection. Students are expected to refer to the Online Course Selection System for courses available under each category."></i>
+                {% endif %}
                 {% if i.comment != '' %}
-                     <i class="fa fa-commenting" data-toggle="tooltip" data-placement="right" data-html="true" title="{{ i.comment }}"></i>
+                     <i class="far fa-commenting" data-bs-toggle="tooltip" data-bs-placement="right" title="{{ i.comment }}"></i>
                 {% endif %}
 {#                {% if material.title_cn %}#}
                     <div class="small text-muted">{{ i.title_cn }}</div>
@@ -56,6 +58,13 @@
 
 {% block footer_extends %}{% endblock %}
 
-{% block extra_js %}{% endblock %}
+{% block extra_js %}
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+{% endblock %}
 
 {% block out_of_body %}{% endblock %}
